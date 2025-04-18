@@ -5,7 +5,7 @@ import { FaHome, FaRegBuilding } from "react-icons/fa";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import TextInput from "../../components/Fields/TextInput";
 import AnimatedSelect from "../../components/Fields/AnimatedSelect";
-import PriceRangeSlider from "../../components/Fields/PriceRangeSlider";
+import PriceRangeSlider from "../../components/Fields/PriceRangeSelector";
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
 import useRequirement from "../../hooks/customer-hooks/useRequirement";
 import useGetFilledRequirements from "../../hooks/customer-hooks/useGetFilledRequirements";
@@ -16,7 +16,7 @@ const Requirements = () => {
     purpose: "",
     category: "Rent",
     location: "",
-    priceRange: [5000, 20000],
+    priceRange: "",
     state: "",
     city: "",
     area: "",
@@ -46,9 +46,9 @@ const Requirements = () => {
   useEffect(() => {
     if (requirements) {
       const sizeParts = requirements?.size?.split(" ") || ["", "sqft"];
-      const priceRangeParts = requirements?.priceRange
-        ?.split("-")
-        ?.map(Number) || [5000, 20000];
+      // const priceRangeParts = requirements?.priceRange
+      //   ?.split("-")
+      //   ?.map(Number) || [5000, 20000];
       setIsData(true);
       setFormData((prev) => ({
         ...prev,
@@ -62,7 +62,7 @@ const Requirements = () => {
         floor: requirements?.floor || "",
         sizetype: sizeParts[1] || "sqft",
         size: parseInt(sizeParts[0]) || "",
-        priceRange: priceRangeParts,
+        priceRange: requirements?.priceRange,
         scheme: requirements?.scheme || "",
       }));
     }
@@ -121,12 +121,12 @@ const Requirements = () => {
         if (!formData.format && formData.purpose === "residential") {
           newErrors.format = "Please select a format";
         }
-        if (
-          !formData.floor &&
-          (formData.type === "Flat" || formData.type === "Office")
-        ) {
-          newErrors.floor = "Please select a floor";
-        }
+        // if (
+        //   !formData.floor &&
+        //   (formData.type === "Flat" || formData.type === "Office")
+        // ) {
+        //   newErrors.floor = "Please select a floor";
+        // }
         break;
       case 4:
         if (!formData.size) {
@@ -134,6 +134,9 @@ const Requirements = () => {
         }
         if (!formData.scheme) {
           newErrors.scheme = "Please enter scheme name";
+        }
+        if (!formData.priceRange){
+          newErrors.priceRange = "Please enter budget";
         }
         break;
       default:
@@ -162,7 +165,7 @@ const Requirements = () => {
       city: formData.city,
       area: formData.area,
       size: formData.size + " " + formData.sizetype,
-      priceRange: formData.priceRange[0] + "-" + formData.priceRange[1],
+      priceRange: formData.priceRange,
       scheme: formData.scheme,
       amount:
         formData.purpose === "residential"
@@ -479,17 +482,28 @@ const Requirements = () => {
               </div> */}
 
               <div className="form-group">
-                <PriceRangeSlider
+                {/* <PriceRangeSlider
                   value={formData.priceRange}
                   onChange={(range) =>
                     setFormData((prev) => ({ ...prev, priceRange: range }))
                   }
+                /> */}
+                <div className="form-group">
+                <TextInput
+                  label="Budget"
+                  name="priceRange"
+                  type="number"
+                  value={formData.priceRange}
+                  onChange={handleChange}
+                  placeholder="Enter your budget"
+                  error={errors.priceRange}
                 />
-                <p className="text-xs poppins-semibold">
+              </div>
+                <p className="text-xs mt-1 text-primary poppins-semibold">
                   You have to pay{" "}
                   {formData.purpose === "residential"
-                    ? formData.priceRange[1] / 5
-                    : formData.priceRange[1] / 2.5}
+                    ? formData.priceRange / 5 || 0
+                    : formData.priceRange / 2.5 || 0}
                 </p>
               </div>
             </div>

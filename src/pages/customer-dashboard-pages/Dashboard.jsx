@@ -81,7 +81,9 @@ const Dashboard = () => {
                   className="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover"
                 />
                 <div className="hidden sm:block">
-                  <p className="poppins-medium text-sm">{localStorage.getItem("userName") || "No Name"}</p>
+                  <p className="poppins-medium text-sm">
+                    {localStorage.getItem("userName") || "No Name"}
+                  </p>
                   <p className="poppins-medium text-sm text-gray-600">
                     Customer
                   </p>
@@ -199,8 +201,11 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="my-2 gap-2 w-full h-[400px] flex flex-col justify-center items-center">
-              <p className="text-xl poppins-semibold">No Data Found</p>
+            <div className="my-2 gap-4 w-full h-[400px] flex flex-col justify-center items-center">
+              <p className="text-xl poppins-semibold">Thank you!</p>
+              <p className="text-xl poppins-semibold">
+                Soon we will share properties with you!
+              </p>
               <img
                 src={notfound}
                 className="w-2/3 mx-auto"
@@ -301,7 +306,10 @@ const Dashboard = () => {
               </div>
               <div className="mt-3 flex flex-row gap-2">
                 <AnimatedButton text={"Filter"} />
-                <AnimatedButton text={"Clear"} otherStyles={"bg-gray-200 text-black"} />
+                <AnimatedButton
+                  text={"Clear"}
+                  otherStyles={"bg-gray-200 text-black"}
+                />
               </div>
             </div>
           </div>

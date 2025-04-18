@@ -25,6 +25,7 @@ const useRequirement = () => {
 
       const result = await response.json();
       console.log("Requirement Result:", result);
+      console.log("Requirement :", formData);
 
       if (!response.ok) {
         throw new Error(result.message || 'Failed to submit requirement');
@@ -39,8 +40,8 @@ const useRequirement = () => {
     try {
       const result = await toast.promise(sendRequirementData(), {
         loading: 'Submitting...',
-        success: <b>Requirement saved successfully!</b>,
-        error: <b>Submission failed</b>,
+        success: 'Requirement saved successfully!',
+        error: (err)=> err.message || "Submission failed",
       });
 
       return result;

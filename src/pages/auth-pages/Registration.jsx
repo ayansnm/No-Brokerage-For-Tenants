@@ -40,8 +40,8 @@ const Registration = () => {
       newErrors.mobile = "Enter a valid 10-digit number";
     if (!emailRegex.test(formData.email))
       newErrors.email = "Enter a valid email";
-    if (!formData.address.trim() || formData.address.trim().length < 20) {
-      newErrors.address = "Address must be at least 20 characters long";
+    if (!formData.address) {
+      newErrors.address = "Address Required";
     }
     
 

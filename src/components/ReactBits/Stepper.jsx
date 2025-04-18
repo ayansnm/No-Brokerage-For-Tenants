@@ -1,20 +1,8 @@
 // Stepper.js
 import React, { useState, Children, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import AnimatedButton from "../Fields/AnimatedButton";
 
-function AnimatedButton({ text, onClick, otherStyles, disabled = false }) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`bg-primary text-white px-4 py-2 rounded-full transition-transform hover:scale-105 ${otherStyles} ${
-        disabled ? "opacity-50 cursor-not-allowed" : ""
-      }`}
-    >
-      {text}
-    </button>
-  );
-}
 
 export default function Stepper({
   children,
@@ -171,7 +159,7 @@ export default function Stepper({
               <div className="w-[60%] sm:w-[40%]">
                 <AnimatedButton
                   text={isLastStep ? "Pay Subscription" : nextButtonText}
-                  onClick={isLastStep ? handleComplete : handleNext}
+                  onClick={isLastStep ? handleSubmit : handleNext}
                   otherStyles="w-full rounded-full cursor-pointer"
                 />
               </div>
