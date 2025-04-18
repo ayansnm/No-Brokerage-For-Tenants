@@ -1,17 +1,21 @@
+// Stepper.js
 import React, { useState, Children, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Placeholder AnimatedButton (you can replace it with your actual one)
-function AnimatedButton({ text, onClick, otherStyles }) {
+function AnimatedButton({ text, onClick, otherStyles, disabled = false }) {
   return (
     <button
       onClick={onClick}
-      className={`bg-primary text-white px-4 py-2 rounded-full transition-transform hover:scale-105 ${otherStyles}`}
+      disabled={disabled}
+      className={`bg-primary text-white px-4 py-2 rounded-full transition-transform hover:scale-105 ${otherStyles} ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
     >
       {text}
     </button>
   );
 }
+
 export default function Stepper({
   children,
   initialStep = 1,
@@ -31,6 +35,9 @@ export default function Stepper({
   handleSubmit,
   canProceed = true,
   purpose,
+  errors = {}, // Receive errors as prop
+  setErrors = () => {}, // Receive setErrors as prop
+  validateStep = () => true, // Validation function
   ...rest
 }) {
   const [currentStep, setCurrentStep] = useState(initialStep);
@@ -53,23 +60,40 @@ export default function Stepper({
     }
   };
 
-  const handleNext = () => {
-    if (!isLastStep && canProceed) {
+  const handleNext = async () => {
+    if (isLastStep) return;
+    
+    // Clear previous errors
+    setErrors({});
+    
+    // Validate current step before proceeding
+    const validationErrors = await validateStep(currentStep);
+    setErrors(validationErrors || {});
+    
+    if (!validationErrors || Object.keys(validationErrors).length === 0) {
       setDirection(1);
       updateStep(currentStep + 1);
     }
   };
 
-  const handleComplete = () => {
-    if (canProceed) {
-      setDirection(1);
-      updateStep(totalSteps + 1);
+  const handleComplete = async () => {
+    if (isLastStep) {
+      // Clear previous errors
+      setErrors({});
+      
+      const validationErrors = await validateStep(currentStep);
+      setErrors(validationErrors || {});
+      
+      if (!validationErrors || Object.keys(validationErrors).length === 0) {
+        setDirection(1);
+        updateStep(totalSteps + 1);
+      }
     }
   };
 
   return (
     <div
-      className="flex min-h-full flex-1 flex-col items-center justify-center "
+      className="flex min-h-full flex-1 flex-col items-center justify-center"
       {...rest}
     >
       <div
@@ -147,9 +171,8 @@ export default function Stepper({
               <div className="w-[60%] sm:w-[40%]">
                 <AnimatedButton
                   text={isLastStep ? "Pay Subscription" : nextButtonText}
-                  onClick={isLastStep ? handleSubmit : handleNext}
+                  onClick={isLastStep ? handleComplete : handleNext}
                   otherStyles="w-full rounded-full cursor-pointer"
-                  disabled={!canProceed}
                 />
               </div>
             </div>

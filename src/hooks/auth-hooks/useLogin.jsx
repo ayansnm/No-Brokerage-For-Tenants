@@ -33,6 +33,7 @@ const useLogin = () => {
       const token = result?.data?.token;
       localStorage.setItem("token", token);
       localStorage.setItem("userId", result?.data?.user?._id);
+      localStorage.setItem("userName", result?.data?.user?.fullName);
 
       // Set token in context
       setAuthUser(token);

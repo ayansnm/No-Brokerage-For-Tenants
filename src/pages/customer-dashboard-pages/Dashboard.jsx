@@ -81,7 +81,7 @@ const Dashboard = () => {
                   className="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover"
                 />
                 <div className="hidden sm:block">
-                  <p className="poppins-medium text-sm">John Doe</p>
+                  <p className="poppins-medium text-sm">{localStorage.getItem("userName") || "No Name"}</p>
                   <p className="poppins-medium text-sm text-gray-600">
                     Customer
                   </p>
@@ -95,9 +95,9 @@ const Dashboard = () => {
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     Profile
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  {/* <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     Settings
-                  </li>
+                  </li> */}
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {

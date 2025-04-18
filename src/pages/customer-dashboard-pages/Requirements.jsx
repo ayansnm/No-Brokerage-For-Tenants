@@ -91,68 +91,56 @@ const Requirements = () => {
     }));
   };
 
-  const validateCurrentStep = () => {
-    let isValid = true;
+  const validateCurrentStep = (step) => {
     const newErrors = {};
 
-    switch (currentStep) {
+    switch (step) {
       case 1:
         if (!formData.purpose) {
           newErrors.purpose = "Please select a purpose!";
-          isValid = false;
         }
         break;
       case 2:
         if (!formData.state) {
           newErrors.state = "Please select a state";
-          isValid = false;
         }
         if (!formData.city) {
           newErrors.city = "Please select a city";
-          isValid = false;
         }
         if (!formData.area) {
           newErrors.area = "Please select an area";
-          isValid = false;
         }
         break;
       case 3:
-        if (!formData.type ) {
+        if (!formData.type) {
           newErrors.type = "Please select a property type";
-          isValid = false;
         }
         if (!formData.furnished) {
           newErrors.furnished = "Please select furnished type";
-          isValid = false;
         }
-        if (!formData.format && (formData.purpose === 'residential')) {
+        if (!formData.format && formData.purpose === "residential") {
           newErrors.format = "Please select a format";
-          isValid = false;
         }
         if (
           !formData.floor &&
           (formData.type === "Flat" || formData.type === "Office")
         ) {
           newErrors.floor = "Please select a floor";
-          isValid = false;
         }
         break;
       case 4:
         if (!formData.size) {
           newErrors.size = "Please enter size";
-          isValid = false;
         }
         if (!formData.scheme) {
           newErrors.scheme = "Please enter scheme name";
-          isValid = false;
         }
         break;
       default:
         break;
     }
 
-    setErrors(newErrors);
-    setCanProceed(isValid);
+    return newErrors;
   };
 
   const handleStepChange = (step) => {
@@ -197,12 +185,11 @@ const Requirements = () => {
         backgroundImage: `url(${bgImage})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
-        backgroundPosition: "bottom center", // Align image at the bottom
+        backgroundPosition: "bottom center",
         backgroundAttachment: "fixed",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        // padding: "",
         boxSizing: "border-box",
         overflowY: "auto",
       }}
@@ -210,8 +197,8 @@ const Requirements = () => {
     >
       <div
         style={{
-          width: "100%", // Fixed width 100%
-          maxWidth: "800px", // You can adjust this max width as needed
+          width: "100%",
+          maxWidth: "800px",
           margin: "2rem 0",
         }}
       >
@@ -222,9 +209,11 @@ const Requirements = () => {
           backButtonText="Previous"
           nextButtonText="Next"
           Heading="Looking for a property? We help you rent property with ease."
-          canProceed={canProceed}
           handleSubmit={handleSubmit}
           purpose={formData.purpose}
+          validateStep={validateCurrentStep}
+          errors={errors} // Pass errors to Stepper
+          setErrors={setErrors} // Pass setErrors to Stepper
         >
           <Step>
             <h2 className="w-full text-center poppins-semibold mb-4">
@@ -406,22 +395,22 @@ const Requirements = () => {
                   error={errors.furnished}
                 />
               </div>
-              {(formData.purpose == "residential") && (
-              <div className="form-group">
-                <AnimatedRadioButtons
-                  label="Format"
-                  name="format"
-                  options={[
-                    { label: "1BHK", value: "1BHK" },
-                    { label: "2BHK", value: "2BHK" },
-                    { label: "3BHK", value: "3BHK" },
-                    { label: "4BHK", value: "4BHK" },
-                  ]}
-                  value={formData.format}
-                  onChange={handleChange}
-                  error={errors.format}
-                />
-              </div>
+              {formData.purpose == "residential" && (
+                <div className="form-group">
+                  <AnimatedRadioButtons
+                    label="Format"
+                    name="format"
+                    options={[
+                      { label: "1BHK", value: "1BHK" },
+                      { label: "2BHK", value: "2BHK" },
+                      { label: "3BHK", value: "3BHK" },
+                      { label: "4BHK", value: "4BHK" },
+                    ]}
+                    value={formData.format}
+                    onChange={handleChange}
+                    error={errors.format}
+                  />
+                </div>
               )}
               {(formData.type === "Flat" || formData.type === "Office") && (
                 <div className="form-group">
@@ -457,7 +446,7 @@ const Requirements = () => {
                   value={formData.sizetype}
                   onChange={handleChange}
                   options={[
-                    { label: "sqft", value: "sqft" },
+                    { label: "Sqft", value: "Sqft" },
                     { label: "Vigha", value: "vigha" },
                     { label: "SqYard", value: "sqyard" },
                   ]}
