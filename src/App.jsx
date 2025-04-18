@@ -18,6 +18,7 @@ import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/authcontext";
 import RoleSelect from "./pages/auth-pages/RoleSelect";
 
+
 const App = () => {
   const {authUser} = useAuthContext();
   return (
