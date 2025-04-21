@@ -22,11 +22,8 @@ import AllProperties from "./pages/admin-dashboard-pages/AllProperties";
 import Profile from "./pages/customer-dashboard-pages/Profile";
 import PropertyDetails from "./pages/PropertyDetails";
 import Brokers from "./pages/admin-dashboard-pages/Brokers";
-<<<<<<< HEAD
 import AllPayments from "./pages/admin-dashboard-pages/AllPayments";
-=======
 import MyTickets from "./pages/customer-dashboard-pages/MyTickets";
->>>>>>> 25b745bc3a4cb74567ad582d363d7ca6858633e3
 
 const App = () => {
   const { authUser } = useAuthContext();
