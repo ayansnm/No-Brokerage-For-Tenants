@@ -34,6 +34,12 @@ const Navbar = () => {
     { label: "All Brokers", path: "/admin/brokers", icon: <FaUsers /> },
     { label: "All Tickets", path: "/admin/tickets", icon: <LuTickets /> },
     { label: "Payments", path: "/admin/payments", icon: <TbCashBanknote /> },
+    {
+      label: "Property Details",
+      path: "/PropertyDetails",
+      icon: <TbCashBanknote />,
+    },
+    { label: "My Tickets", path: "/MyTickets", icon: <TbCashBanknote /> },
   ];
 
   const location = useLocation();
@@ -90,6 +96,12 @@ const Navbar = () => {
                 <ul className="py-2 text-sm">
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     Profile
+                  </li>
+                  <li
+                    onClick={() => navigate("/MyTickets")}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    My Tickets
                   </li>
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
