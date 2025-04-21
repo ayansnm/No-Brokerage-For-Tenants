@@ -51,7 +51,7 @@ const AllProperties = () => {
                                     </div>
 
                                     {/* Sort dropdown */}
-                                    <div className="mt-3 w-[32%] sm:w-[28%] bg-white border rounded-lg border-[#e7e4e7] text-[#7f7f7f] pr-2 flex flex-row items-center px-2 focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all">
+                                    <div className="mt-3 w-[35%] sm:w-[28%] bg-white border rounded-lg border-[#e7e4e7] text-[#7f7f7f] pr-2 flex flex-row items-center px-2 focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all">
                                         <MdOutlineSort size={25} className="mr-1 text-[#7f7f7f]" />
                                         <select className="w-full px-1 py-2 outline-none border-none bg-transparent rounded-lg transition-all">
                                             <option value="">Sort</option>
