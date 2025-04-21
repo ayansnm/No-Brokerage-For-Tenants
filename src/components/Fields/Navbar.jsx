@@ -43,7 +43,7 @@ const Navbar = () => {
   ];
 
   const location = useLocation();
-  const currentMenuItemy = menuItems.find(
+  const currentMenuItem = menuItems.find(
     (item) => item.path === location.pathname
   );
   const pageHeading = currentMenuItem?.label || "Dashboard";
@@ -84,7 +84,7 @@ const Navbar = () => {
                     {localStorage.getItem("userName") || "No Name"}
                   </p>
                   <p className="poppins-medium text-sm text-gray-600">
-                    Customer
+                    Admin
                   </p>
                 </div>
               </div>
