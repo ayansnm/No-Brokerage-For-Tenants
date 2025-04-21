@@ -22,20 +22,28 @@ import AllProperties from "./pages/admin-dashboard-pages/AllProperties";
 import Profile from "./pages/customer-dashboard-pages/Profile";
 import PropertyDetails from "./pages/PropertyDetails";
 import Brokers from "./pages/admin-dashboard-pages/Brokers";
+import MyTickets from "./pages/customer-dashboard-pages/MyTickets";
 
 const App = () => {
   const { authUser } = useAuthContext();
   return (
     <Router>
       <Routes>
-        <Route path="/" element={authUser ? <Dashboard /> : <Navigate to='/Login' />} />
+        <Route
+          path="/"
+          element={authUser ? <Dashboard /> : <Navigate to="/Login" />}
+        />
         <Route path="/RoleSelect" element={<RoleSelect />} />
         <Route path="/Registration" element={<Registration />} />
         <Route path="/VerifyOtp" element={<VerifyOtp />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/PropertyDetails" element={<PropertyDetails />} />
-        <Route path="/Requirements" element={authUser ? <Requirements /> : <Navigate to='/Login' />} />
+        <Route path="/MyTickets" element={<MyTickets />} />
+        <Route
+          path="/Requirements"
+          element={authUser ? <Requirements /> : <Navigate to="/Login" />}
+        />
 
         {/* Admin Dashboard */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
