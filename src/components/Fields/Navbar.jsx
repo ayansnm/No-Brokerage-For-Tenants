@@ -34,6 +34,7 @@ const Navbar = () => {
     { label: "All Brokers", path: "/admin/brokers", icon: <FaUsers /> },
     { label: "All Tickets", path: "/admin/tickets", icon: <LuTickets /> },
     { label: "Payments", path: "/admin/payments", icon: <TbCashBanknote /> },
+    { label: "Profile", path: "/Profile", icon: <TbCashBanknote /> },
     {
       label: "Property Details",
       path: "/PropertyDetails",
@@ -94,7 +95,7 @@ const Navbar = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-3 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50 hidden sm:block">
                 <ul className="py-2 text-sm">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  <li onClick={()=>navigate("/Profile")} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     Profile
                   </li>
                   <li
