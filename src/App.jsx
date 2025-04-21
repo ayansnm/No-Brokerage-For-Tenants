@@ -24,6 +24,7 @@ import PropertyDetails from "./pages/PropertyDetails";
 import Brokers from "./pages/admin-dashboard-pages/Brokers";
 import AllPayments from "./pages/admin-dashboard-pages/AllPayments";
 import MyTickets from "./pages/customer-dashboard-pages/MyTickets";
+import AllCustomers from "./pages/admin-dashboard-pages/AllCustomers";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/admin/properties" element={<AllProperties />} />
         <Route path="/admin/brokers" element={<Brokers />} />
         <Route path="/admin/payments" element={<AllPayments />} />
+        <Route path="/admin/customers" element={<AllCustomers />} />
       </Routes>
       <div>
         <Toaster />

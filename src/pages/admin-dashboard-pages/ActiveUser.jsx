@@ -5,15 +5,16 @@ import { FiSearch, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import { FaFilter } from 'react-icons/fa';
 import { IoAddOutline } from 'react-icons/io5';
 
-const Brokers = () => {
+const AllCustomers = () => {
+    const statuses = ['Deal Complete', 'Unpaid', 'Closed', 'Open'];
     const brokers = Array.from({ length: 30 }, (_, i) => ({
         id: i + 1,
         name: `Broker ${i + 1}`,
         email: `broker${i + 1}@example.com`,
-        status: i % 3 === 0 ? 'Active' : 'Inactive',
+        status: statuses[i % statuses.length],
         rate: `${20000 + i * 1000}`,
         properties: i % 2 === 0 ? 'Residential' : 'Commercial',
-        share: ``,
+        share: 'Suggest Property',
     }));
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +49,7 @@ const Brokers = () => {
 
                     <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900 hover:bg-green-800 text-white text-sm transition self-start sm:self-auto">
                         <IoAddOutline size={18} />
-                        Add Broker
+                        Add Payment
                     </button>
                 </div>
 
@@ -62,7 +63,7 @@ const Brokers = () => {
                                 <th className="text-left px-4 py-3">STATUS</th>
                                 <th className="text-left px-4 py-3">RATE</th>
                                 <th className="text-left px-4 py-3">ACTION</th>
-                                <th className="text-left px-4 py-3">PROPERTIES</th>
+                                <th className="text-left px-4 py-3">PROPERTY</th>
                                 <th className="text-left px-4 py-3">SHARE</th>
                             </tr>
                         </thead>
@@ -74,14 +75,19 @@ const Brokers = () => {
                                     <td className="px-4 py-3">{broker.email}</td>
                                     <td className="px-4 py-3">
                                         <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${broker.status === 'Active'
-                                                ? 'bg-green-100 text-green-700'
-                                                : 'bg-red-100 text-red-700'
+                                            className={`px-2 py-1 rounded-full text-xs font-medium ${broker.status === 'Deal Complete'
+                                                    ? 'text-green-700 bg-green-200'
+                                                    : broker.status === 'Unpaid'
+                                                        ? 'text-red-700 bg-red-200'
+                                                        : broker.status === 'Closed'
+                                                            ? 'text-gray-700 bg-gray-200'
+                                                            : 'text-blue-700 bg-blue-200'
                                                 }`}
                                         >
                                             {broker.status}
                                         </span>
                                     </td>
+
                                     <td className="px-4 py-3">
                                         <div className="flex flex-col">
                                             <span>{broker.rate}</span>
@@ -97,7 +103,7 @@ const Brokers = () => {
                                         </button>
                                     </td>
                                     <td className="px-4 py-3">{broker.properties}</td>
-
+                                    <td><p className='p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white'>{broker.share}</p></td>
                                 </tr>
                             ))}
                         </tbody>
@@ -136,4 +142,4 @@ const Brokers = () => {
     );
 };
 
-export default Brokers;
+export default AllCustomers;

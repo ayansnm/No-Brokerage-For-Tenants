@@ -10,10 +10,9 @@ const AllPayments = () => {
         id: i + 1,
         name: `Broker ${i + 1}`,
         email: `broker${i + 1}@example.com`,
-        status: i % 3 === 0 ? 'Payment Received' : 'Refunded',
+        status: i % 3 === 0 ? 'Received Payment' : 'Refunded',
         rate: `${20000 + i * 1000}`,
         properties: i % 2 === 0 ? 'Residential' : 'Commercial',
-        share: ``,
     }));
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +47,7 @@ const AllPayments = () => {
 
                     <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900 hover:bg-green-800 text-white text-sm transition self-start sm:self-auto">
                         <IoAddOutline size={18} />
-                        Add Broker
+                        Add Payment
                     </button>
                 </div>
 
@@ -57,13 +56,12 @@ const AllPayments = () => {
                         <thead className="bg-gray-100 text-gray-600 text-sm">
                             <tr>
                                 <th className="text-left px-4 py-3">#</th>
-                                <th className="text-left px-4 py-3">Name</th>
-                                <th className="text-left px-4 py-3">Email</th>
-                                <th className="text-left px-4 py-3">Amount</th>
-                                <th className="text-left px-4 py-3">Status</th>
-                                <th className="text-left px-4 py-3">Action</th>
-                                <th className="text-left px-4 py-3">Properties</th>
-                                <th className="text-left px-4 py-3">Share</th>
+                                <th className="text-left px-4 py-3">NAME</th>
+                                <th className="text-left px-4 py-3">EMAIL</th>
+                                <th className="text-left px-4 py-3">AMOUNT</th>
+                                <th className="text-left px-4 py-3">STATUS</th>
+                                <th className="text-left px-4 py-3">ACTION</th>
+                                <th className="text-left px-4 py-3">TYPE</th>
                             </tr>
                         </thead>
                         <tbody className="text-sm text-gray-700">
@@ -74,16 +72,16 @@ const AllPayments = () => {
                                     <td className="px-4 py-3">{broker.email}</td>
                                     <td className="px-4 py-3">
                                         <div className="flex flex-col">
-                                            <span>{broker.rate}</span>
+                                            <span className={`${broker.status === 'Received Payment'
+                                                ? 'text-green-700'
+                                                : 'text-red-700'
+                                                }`}>{broker.rate}</span>
                                             <span className="text-xs text-gray-500">INR</span>
                                         </div>
                                     </td>
                                     <td className="px-4 py-3">
                                         <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${broker.status === 'Active'
-                                                ? 'bg-green-100 text-green-700'
-                                                : 'bg-red-100 text-red-700'
-                                                }`}
+                                            className={`px-2 py-1 rounded-full text-xs font-medium`}
                                         >
                                             {broker.status}
                                         </span>
@@ -97,14 +95,13 @@ const AllPayments = () => {
                                         </button>
                                     </td>
                                     <td className="px-4 py-3">{broker.properties}</td>
-                                    <td className="px-4 py-3">{broker.share}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
 
                     {/* Pagination Controls */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-4 px-1 text-sm text-gray-700">
+                    <div className="flex pb-4 flex-col sm:flex-row sm:items-center justify-between mt-4 px-1 text-sm text-gray-700">
                         <div>
                             Showing {indexOfFirstItem + 1}–{Math.min(indexOfLastItem, brokers.length)} of {brokers.length}
                         </div>
