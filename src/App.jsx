@@ -20,6 +20,7 @@ import RoleSelect from "./pages/auth-pages/RoleSelect";
 import AdminDashboard from "./pages/admin-dashboard-pages/AdminDashboard";
 import AllProperties from "./pages/admin-dashboard-pages/AllProperties";
 import Profile from "./pages/customer-dashboard-pages/Profile";
+import PropertyDetails from "./pages/PropertyDetails";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/VerifyOtp" element={<VerifyOtp />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/PropertyDetails" element={<PropertyDetails />} />
         <Route path="/Requirements" element={authUser ? <Requirements /> : <Navigate to='/Login' />} />
 
         {/* Admin Dashboard */}

@@ -2,10 +2,12 @@ import React from 'react'
 import { FiMapPin } from 'react-icons/fi'
 import { BsFillHeartFill } from 'react-icons/bs'
 import PropertyImg from '../../assets/property.jpg'
+import { useNavigate } from 'react-router-dom'
 
 const PropertyCard = () => {
+  const navigate = useNavigate();
   return (
-    <div className="w-full bg-white border border-gray-200 rounded-xl h-auto sm:h-[160px] flex flex-col sm:flex-row items-stretch px-3 py-2 shadow-sm gap-3 sm:gap-0">
+    <div onClick={()=>navigate("/PropertyDetails")} className="w-full cursor-pointer bg-white border border-gray-200 rounded-xl h-auto sm:h-[160px] flex flex-col sm:flex-row items-stretch px-3 py-2 shadow-sm gap-3 sm:gap-0">
       {/* Image - Full width on mobile, 35% on desktop */}
       <div
         className="h-40 sm:h-full w-full sm:w-[35%] rounded-lg bg-cover bg-center"
@@ -16,7 +18,7 @@ const PropertyCard = () => {
       <div className="flex flex-col justify-between w-full sm:w-[45%] px-0 sm:px-4 h-full py-1 sm:py-2">
         <div className="flex justify-between items-start">
           <h3 className="text-sm sm:text-[15px] font-semibold line-clamp-2">Swarnim Business Center</h3>
-          <span className="bg-green-100 text-green-600 text-xs sm:text-[10px] font-semibold px-2 py-1 rounded-full whitespace-nowrap ml-2">
+          <span className="bg-green-100 text-green-600 text-xs sm:text-[10px] font-semibold px-2 mx-2 py-1 rounded-full whitespace-nowrap ml-2">
             NEW
           </span>
         </div>
