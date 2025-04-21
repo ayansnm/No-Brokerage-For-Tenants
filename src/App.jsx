@@ -25,6 +25,7 @@ import Brokers from "./pages/admin-dashboard-pages/Brokers";
 import AllPayments from "./pages/admin-dashboard-pages/AllPayments";
 import MyTickets from "./pages/customer-dashboard-pages/MyTickets";
 import AllCustomers from "./pages/admin-dashboard-pages/AllCustomers";
+import AllTickets from "./pages/admin-dashboard-pages/AllTickets";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -53,6 +54,7 @@ const App = () => {
         <Route path="/admin/brokers" element={<Brokers />} />
         <Route path="/admin/payments" element={<AllPayments />} />
         <Route path="/admin/customers" element={<AllCustomers />} />
+        <Route path="/admin/tickets" element={<AllTickets />} />
       </Routes>
       <div>
         <Toaster />
