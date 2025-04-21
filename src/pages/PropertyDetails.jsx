@@ -6,6 +6,7 @@ import { FaArrowLeft, FaArrowRight, FaPhoneAlt } from "react-icons/fa";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const images = [PropertyImg, PropertyImg, PropertyImg];
 
@@ -14,7 +15,7 @@ const PrevArrow = ({ onClick }) => (
     className="absolute -left-6 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-lg shadow hover:bg-gray-100 z-10"
     onClick={onClick}
   >
-    <FaArrowLeft />
+    <IoIosArrowBack />
   </button>
 );
 
@@ -23,7 +24,7 @@ const NextArrow = ({ onClick }) => (
     className="absolute -right-6 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-lg shadow hover:bg-gray-100 z-10"
     onClick={onClick}
   >
-    <FaArrowRight />
+    <IoIosArrowForward />
   </button>
 );
 
@@ -86,59 +87,59 @@ const PropertyDetails = () => {
             <div className="md:w-1/2">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-3xl font-bold">₹26,500</p>
+                  <p className="text-3xl font-semibold">₹26,500</p>
                   <p className="text-md text-gray-500">Rent</p>
                 </div>
                 <BsFillHeartFill className="text-red-500 text-[25px]" />
               </div>
               <hr className="mt-2 text-gray-300" />
               <div className="flex  p-3 items-center">
-                <p className="w-1/2">
-                  <span className="font-semibold">750 sqft.</span>
+                <p className="w-1/2 text-gray-500">
+                  <span className="font-semibold text-black">750 sqft.</span>
                   <br />
                   Size
                 </p>
-                <p className="w-1/2">
-                  <span className="font-semibold">2BHK</span>
+                <p className="w-1/2 text-gray-500">
+                  <span className="font-semibold text-black">2BHK</span>
                   <br />
                   Format
                 </p>
               </div>
               <hr className=" text-gray-300" />
-              <div className="flex  p-3 items-center">
-                <p className="w-1/2">
-                  <span className="font-semibold">Pent house</span>
+              <div className="flex  p-3 items-center text-gray-500">
+                <p className="w-1/2 ">
+                  <span className="font-semibold text-black">Pent house</span>
                   <br />
                   Category
                 </p>
                 <p className="w-1/2">
-                  <span className="font-semibold">Fully furnished</span>
+                  <span className="font-semibold text-black">Fully furnished</span>
                   <br />
                   Format
                 </p>
               </div>
               <hr className=" text-gray-300" />
-              <div className="flex  p-3 items-center">
+              <div className="flex  p-3 items-center text-gray-500">
                 <p className="w-1/2">
-                  <span className="font-semibold">South bopal</span>
+                  <span className="font-semibold text-black">South bopal</span>
                   <br />
                   Area
                 </p>
                 <p className="w-1/2">
-                  <span className="font-semibold">4th Floor</span>
+                  <span className="font-semibold text-black">4th Floor</span>
                   <br />
                   Floor
                 </p>
               </div>
               <hr className=" text-gray-300" />
-              <div className="flex  p-3 items-center">
+              <div className="flex  p-3 items-center text-gray-500">
                 <p className="w-1/2">
-                  <span className="font-semibold">Negotiable</span>
+                  <span className="font-semibold text-black">Negotiable</span>
                   <br />
                   Price
                 </p>
                 <p className="w-1/2">
-                  <span className="font-semibold">Water supply</span>
+                  <span className="font-semibold text-black">Water supply</span>
                   <br />
                   Utility
                 </p>
