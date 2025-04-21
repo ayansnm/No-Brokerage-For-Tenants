@@ -10,6 +10,7 @@ import { MdOutlineRadioButtonChecked } from "react-icons/md";
 import useRequirement from "../../hooks/customer-hooks/useRequirement";
 import useGetFilledRequirements from "../../hooks/customer-hooks/useGetFilledRequirements";
 import useUpdateRequirement from "../../hooks/customer-hooks/useUpdateRequirement";
+import useGetAreas from "../../hooks/customer-hooks/useGetAreas";
 
 const Requirements = () => {
   const [formData, setFormData] = useState({
@@ -34,6 +35,15 @@ const Requirements = () => {
     getRequirement,
     requirements,
   } = useGetFilledRequirements();
+
+  const { loading: arealoading, areas, getAreas } = useGetAreas();
+  const [search, setSearch] = useState("");
+  const fetchAreas = async () => {
+    await getAreas({ search });
+  };
+  useEffect(() => {
+    fetchAreas();
+  }, [search]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,6 +92,11 @@ const Requirements = () => {
       ...prev,
       [name]: value,
     }));
+    if (name == "area") {
+      console.log("HELLO");
+      console.log(value);
+      formData.area = value
+    }
   };
 
   const handlePurposeSelect = (purpose) => {
@@ -135,7 +150,7 @@ const Requirements = () => {
         if (!formData.scheme) {
           newErrors.scheme = "Please enter scheme name";
         }
-        if (!formData.priceRange){
+        if (!formData.priceRange) {
           newErrors.priceRange = "Please enter budget";
         }
         break;
@@ -345,14 +360,26 @@ const Requirements = () => {
                   name="area"
                   value={formData.area}
                   onChange={handleChange}
-                  options={[
-                    { value: "Jamalpur", label: "Jamalpur" },
-                    { value: "Gomtipur", label: "Gomtipur" },
-                    { value: "Satellite", label: "Satellite" },
-                  ]}
+                  options={
+                    Array.isArray(areas)
+                      ? areas.map((item) => ({
+                          value: item.areaName,
+                          label: item.areaName,
+                        }))
+                      : []
+                  }
+                  
                   placeholder="Select area"
                   error={errors.area}
+                  search={search}
+                  setSearch={setSearch}
                 />
+
+                {/* {JSON.stringify(
+                  areas.map((item) => {
+                    return item.areaName;
+                  })
+                )} */}
               </div>
             </div>
           </Step>
@@ -489,16 +516,16 @@ const Requirements = () => {
                   }
                 /> */}
                 <div className="form-group">
-                <TextInput
-                  label="Budget"
-                  name="priceRange"
-                  type="number"
-                  value={formData.priceRange}
-                  onChange={handleChange}
-                  placeholder="Enter your budget"
-                  error={errors.priceRange}
-                />
-              </div>
+                  <TextInput
+                    label="Budget"
+                    name="priceRange"
+                    type="number"
+                    value={formData.priceRange}
+                    onChange={handleChange}
+                    placeholder="Enter your budget"
+                    error={errors.priceRange}
+                  />
+                </div>
                 <p className="text-xs mt-1 text-primary poppins-semibold">
                   You have to pay{" "}
                   {formData.purpose === "residential"

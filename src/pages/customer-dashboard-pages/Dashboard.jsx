@@ -145,10 +145,16 @@ const Dashboard = () => {
             </div>
 
             <div className="my-2 gap-4 w-full h-[400px] flex flex-col  items-center">
-              {/* <p className="text-xl poppins-semibold">Thank you!</p>
-              <p className="text-xl poppins-semibold">Soon we will share properties with you!</p>
-              <img src={notfound} className="w-2/3 mx-auto" alt="No data found" /> */}
-              <PropertyCard />
+              <p className="text-xl poppins-semibold">Thank you!</p>
+              <p className="text-xl poppins-semibold">
+                Soon we will share properties with you!
+              </p>
+              <img
+                src={notfound}
+                className="w-2/3 mx-auto"
+                alt="No data found"
+              />
+              {/* <PropertyCard /> */}
             </div>
           </div>
 

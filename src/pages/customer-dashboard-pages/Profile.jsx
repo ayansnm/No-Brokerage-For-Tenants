@@ -1,14 +1,23 @@
-
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { VscBell } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import ProfileImg from "../../assets/profile.png";
 import { RxDashboard } from "react-icons/rx";
+import AnimatedButton from "../../components/Fields/AnimatedButton";
+import useGetProfile from "../../hooks/customer-hooks/useGetProfile";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
+  const { loading, getProfile, userProfile } = useGetProfile();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      await getProfile();
+    };
+    fetchProfile();
+  }, []);
 
   const currentDate = new Date().toLocaleDateString("en-GB", {
     weekday: "long",
@@ -17,11 +26,12 @@ const Profile = () => {
     year: "numeric",
   });
 
-  // Dummy data - Replace with real data or backend fetch
-  const userName = localStorage.getItem("userName") || "John Doe";
-  const userEmail = localStorage.getItem("userEmail") || "johndoe@example.com";
-  const userPhone = localStorage.getItem("userPhone") || "+91 9876543210";
-  const userAddress = localStorage.getItem("userAddress") || "Ahmedabad, Gujarat, India";
+  // Real data from API fallback to dummy values
+  const userName = userProfile?.fullName || "John Doe";
+  const userEmail = userProfile?.email || "johndoe@example.com";
+  const userPhone = userProfile?.mobileNo || "+91 9876543210";
+  const userAddress =
+    userProfile?.address || "Ahmedabad, Gujarat, India";
 
   return (
     <div className="bg-[#FAFAFA] min-h-screen poppins-regular">
@@ -66,12 +76,6 @@ const Profile = () => {
                   >
                     <RxDashboard /> Dashboard
                   </li>
-                  {/* <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => navigate("/Profile")}
-                  >
-                    Profile
-                  </li> */}
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
@@ -116,12 +120,7 @@ const Profile = () => {
               <label className="font-medium text-gray-700">Address:</label>
               <p>{userAddress}</p>
             </div>
-            <button
-              onClick={() => alert("Edit functionality coming soon!")}
-              className="mt-4 px-4 py-2 bg-gray-700 hover:bg-black text-white rounded-lg transition"
-            >
-              Edit Profile
-            </button>
+            <AnimatedButton text={"Edit Profile"} otherStyles="w-[100px]" />
           </div>
         </div>
       </div>

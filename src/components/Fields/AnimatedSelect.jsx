@@ -10,6 +10,8 @@ const AnimatedSelect = ({
   error,
   className = "",
   placeholder = "Select an option",
+  search = "",
+  setSearch = () => {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +21,8 @@ const AnimatedSelect = ({
     const handleClickOutside = (event) => {
       if (selectRef.current && !selectRef.current.contains(event.target)) {
         setIsOpen(false);
-        setSearchTerm(""); // clear on close
+        setSearchTerm("");
+        setSearch("");
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -30,10 +33,10 @@ const AnimatedSelect = ({
     onChange({ target: { name, value: optionValue } });
     setIsOpen(false);
     setSearchTerm("");
+    setSearch("");
   };
 
   const selectedOption = options.find((opt) => opt.value === value);
-
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -52,7 +55,7 @@ const AnimatedSelect = ({
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className={`${!value ? "text-gray-400" : ""}`}>
-          {selectedOption?.label || placeholder}
+          {selectedOption?.label || value || placeholder}
         </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -87,13 +90,21 @@ const AnimatedSelect = ({
               <input
                 type="text"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setSearch(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && searchTerm.trim() !== "") {
+                    handleSelect(searchTerm.trim());
+                  }
+                }}
                 placeholder="Search..."
                 className="w-full px-3 py-1 text-sm border rounded-md outline-none"
               />
             </div>
 
-            {/* Filtered Options */}
+            {/* Filtered Options + Custom Entry */}
             <ul className="py-1 max-h-60 overflow-auto">
               {filteredOptions.length > 0 ? (
                 filteredOptions.map((option) => (
@@ -109,6 +120,15 @@ const AnimatedSelect = ({
                     {option.label}
                   </motion.li>
                 ))
+              ) : searchTerm.trim() !== "" ? (
+                <motion.li
+                  whileHover={{ backgroundColor: "#f0f0f0" }}
+                  transition={{ duration: 0.1 }}
+                  className="px-4 py-2 cursor-pointer text-primary"
+                  onClick={() => handleSelect(searchTerm.trim())}
+                >
+                  Use "{searchTerm.trim()}" as custom area
+                </motion.li>
               ) : (
                 <li className="px-4 py-2 text-sm text-gray-400">
                   No options found
