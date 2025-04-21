@@ -11,12 +11,19 @@ import useAddTicket from "../../hooks/customer-hooks/useAddTicket";
 import useGetTickets from "../../hooks/customer-hooks/useGetTickets";
 
 // Reusable Ticket Card Component
-const TicketCard = ({ question, description, onClick }) => (
+const TicketCard = ({ question, description, image, onClick, reply }) => (
   <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 w-full h-40 max-h-40 overflow-hidden">
     <div className="flex gap-4 h-full">
-      <div className="w-32 h-full bg-gray-200 rounded-md flex items-center justify-center">
+      {image && (
+        <img
+          src={`http://145.223.20.218:2025/${image}`}
+          alt="Ticket Photo"
+          className="w-32 h-full bg-gray-200 rounded-md flex items-center justify-center"
+        />
+      )}
+      {/* <div className="w-32 h-full bg-gray-200 rounded-md flex items-center justify-center">
         <span className="text-gray-400 text-2xl">🖼️</span>
-      </div>
+      </div> */}
       <div className="flex flex-col justify-between h-full overflow-hidden flex-1">
         <div className="overflow-hidden">
           <h3 className="font-semibold text-gray-800 mb-1 text-ellipsis whitespace-nowrap overflow-hidden">
@@ -44,14 +51,13 @@ const MyTickets = () => {
   const fileInputRef = useRef(null);
 
   const handleClick = () => fileInputRef.current.click();
+  const [imageName, setImageName] = useState("");
 
   const handleFileChange = (event) => {
-    const files = event.target.files;
-    if (files.length > 0) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        image: files[0],
-      }));
+    const file = event.target.files[0];
+    if (file) {
+      setFormData({ ...formData, image: file });
+      setImageName(file.name); // Set only the name of the file
     }
   };
 
@@ -95,7 +101,9 @@ const MyTickets = () => {
                   key={index}
                   question={item.message}
                   description={item.description}
+                  reply={item?.reply}
                   onClick={() => setSelectedTicket(item)}
+                  image={item.photo}
                 />
               ))}
             </div>
@@ -134,14 +142,19 @@ const MyTickets = () => {
 
               <form className="space-y-4">
                 <div>
-                  <p className="text-sm poppins-medium">Images of your query</p>
+                  <p className="text-sm poppins-medium mb-1">
+                    Images of your query
+                  </p>
                   <div
                     className="w-full cursor-pointer hover:bg-gray-100 flex-col text-sm px-5 poppins-regular border-2 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#265953] border-primary h-[120px] flex justify-center items-center"
                     onClick={handleClick}
                   >
                     <MdOutlineFileUpload className="text-primary w-16 h-16" />
-                    <p className="text-primary poppins-medium">Upload Images</p>
+                    <p className="text-primary poppins-medium">
+                      {imageName || "Upload Image"}
+                    </p>
                   </div>
+
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -150,6 +163,12 @@ const MyTickets = () => {
                     onChange={handleFileChange}
                   />
                 </div>
+                {/* {imageName && (
+                  <p className="text-sm text-gray-700 mt-2">
+                    Selected Image:{" "}
+                    <span className="font-medium">{imageName}</span>
+                  </p>
+                )} */}
 
                 <TextInput
                   label={"Question"}
@@ -218,7 +237,7 @@ const MyTickets = () => {
                 </p>
                 <p className="text-sm text-green-700">
                   <strong>Response:</strong>{" "}
-                  {selectedTicket.response || "No response yet."}
+                  {selectedTicket.reply || "No response yet."}
                 </p>
               </div>
             </motion.div>

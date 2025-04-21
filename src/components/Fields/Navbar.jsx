@@ -84,7 +84,7 @@ const Navbar = () => {
                     {localStorage.getItem("userName") || "No Name"}
                   </p>
                   <p className="poppins-medium text-sm text-gray-600">
-                    Admin
+                    {localStorage.getItem("role") == 'user' ? "Customer" : "Admin" }
                   </p>
                 </div>
               </div>
