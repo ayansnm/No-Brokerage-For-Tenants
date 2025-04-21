@@ -81,7 +81,7 @@ const Dashboard = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-3 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
                 <ul className="py-2 text-sm">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
+                  <li onClick={()=>navigate("/Profile")} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
                   {/* <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     Settings
                   </li> */}
