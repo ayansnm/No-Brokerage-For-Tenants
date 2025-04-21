@@ -84,9 +84,9 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                <div className="w-full flex flex-col px-10 lg:flex-row gap-6 items-start">
+                <div className="w-full flex flex-col px-2 sm:px-10 lg:flex-row gap-6 items-start">
                     {/* Analytics Box - Left */}
-                    <div className="w-full lg:flex-1 bg-white rounded-2xl border border-[#D4D4D4] p-5 shadow-sm">
+                    <div className="w-full lg:flex-1 bg-white rounded-2xl border border-[#D4D4D4] p-2 sm:p-5 shadow-sm">
                         <p className="text-lg sm:text-xl text-[#777777] font-semibold poppins-medium mb-3">Analytics</p>
 
                         {/* Number + Last Week Stats */}
