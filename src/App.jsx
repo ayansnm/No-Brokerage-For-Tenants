@@ -17,18 +17,24 @@ import Dashboard from "./pages/customer-dashboard-pages/Dashboard";
 import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/authcontext";
 import RoleSelect from "./pages/auth-pages/RoleSelect";
+import AdminDashboard from "./pages/admin-dashboard-pages/AdminDashboard";
+import AllProperties from "./pages/admin-dashboard-pages/AllProperties";
 
 const App = () => {
-  const {authUser} = useAuthContext();
+  const { authUser } = useAuthContext();
   return (
     <Router>
       <Routes>
-        <Route path="/" element={authUser ? <Dashboard /> : <Navigate to='/Login'/>} />
+        <Route path="/" element={authUser ? <Dashboard /> : <Navigate to='/Login' />} />
         <Route path="/RoleSelect" element={<RoleSelect />} />
         <Route path="/Registration" element={<Registration />} />
         <Route path="/VerifyOtp" element={<VerifyOtp />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/Requirements" element={authUser ? <Requirements /> : <Navigate to='/Login'/>} />
+        <Route path="/Requirements" element={authUser ? <Requirements /> : <Navigate to='/Login' />} />
+
+        {/* Admin Dashboard */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/properties" element={<AllProperties />} />
       </Routes>
       <div>
         <Toaster />

@@ -1,0 +1,84 @@
+import React from 'react';
+import { FiSearch } from "react-icons/fi";
+import { RxDashboard } from "react-icons/rx";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
+import { FaUsers } from "react-icons/fa";
+import { FiUser } from "react-icons/fi";
+import { LuTickets } from "react-icons/lu";
+import { TbCashBanknote } from "react-icons/tb";
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const Sidebar = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    return (
+        <>
+            {/* Sidebar */}
+            <aside className="w-64 bg-white shadow-md p-5 hidden md:block border-r-2 border-[#b5b5b5]">
+                <h1 className="text-2xl font-semibold mb-4 text-[#2E073F]">PROPCONNECT</h1>
+                <hr className="mb-4" />
+
+                {/* Search Bar */}
+                <div className="relative mb-6">
+                    <input type="text" placeholder="Search..." className="w-full px-4 py-2 pl-10 text-sm border rounded-md focus:outline-none" />
+                    <FiSearch className="absolute left-3 top-3 text-gray-500" />
+                </div>
+
+                {/* Navigation Menu */}
+                <ul className="space-y-3 text-gray-700 text-sm">
+                    <li
+                        onClick={() => navigate('/admin/dashboard')}
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${
+                            location.pathname === '/admin/dashboard' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        }`}
+                    >
+                        <RxDashboard /> <span>Dashboard</span>
+                    </li>
+                    <li
+                        onClick={() => navigate('/admin/properties')}
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${
+                            location.pathname === '/admin/properties' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        }`}
+                    >
+                        <HiOutlineBuildingOffice2 /> <span>All Properties</span>
+                    </li>
+                    <li
+                        onClick={() => navigate('/admin/customers')}
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${
+                            location.pathname === '/admin/customers' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        }`}
+                    >
+                        <FiUser /> <span>All Customers</span>
+                    </li>
+                    <li
+                        onClick={() => navigate('/admin/brokers')}
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${
+                            location.pathname === '/admin/brokers' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        }`}
+                    >
+                        <FaUsers /> <span>All Brokers</span>
+                    </li>
+                    <li
+                        onClick={() => navigate('/admin/tickets')}
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${
+                            location.pathname === '/admin/tickets' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        }`}
+                    >
+                        <LuTickets /> <span>All Tickets</span>
+                    </li>
+                    <li
+                        onClick={() => navigate('/admin/payments')}
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${
+                            location.pathname === '/admin/payments' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        }`}
+                    >
+                        <TbCashBanknote /> <span>Payments</span>
+                    </li>
+                </ul>
+            </aside>
+        </>
+    )
+}
+
+export default Sidebar;

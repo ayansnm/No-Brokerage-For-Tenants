@@ -60,9 +60,7 @@ const Dashboard = () => {
         <div className="flex flex-row md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <p className="text-2xl sm:text-3xl poppins-semibold">Dashboard</p>
-            <p className="poppins-medium text-gray-600 text-sm sm:text-base">
-              {formattedDate}
-            </p>
+            <p className="poppins-medium text-gray-600 text-sm sm:text-base">{formattedDate}</p>
           </div>
 
           <div className="relative" ref={dropdownRef}>
@@ -71,22 +69,11 @@ const Dashboard = () => {
                 <VscBell size={24} className="text-gray-500" />
               </div>
               <div className="w-px h-10 bg-gray-400 hidden sm:block"></div>
-              <div
-                className="flex flex-row gap-2 items-center"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <img
-                  src={Profile}
-                  alt=""
-                  className="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover"
-                />
+              <div className="flex flex-row gap-2 items-center" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                <img src={Profile} alt="" className="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover" />
                 <div className="hidden sm:block">
-                  <p className="poppins-medium text-sm">
-                    {localStorage.getItem("userName") || "No Name"}
-                  </p>
-                  <p className="poppins-medium text-sm text-gray-600">
-                    Customer
-                  </p>
+                  <p className="poppins-medium text-sm">{localStorage.getItem("userName") || "No Name"}</p>
+                  <p className="poppins-medium text-sm text-gray-600">Customer</p>
                 </div>
               </div>
             </div>
@@ -94,9 +81,7 @@ const Dashboard = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-3 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
                 <ul className="py-2 text-sm">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Profile
-                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
                   {/* <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     Settings
                   </li> */}
@@ -105,8 +90,7 @@ const Dashboard = () => {
                     onClick={() => {
                       localStorage.clear();
                       navigate("/Login");
-                    }}
-                  >
+                    }}>
                     Logout
                   </li>
                 </ul>
@@ -121,9 +105,7 @@ const Dashboard = () => {
         <div className="w-full md:w-[90vw] lg:w-[75vw] flex flex-col md:flex-row justify-between bg-white rounded-2xl border border-[#D4D4D4] p-4 sm:p-6 gap-6">
           {/* Card 1 */}
           <div className="flex-4">
-            <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
-              Total Properties suggested
-            </p>
+            <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">Total Properties suggested</p>
             <div className="mt-3 flex flex-row items-end gap-2">
               <div className="p-2 h-12 w-12 sm:h-14 sm:w-14 rounded-full flex justify-center items-center bg-primary">
                 <BsFillBuildingsFill size={24} className="text-white" />
@@ -136,18 +118,14 @@ const Dashboard = () => {
                     <p className="poppins-medium ml-1">12 NEW</p>
                   </div>
                 </div>
-                <p className="poppins-medium text-[#777777] text-xs sm:text-sm mt-1">
-                  New Properties Today
-                </p>
+                <p className="poppins-medium text-[#777777] text-xs sm:text-sm mt-1">New Properties Today</p>
               </div>
             </div>
           </div>
 
           {/* Card 2 */}
           <div className="flex-1">
-            <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
-              Whishlisted
-            </p>
+            <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">Whishlisted</p>
             <div className="mt-3 flex flex-row items-end gap-2">
               <div className="p-2 h-12 w-12 sm:h-14 sm:w-14 rounded-full flex justify-center items-center bg-[#d24d2a]">
                 <BsFillHeartFill size={24} className="text-white" />
@@ -160,10 +138,7 @@ const Dashboard = () => {
 
       {/* Mobile Filter Button - Only visible on mobile */}
       <div className="md:hidden flex justify-center px-3">
-        <button
-          onClick={() => setFilterModalOpen(true)}
-          className="w-full bg-white border border-[#D4D4D4] rounded-lg py-2 flex items-center justify-center gap-2 shadow-sm"
-        >
+        <button onClick={() => setFilterModalOpen(true)} className="w-full bg-white border border-[#D4D4D4] rounded-lg py-2 flex items-center justify-center gap-2 shadow-sm">
           <CiFilter size={20} />
           <span className="poppins-medium">Filter Properties</span>
         </button>
@@ -174,20 +149,14 @@ const Dashboard = () => {
           {/* Left Section - 2/3 width */}
           <div className="w-full md:w-2/3 p-1 rounded-xl">
             <div className="flex justify-between items-center">
-              <p className="text-lg font-semibold text-gray-700">
-                Your all Shared properties!
-              </p>
+              <p className="text-lg font-semibold text-gray-700">Your all Shared properties!</p>
             </div>
 
             <div className="flex flex-row justify-between">
               {/* Search input */}
               <div className="mt-3 w-[66%] sm:w-[47%] flex flex-row items-center px-2 bg-white border rounded-lg py-1 border-[#e7e4e7] focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all">
                 <FiSearch size={21} color="#7f7f7f" />
-                <input
-                  type="text"
-                  className="p-2 py-1 outline-none w-full"
-                  placeholder="Search..."
-                />
+                <input type="text" className="p-2 py-1 outline-none w-full" placeholder="Search..." />
               </div>
 
               {/* Sort dropdown */}
@@ -203,14 +172,8 @@ const Dashboard = () => {
 
             <div className="my-2 gap-4 w-full h-[400px] flex flex-col justify-center items-center">
               <p className="text-xl poppins-semibold">Thank you!</p>
-              <p className="text-xl poppins-semibold">
-                Soon we will share properties with you!
-              </p>
-              <img
-                src={notfound}
-                className="w-2/3 mx-auto"
-                alt="No data found"
-              />
+              <p className="text-xl poppins-semibold">Soon we will share properties with you!</p>
+              <img src={notfound} className="w-2/3 mx-auto" alt="No data found" />
             </div>
           </div>
 
@@ -238,12 +201,7 @@ const Dashboard = () => {
                 />
               </div>
               <div className="mt-3">
-                <PriceRangeSlider
-                  value={filter.priceRange}
-                  onChange={(range) =>
-                    setFilter((prev) => ({ ...prev, priceRange: range }))
-                  }
-                />
+                <PriceRangeSlider value={filter.priceRange} onChange={(range) => setFilter((prev) => ({ ...prev, priceRange: range }))} />
               </div>
               <div className="mt-3">
                 <AnimatedRadioButtons
@@ -306,10 +264,7 @@ const Dashboard = () => {
               </div>
               <div className="mt-3 flex flex-row gap-2">
                 <AnimatedButton text={"Filter"} />
-                <AnimatedButton
-                  text={"Clear"}
-                  otherStyles={"bg-gray-200 text-black"}
-                />
+                <AnimatedButton text={"Clear"} otherStyles={"bg-gray-200 text-black"} />
               </div>
             </div>
           </div>
@@ -324,10 +279,7 @@ const Dashboard = () => {
               <p className="text-lg font-semibold flex items-center gap-2">
                 <CiFilter size={25} /> Filter Properties
               </p>
-              <button
-                onClick={() => setFilterModalOpen(false)}
-                className="p-1 rounded-full hover:bg-gray-100"
-              >
+              <button onClick={() => setFilterModalOpen(false)} className="p-1 rounded-full hover:bg-gray-100">
                 <IoClose size={24} />
               </button>
             </div>
@@ -350,12 +302,7 @@ const Dashboard = () => {
                 />
               </div>
               <div className="mt-3">
-                <PriceRangeSlider
-                  value={filter.priceRange}
-                  onChange={(range) =>
-                    setFilter((prev) => ({ ...prev, priceRange: range }))
-                  }
-                />
+                <PriceRangeSlider value={filter.priceRange} onChange={(range) => setFilter((prev) => ({ ...prev, priceRange: range }))} />
               </div>
               <div className="mt-3">
                 <AnimatedRadioButtons
@@ -417,16 +364,8 @@ const Dashboard = () => {
                 />
               </div>
               <div className="mt-6 flex flex-row gap-2 sticky bottom-0 bg-white py-3 border-t">
-                <AnimatedButton
-                  text={"Apply Filters"}
-                  onClick={() => setFilterModalOpen(false)}
-                  fullWidth
-                />
-                <AnimatedButton
-                  text={"Clear All"}
-                  otherStyles={"bg-red-200"}
-                  fullWidth
-                />
+                <AnimatedButton text={"Apply Filters"} onClick={() => setFilterModalOpen(false)} fullWidth />
+                <AnimatedButton text={"Clear All"} otherStyles={"bg-red-200"} fullWidth />
               </div>
             </div>
           </div>
