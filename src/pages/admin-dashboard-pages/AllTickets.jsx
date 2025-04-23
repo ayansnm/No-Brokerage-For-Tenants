@@ -10,7 +10,7 @@ const AllTickets = () => {
     const [showModal, setShowModal] = useState(false);
 
     return (
-        <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular">
+        <div className="flex flex-col sm:flex-row min-h-screen bg-[#FAFAFA] poppins-regular">
             <Sidebar />
 
             <div className="flex-1">
@@ -52,14 +52,14 @@ const AllTickets = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 z-50 bg-black/50 bg-opacity-40 flex items-center justify-center"
+                            className="fixed inset-0 z-50 bg-black/50 bg-opacity-40 flex items-center justify-center p-4"
                         >
                             <motion.div
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0.8, opacity: 0 }}
                                 transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                                className="bg-white rounded-xl w-[90%] max-w-md p-6 relative"
+                                className="bg-white rounded-xl w-full max-w-md p-6 relative"
                             >
                                 <button
                                     onClick={() => setShowModal(false)}
@@ -71,18 +71,17 @@ const AllTickets = () => {
                                 <div className="flex flex-col gap-4">
                                     {/* Header */}
                                     <h2 className="text-xl font-semibold text-primary">Ticket Response :</h2>
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-[50%] h-32 bg-gray-200 rounded-md flex items-center justify-center">
+                                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                                        <div className="w-full sm:w-[50%] h-32 bg-gray-200 rounded-md flex items-center justify-center">
                                             <span className="text-gray-400 text-4xl">🖼️</span>
                                         </div>
                                         {/* Ticket Info */}
-                                        <div className="space-y-2 text-sm text-gray-700">
+                                        <div className="space-y-2 text-sm text-gray-700 w-full sm:w-[50%]">
                                             <p><strong>Username:</strong> John Doe</p>
                                             <p><strong>Question:</strong> Is this property for rent?</p>
                                             <p><strong>Description:</strong> I want to know whether this listing is for rent or sale.</p>
                                         </div>
                                     </div>
-
 
                                     {/* Textarea */}
                                     <textarea
@@ -108,34 +107,41 @@ const AllTickets = () => {
 };
 
 const TicketCard = ({ onResponseClick }) => (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 w-full h-40 max-h-40 overflow-hidden">
-        <div className="flex gap-4 h-full">
-            <div className="w-32 h-full bg-gray-200 rounded-md flex items-center justify-center">
-                <span className="text-gray-400 text-2xl">🖼️</span>
-            </div>
-            <div className="flex flex-col justify-between h-full overflow-hidden flex-1">
-                <div className="overflow-hidden">
-                    <div className="flex justify-between items-center">
-                        <h3 className="font-semibold text-gray-800 mb-1 text-ellipsis whitespace-nowrap overflow-hidden">
-                            ABCD NAME
-                        </h3>
-                        <button
-                            className="bg-green-900 rounded-full p-1 px-2 text-sm text-white cursor-pointer"
-                            onClick={onResponseClick}
-                        >
-                            Give Response
-                        </button>
-                    </div>
-                    <h3 className="font-semibold text-gray-800 mt-2 text-ellipsis whitespace-nowrap overflow-hidden">
-                        Is this property for rent?
-                    </h3>
-                    <p className="text-sm text-gray-500 my-2 line-clamp-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, earum assumenda, id aspernatur quibusdam dolores...
-                    </p>
-                </div>
-            </div>
+    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 w-full">
+      <div className="flex flex-col sm:flex-row gap-4">
+        
+        {/* Image Section */}
+        <div className="w-full sm:w-32 h-32 sm:h-auto bg-gray-200 rounded-md flex items-center justify-center">
+          <span className="text-gray-400 text-2xl">🖼️</span>
         </div>
+  
+        {/* Content Section */}
+        <div className="flex flex-col justify-between flex-1">
+          <div>
+            <div className="flex flex-row sm:flex-row sm:justify-between sm:items-center sm:gap-1 gap-5">
+              <h3 className="font-semibold text-gray-800 text-base truncate">
+                ABCD NAME
+              </h3>
+              <button
+                className="bg-green-900 rounded-full px-3 py-1 text-sm text-white self-start sm:self-auto"
+                onClick={onResponseClick}
+              >
+                Give Response
+              </button>
+            </div>
+  
+            <h4 className="font-semibold text-gray-800 mt-2 truncate">
+              Is this property for rent?
+            </h4>
+  
+            <p className="text-sm text-gray-500 mt-2 line-clamp-3">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, earum assumenda, id aspernatur quibusdam dolores...
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-);
+  );
+  
 
 export default AllTickets;

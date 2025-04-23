@@ -24,25 +24,19 @@ const Navbar = () => {
     year: "numeric",
   });
 
+
   const menuItems = [
-    { label: "Dashboard", path: "/admin/dashboard", icon: <RxDashboard /> },
-    {
-      label: "All Properties",
-      path: "/admin/properties",
-      icon: <HiOutlineBuildingOffice2 />,
-    },
-    { label: "All Customers", path: "/admin/customers", icon: <FiUser /> },
-    { label: "All Brokers", path: "/admin/brokers", icon: <FaUsers /> },
-    { label: "All Tickets", path: "/admin/tickets", icon: <LuTickets /> },
-    { label: "Payments", path: "/admin/payments", icon: <TbCashBanknote /> },
-    {
-      label: "Property Details",
-      path: "/PropertyDetails",
-      icon: <TbCashBanknote />,
-    },
-    { label: "My Tickets", path: "/MyTickets", icon: <TbCashBanknote /> },
+    { label: "Dashboard", path: "/admin/dashboard", icon: <RxDashboard />, role: "admin" },
+    { label: "All Properties", path: "/admin/properties", icon: <HiOutlineBuildingOffice2 />, role: "admin" },
+    { label: "All Customers", path: "/admin/customers", icon: <FiUser />, role: "admin" },
+    { label: "All Brokers", path: "/admin/brokers", icon: <FaUsers />, role: "admin" },
+    { label: "All Tickets", path: "/admin/tickets", icon: <LuTickets />, role: "admin" },
+    { label: "Payments", path: "/admin/payments", icon: <TbCashBanknote />, role: "admin" },
+    // { label: "Property Details", path: "/PropertyDetails", icon: <TbCashBanknote /> },
+    // { label: "My Tickets", path: "/MyTickets", icon: <TbCashBanknote /> },
   ];
 
+  const role = localStorage.getItem("role");
   const location = useLocation();
   const currentMenuItem = menuItems.find(
     (item) => item.path === location.pathname
@@ -65,7 +59,7 @@ const Navbar = () => {
           <div className="relative" ref={dropdownRef}>
             <div className="flex flex-row items-center gap-4 cursor-pointer">
               {localStorage.getItem("role") == "user" && (
-                <div className="rounded-full p-2 bg-white border border-gray-500">
+                <div className="rounded-full hidden sm:block p-2 bg-white border border-gray-500">
                   <RiCustomerServiceFill
                     onClick={() => navigate("/MyTickets")}
                     size={24}
@@ -73,7 +67,7 @@ const Navbar = () => {
                   />
                 </div>
               )}
-              <div className="rounded-full p-2 bg-white border border-gray-500">
+              <div className="rounded-full hidden sm:block p-2 bg-white border border-gray-500">
                 <VscBell size={24} className="text-gray-500" />
               </div>
               <div className="w-px h-10 bg-gray-400 hidden sm:block"></div>
@@ -107,17 +101,17 @@ const Navbar = () => {
               <div className="absolute right-0 mt-3 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50 hidden sm:block">
                 <ul className="py-2 text-sm">
                   <li
+                    onClick={() => navigate("/")}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Home
+                  </li>
+                  <li
                     onClick={() => navigate("/Profile")}
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   >
                     Profile
                   </li>
-                  {/* <li
-                    onClick={() => navigate("/MyTickets")}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    My Tickets
-                  </li> */}
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
@@ -138,27 +132,67 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-300 shadow-md p-4 z-50 fixed top-20 right-4 left-4 rounded-xl">
           <ul className="space-y-2 text-gray-800 text-sm">
-            {menuItems.map((item) => (
-              <li
-                key={item.label}
-                onClick={() => {
-                  navigate(item.path);
-                  setMobileMenuOpen(false);
-                }}
-                className="cursor-pointer p-2 rounded-lg flex items-center gap-2 hover:bg-gray-100"
-              >
-                {item.icon} <span>{item.label}</span>
-              </li>
-            ))}
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+
+            {/* Show only if role is admin */}
+            {role === "admin" &&
+              menuItems.map((item) => (
+                <li
+                  key={item.label}
+                  onClick={() => {
+                    navigate(item.path);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="cursor-pointer p-2 rounded-lg flex items-center gap-2 hover:bg-gray-100"
+                >
+                  {item.icon} <span>{item.label}</span>
+                </li>
+              ))}
+
+            {/* Show My Tickets only for users */}
+            {role === "user" && (
+              <>
+                <li
+                  onClick={() => {
+                    navigate("/");
+                    setMobileMenuOpen(false);
+                  }}
+                  className="cursor-pointer p-2 rounded-lg flex items-center gap-2 hover:bg-gray-100"
+                >
+                  <LuTickets /> <span>Home</span>
+                </li>
+                <li
+                  onClick={() => {
+                    navigate("/MyTickets");
+                    setMobileMenuOpen(false);
+                  }}
+                  className="cursor-pointer p-2 rounded-lg flex items-center gap-2 hover:bg-gray-100"
+                >
+                  <LuTickets /> <span>Customer Support</span>
+                </li>
+                <li
+                  onClick={() => {
+                    navigate("");
+                    setMobileMenuOpen(false);
+                  }}
+                  className="cursor-pointer p-2 rounded-lg flex items-center gap-2 hover:bg-gray-100"
+                >
+                  <VscBell /> <span>Notification</span>
+                </li>
+              </>
+            )}
+
+            {/* Profile (common for both) */}
+            <li
+              onClick={() => {
+                navigate("/Profile");
+                setMobileMenuOpen(false);
+              }}
+              className="cursor-pointer p-2 rounded-lg flex items-center gap-2 hover:bg-gray-100"
+            >
               Profile
             </li>
-            <li
-              onClick={() => navigate("/MyTickets")}
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-            >
-              My Tickets
-            </li>
+
+            {/* Logout (common for both) */}
             <li
               onClick={() => {
                 localStorage.clear();
@@ -171,6 +205,7 @@ const Navbar = () => {
           </ul>
         </div>
       )}
+
     </>
   );
 };
