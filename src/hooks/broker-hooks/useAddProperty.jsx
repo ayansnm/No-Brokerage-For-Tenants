@@ -26,10 +26,15 @@ const useAddProperty = () => {
 
       // Append multiple images
       if (data?.images?.length > 0) {
-        data.images.forEach((image, index) => {
-          formData.append("images", image); // your backend should handle array of images
+        data.images.forEach((image) => {
+          if (image?.file) {
+            formData.append("images", image.file);
+          }
         });
       }
+      
+      console.log("FORMDATA :",JSON.stringify(data));
+      
 
       const response = await fetch(`${API_URL}/api/property/addproperty`, {
         method: "POST",
