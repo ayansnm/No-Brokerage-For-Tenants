@@ -9,6 +9,7 @@ import { FiUser } from "react-icons/fi";
 import { LuTickets } from "react-icons/lu";
 import { TbCashBanknote } from "react-icons/tb";
 import { useLocation } from "react-router-dom";
+import { RiCustomerServiceFill } from "react-icons/ri";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -63,6 +64,15 @@ const Navbar = () => {
 
           <div className="relative" ref={dropdownRef}>
             <div className="flex flex-row items-center gap-4 cursor-pointer">
+              {localStorage.getItem("role") == "user" && (
+                <div className="rounded-full p-2 bg-white border border-gray-500">
+                  <RiCustomerServiceFill
+                    onClick={() => navigate("/MyTickets")}
+                    size={24}
+                    className="text-gray-500"
+                  />
+                </div>
+              )}
               <div className="rounded-full p-2 bg-white border border-gray-500">
                 <VscBell size={24} className="text-gray-500" />
               </div>
@@ -84,7 +94,9 @@ const Navbar = () => {
                     {localStorage.getItem("userName") || "No Name"}
                   </p>
                   <p className="poppins-medium text-sm text-gray-600">
-                    {localStorage.getItem("role") == 'user' ? "Customer" : "Admin" }
+                    {localStorage.getItem("role") == "user"
+                      ? "Customer"
+                      : "Admin"}
                   </p>
                 </div>
               </div>
@@ -94,15 +106,18 @@ const Navbar = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-3 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50 hidden sm:block">
                 <ul className="py-2 text-sm">
-                  <li onClick={()=>navigate("/Profile")} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  <li
+                    onClick={() => navigate("/Profile")}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
                     Profile
                   </li>
-                  <li
+                  {/* <li
                     onClick={() => navigate("/MyTickets")}
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                   >
                     My Tickets
-                  </li>
+                  </li> */}
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
