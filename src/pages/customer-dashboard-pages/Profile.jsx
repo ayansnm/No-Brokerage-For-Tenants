@@ -7,6 +7,8 @@ import AnimatedButton from "../../components/Fields/AnimatedButton";
 import useGetProfile from "../../hooks/customer-hooks/useGetProfile";
 import TextInput from "../../components/Fields/TextInput";
 import useProfileEdit from "../../hooks/useProfileEdit";
+import { AnimatePresence, motion } from "framer-motion";
+import { IoCloseSharp } from "react-icons/io5";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -70,7 +72,7 @@ const Profile = () => {
         email: formData.email,
         address: formData.address,
       },
-      userId:null
+      userId: null,
     });
     await getProfile(); // Refresh the data in UI
     setShowEditModal(false);
@@ -176,58 +178,75 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      {showEditModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-xl w-[90%] max-w-md p-6 relative shadow-lg">
-            <button
-              onClick={() => setShowEditModal(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black"
+      <AnimatePresence>
+        {showEditModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center bg-black/50 bg-opacity-40 z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="bg-white rounded-lg shadow-lg p-6 w-80 text-center"
             >
-              ✕
-            </button>
-            <h2 className="text-lg font-semibold mb-4">Edit Profile</h2>
-
-            <form className="space-y-4">
-              <TextInput
-                label="Full Name"
-                name="fullName"
-                type="text"
-                placeholder="Enter full name"
-                value={formData.fullName}
-                onChange={handleChange}
-              />
-
-              <TextInput
-                label="Email"
-                name="email"
-                type="email"
-                placeholder="Enter email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-
-              <textarea
-                className="w-full cursor-pointer hover:bg-gray-100 flex-col text-sm px-4 py-2 poppins-regular border-2 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#265953] border-primary h-[80px]"
-                placeholder="Enter description"
-                value={formData.address}
-                onChange={(text) =>
-                  setFormData({
-                    ...formData,
-                    address: text.target.value,
-                  })
-                }
-              />
-
-              <div className="flex justify-end">
-                <AnimatedButton
-                  text={"Update Profile"}
-                  onClick={handleSubmit}
+              <div
+                onClick={() => setShowEditModal(false)}
+                className="flex  justify-end items-end "
+              >
+                <IoCloseSharp
+                  size={25}
+                  className="text-gray-700 hover:text-gray-600"
                 />
               </div>
-            </form>
-          </div>
-        </div>
-      )}
+              <h2 className="text-lg font-semibold mb-4">Edit User</h2>
+              <div className="text-start">
+                <TextInput
+                  label="Full Name"
+                  name="fullName"
+                  type="text"
+                  placeholder="Enter full name"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                />
+
+                <TextInput
+                  label="Email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+
+                <label htmlFor="" className="text-sm poppins-medium">Address</label>
+                <textarea
+                  className="w-full cursor-pointer hover:bg-gray-100 flex-col text-sm px-4 py-2 poppins-regular border-2 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#265953] border-primary h-[80px]"
+                  placeholder="Enter description"
+                  value={formData.address}
+                  onChange={(text) =>
+                    setFormData({
+                      ...formData,
+                      address: text.target.value,
+                    })
+                  }
+                />
+
+                <div className="flex justify-end">
+                  <AnimatedButton
+                    text={"Update Profile"}
+                    onClick={handleSubmit}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
     </div>
   );
 };

@@ -3,7 +3,11 @@ import { VscBell } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import Profile from "../../assets/profile.png";
 import { BsFillBuildingsFill, BsFillHeartFill } from "react-icons/bs";
-import { MdArrowOutward, MdOutlineSort } from "react-icons/md";
+import {
+  MdArrowOutward,
+  MdOutlinePendingActions,
+  MdOutlineSort,
+} from "react-icons/md";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSlider";
@@ -13,7 +17,7 @@ import PropertyCard from "../../components/Cards/PropertyCard";
 import { IoClose } from "react-icons/io5";
 import notfound from "../../assets/notfound.png";
 import Navbar from "../../components/Fields/Navbar";
-import { FaUserTie } from "react-icons/fa";
+import { FaHandsHelping, FaPlus, FaUserTie } from "react-icons/fa";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -54,6 +58,13 @@ const Dashboard = () => {
     month: "long",
     year: "numeric",
   });
+  const [activeTab, setActiveTab] = useState("all");
+
+  const tabs = [
+    { label: "All", value: "all" },
+    { label: "Residential", value: "residential" },
+    { label: "Commercial", value: "commercial" },
+  ];
 
   return (
     <div className="bg-[#FAFAFA] min-h-screen poppins-regular">
@@ -81,7 +92,7 @@ const Dashboard = () => {
                 <p className="poppins-medium text-2xl sm:text-3xl">4578</p>
 
                 {/* Percentage & Text */}
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                   <div className="poppins-semibold text-xs bg-[#beffd3] text-[#3fbe67] flex flex-row justify-center items-center rounded-full px-2 w-fit">
                     <MdArrowOutward size={15} />
                     <p className="poppins-medium ml-1">15.35%</p>
@@ -89,19 +100,19 @@ const Dashboard = () => {
                   <p className="poppins-medium text-[#777777] text-xs sm:text-sm">
                     Growth in properties
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
 
           {/* Total Brokers */}
           <div className="flex items-start gap-4 flex-1">
-            <div className="p-3 h-14 w-14 rounded-full flex justify-center items-center bg-yellow-500">
-              <FaUserTie size={24} className="text-white" />
+            <div className="p-3 h-14 w-14 rounded-full flex justify-center items-center bg-[#2ad284]">
+              <MdOutlinePendingActions size={26} className="text-white" />
             </div>
             <div>
-              <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
-                Total Brokers
+              <p className="text-lg sm:text-lg text-[#777777] poppins-medium font-semibold">
+                Pending Properties
               </p>
               <p className="poppins-medium text-2xl sm:text-3xl mt-1">5729</p>
             </div>
@@ -109,13 +120,13 @@ const Dashboard = () => {
 
           {/* Wishlist */}
           <div className="flex items-start gap-4 flex-1">
-            <div className="w-px h-16 bg-gray-400 hidden sm:block"></div>
-            <div className="p-3 h-14 w-14 rounded-full flex justify-center items-center bg-[#d24d2a]">
-              <FiUser size={24} className="text-white" />
+            {/* <div className="w-px h-16 bg-gray-400 hidden sm:block"></div> */}
+            <div className="p-3 h-14 w-14 rounded-full flex justify-center items-center bg-[#2ad235]">
+              <FaHandsHelping size={24} className="text-white" />
             </div>
             <div>
-              <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
-                Total Users
+              <p className="text-lg sm:text-lg text-[#777777] poppins-medium font-semibold">
+                Deal Closed
               </p>
               <p className="poppins-medium text-2xl sm:text-3xl mt-1">5729</p>
             </div>
@@ -124,14 +135,40 @@ const Dashboard = () => {
       </div>
 
       <div className="flex-1">
-        <div className="w-full flex justify-center p-3">
+        <div className="w-full flex justify-center p-4">
           <div className="w-full md:w-[90vw] lg:w-[75vw] flex flex-col md:flex-row gap-4">
             {/* Left Section */}
-            <div className="w-full md:w-2/3 flex flex-col gap-4">
-              {/* Search + Sort */}
+            <div className="w-full md:w-2/3 flex flex-col gap-2">
               <div className="flex flex-row justify-between">
+              <p className="text-lg poppins-semibold text-gray-800">
+                Your all properties!
+              </p>
+              <button className="flex flex-row justify-center items-center bg-primary text-white px-3 rounded-full text-sm gap-2 hover:opacity-95">
+              <FaPlus />
+                Add Property
+              </button>
+              </div>
+              {/* Search & Sort container */}
+              <div className="flex flex-col sm:flex-row text-sm justify-between gap-2 w-full sm:w-auto">
+                {/* Tabs */}
+                <div className="flex gap-1 bg-white p-1 rounded-full border border-gray-300">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab.value}
+                      onClick={() => setActiveTab(tab.value)}
+                      className={`px-3 py-0.5 text-xs rounded-full border transition-all ${
+                        activeTab === tab.value
+                          ? "bg-[#174c45] text-white"
+                          : "bg-white text-[#7f7f7f] border-[#e7e4e7]"
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+                {/* <div className="flex flex-row"> */}
                 {/* Search input */}
-                <div className="mt-3 w-[66%] sm:w-[47%] flex flex-row items-center px-2 bg-white border rounded-lg py-1 border-[#e7e4e7] focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all">
+                <div className="flex flex-row items-center px-2 bg-white border rounded-lg py-1 border-[#e7e4e7] focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f]  transition-all h-[33px] w-full sm:w-[230px]">
                   <FiSearch size={21} color="#7f7f7f" />
                   <input
                     type="text"
@@ -141,15 +178,16 @@ const Dashboard = () => {
                 </div>
 
                 {/* Sort dropdown */}
-                <div className="mt-3 w-[35%] sm:w-[28%] bg-white border rounded-lg border-[#e7e4e7] text-[#7f7f7f] pr-2 flex flex-row items-center px-2 focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all">
+                <div className="flex flex-row items-center px-2 bg-white border rounded-lg border-[#e7e4e7] text-[#7f7f7f] pr-2 focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all h-[33px] w-full sm:w-[140px]">
                   <MdOutlineSort size={25} className="mr-1 text-[#7f7f7f]" />
                   <select className="w-full px-1 py-2 outline-none border-none bg-transparent rounded-lg transition-all">
-                    <option value="">Sort</option>
+                    <option value="">Sort by</option>
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
                   </select>
                 </div>
               </div>
+              {/* </div> */}
 
               {/* Property Cards */}
               <div className="flex flex-col gap-4 mt-2">
