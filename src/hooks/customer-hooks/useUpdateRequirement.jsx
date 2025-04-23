@@ -14,7 +14,7 @@ const useUpdateRequirement = () => {
     const token = localStorage.getItem("token");
 
     const sendRequirementData = async () => {
-      const response = await fetch(`${API_URL}/api/property/requirementForm/${id}`, {
+      const response = await fetch(`${API_URL}/api/property/updateRequirement/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -4,6 +4,57 @@ import { Link } from "react-router-dom";
 import AnimatedButton from "../../components/Fields/AnimatedButton";
 import useRegistration from "../../hooks/auth-hooks/useRegistration";
 import IMG from "../../assets/image.png";
+import { motion, AnimatePresence } from "framer-motion";
+import Button from "../../components/Fields/Button";
+import { FaRegUser, FaUsers } from "react-icons/fa";
+import { FaBuildingUser } from "react-icons/fa6";
+
+const RoleSelectionPopup = ({ onSelect }) => {
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50"
+      >
+        <motion.div
+          initial={{ scale: 0.8, y: 20 }}
+          animate={{ scale: 1, y: 0 }}
+          exit={{ scale: 0.8, y: 20 }}
+          transition={{ type: "spring", damping: 20 }}
+          className="bg-white p-8 rounded-xl max-w-md w-full mx-4"
+        >
+          <h2 className="text-2xl font-bold mb-6 text-center poppins-semibold">
+            Select Your Role
+          </h2>
+          <div className="flex flex-col items-center sm:items-start sm:flex-row justify-between space-y-4 poppins-regular">
+            <Button
+              text={"Customer"}
+              onClick={() => onSelect("user")}
+              icon={<FaUsers size={42} />}
+            />
+            <Button
+              text={"Broker"}
+              onClick={() => onSelect("broker")}
+              icon={<FaBuildingUser size={42} />}
+            />
+          </div>
+          <p className="text-center mt-2 text-sm text-white sm:text-gray-600 poppins-regular">
+            Already have an account?
+            <Link
+              to="/Login"
+              className="text-gray-900 font-semibold ml-1 hover:underline"
+            >
+              Sign In
+            </Link>
+          </p>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
 
 const Registration = () => {
   const [formData, setFormData] = useState({
@@ -43,7 +94,6 @@ const Registration = () => {
     if (!formData.address) {
       newErrors.address = "Address Required";
     }
-    
 
     if (!passwordRegex.test(formData.password)) {
       newErrors.password =
@@ -72,14 +122,22 @@ const Registration = () => {
         email: formData.email,
         address: formData.address,
         password: formData.password,
+        role: formData.role
       };
       await registration(data);
     }
   };
+  const [showRolePopup, setShowRolePopup] = useState(true);
+
+  const handleRoleSelect = (role) => {
+    setFormData((prev) => ({ ...prev, role }));
+    setShowRolePopup(false);
+  };
 
   return (
     <div className="flex h-screen animate-fadeIn">
-      
+      {/* Role Selection Popup */}
+      {showRolePopup && <RoleSelectionPopup onSelect={handleRoleSelect} />}
 
       {/* Left Section with mobile background */}
       <div className="w-full sm:w-1/2 h-full overflow-y-auto no-scrollbar py-20 px-5 sm:px-20 flex justify-center items-center pb-5 bg-[url('/src/assets/image.png')] bg-cover bg-center sm:bg-none">
@@ -88,6 +146,13 @@ const Registration = () => {
           <h2 className="text-xl mb-6 text-center poppins-semibold">
             Registration
           </h2>
+
+          {/* {formData.role && (
+            <div className="mb-4 p-2 bg-primary/10 rounded-lg text-center">
+              <span className="font-semibold">Registering as: </span>
+              <span className="capitalize">{formData.role}</span>
+            </div>
+          )} */}
 
           <form className="space-y-2" onSubmit={handleSubmit}>
             <TextInput
@@ -175,11 +240,7 @@ const Registration = () => {
       </div>
       {/* Right Image Section for desktop */}
       <div className="hidden sm:block sm:w-1/2 h-full bg-primary">
-        <img
-          src={IMG}
-          alt="Visual"
-          className="w-full h-full object-cover"
-        />
+        <img src={IMG} alt="Visual" className="w-full h-full object-cover" />
       </div>
     </div>
   );

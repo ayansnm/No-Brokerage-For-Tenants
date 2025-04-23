@@ -74,7 +74,6 @@ const MyTickets = () => {
     await addTicket(formData);
     setShowModal(false);
     fetchTickets();
-    toast.success("Ticket Added!");
   };
 
   return (

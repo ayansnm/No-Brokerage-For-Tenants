@@ -41,13 +41,21 @@ const useLogin = () => {
 
       // Navigate based on subscription
       const user = result?.data?.user;
-      if (
-        !user?.isSubscribedForCommercial &&
-        !user?.isSubscribedForResidential
-      ) {
-        navigate("/Requirements");
-      } else {
-        navigate("/");
+      if (user?.role == "admin") {
+        navigate("/admin/dashboard");
+      } else if (user?.role == "broker") {
+        navigate("/broker/dashboard");
+      } else if (user?.role == "user") {
+        console.log(user?.role);
+        
+        if (
+          !user?.isSubscribedForCommercial &&
+          !user?.isSubscribedForResidential
+        ) {
+          navigate("/Requirements");
+        } else {
+          navigate("/");
+        }
       }
 
       return result;
