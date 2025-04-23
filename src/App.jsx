@@ -28,6 +28,7 @@ import AllCustomers from "./pages/admin-dashboard-pages/AllCustomers";
 import AllTickets from "./pages/admin-dashboard-pages/AllTickets";
 import BrokerDashboard from "./pages/broker-dashboard/Dashboard";
 import SuggestedCustomer from "./pages/broker-dashboard/SuggestedCustomer";
+import AddProperty from "./pages/broker-dashboard/AddProperty";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -65,6 +66,7 @@ const App = () => {
         {/* Broker Dashboard */}
         <Route path="/broker/dashboard" element={authUser ? <BrokerDashboard /> : <Navigate to="/Login" />} />
         <Route path="/broker/suggestedcustomer" element={authUser ? <SuggestedCustomer /> : <Navigate to="/Login" />} />
+        <Route path="/broker/addproperty" element={authUser ? <AddProperty /> : <Navigate to="/Login" />} />
       </Routes>
       <div>
         <Toaster />

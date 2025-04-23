@@ -140,13 +140,13 @@ const Dashboard = () => {
             {/* Left Section */}
             <div className="w-full md:w-2/3 flex flex-col gap-2">
               <div className="flex flex-row justify-between">
-              <p className="text-lg poppins-semibold text-gray-800">
-                Your all properties!
-              </p>
-              <button className="flex flex-row justify-center items-center bg-primary text-white px-3 rounded-full text-sm gap-2 hover:opacity-95">
-              <FaPlus />
-                Add Property
-              </button>
+                <p className="text-lg poppins-semibold text-gray-800">
+                  Your all properties!
+                </p>
+                <button className="flex flex-row justify-center items-center bg-primary text-white px-3 rounded-full text-sm gap-2 hover:opacity-95" onClick={()=>navigate("/broker/addproperty")}>
+                  <FaPlus />
+                  Add Property
+                </button>
               </div>
               {/* Search & Sort container */}
               <div className="flex flex-col sm:flex-row text-sm justify-between gap-2 w-full sm:w-auto">

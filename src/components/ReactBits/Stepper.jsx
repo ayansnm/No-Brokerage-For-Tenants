@@ -3,7 +3,6 @@ import React, { useState, Children, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "../Fields/AnimatedButton";
 
-
 export default function Stepper({
   children,
   initialStep = 1,
@@ -26,6 +25,7 @@ export default function Stepper({
   errors = {}, // Receive errors as prop
   setErrors = () => {}, // Receive setErrors as prop
   validateStep = () => true, // Validation function
+  typeofstepper = "requirement",
   ...rest
 }) {
   const [currentStep, setCurrentStep] = useState(initialStep);
@@ -50,14 +50,14 @@ export default function Stepper({
 
   const handleNext = async () => {
     if (isLastStep) return;
-    
+
     // Clear previous errors
     setErrors({});
-    
+
     // Validate current step before proceeding
     const validationErrors = await validateStep(currentStep);
     setErrors(validationErrors || {});
-    
+
     if (!validationErrors || Object.keys(validationErrors).length === 0) {
       setDirection(1);
       updateStep(currentStep + 1);
@@ -68,10 +68,10 @@ export default function Stepper({
     if (isLastStep) {
       // Clear previous errors
       setErrors({});
-      
+
       const validationErrors = await validateStep(currentStep);
       setErrors(validationErrors || {});
-      
+
       if (!validationErrors || Object.keys(validationErrors).length === 0) {
         setDirection(1);
         updateStep(totalSteps + 1);
@@ -158,29 +158,39 @@ export default function Stepper({
               )}
               <div className="w-[60%] sm:w-[40%]">
                 <AnimatedButton
-                  text={isLastStep ? "Pay Subscription" : nextButtonText}
+                  text={
+                    isLastStep
+                      ? typeofstepper == "requirement"
+                        ? "Pay Subscription"
+                        : "Add Property"
+                      : nextButtonText
+                  }
                   onClick={isLastStep ? handleSubmit : handleNext}
                   otherStyles="w-full rounded-full cursor-pointer"
                 />
               </div>
             </div>
-            {isLastStep && purpose == "residential" && (
-              <p className="text-xs mt-3 text-center text-primary poppins-bold">
-                Note: Based on your price range, if you choose to rent a
-                residential property, we charge 20% of the higher end of your
-                selected range. In case we are unable to find a suitable
-                property for you within 3 months, we will refund 15% of the
-                amount and retain 5% as a platform fee.
-              </p>
-            )}
-            {isLastStep && purpose == "commercial" && (
-              <p className="text-xs mt-3 text-center text-primary poppins-bold">
-                Note: Based on your price range, if you choose to rent a
-                commercial property, we charge 40% of the higher end of your
-                selected range. In case we are unable to find a suitable
-                property for you within 3 months, we will refund 30% of the
-                amount and retain 10% as a platform fee.
-              </p>
+            {isLastStep && typeofstepper === "requirement" && (
+              <>
+                {purpose === "residential" && (
+                  <p className="text-xs mt-3 text-center text-primary poppins-bold">
+                    Note: Based on your price range, if you choose to rent a
+                    residential property, we charge 20% of the higher end of
+                    your selected range. In case we are unable to find a
+                    suitable property for you within 3 months, we will refund
+                    15% of the amount and retain 5% as a platform fee.
+                  </p>
+                )}
+                {purpose === "commercial" && (
+                  <p className="text-xs mt-3 text-center text-primary poppins-bold">
+                    Note: Based on your price range, if you choose to rent a
+                    commercial property, we charge 40% of the higher end of your
+                    selected range. In case we are unable to find a suitable
+                    property for you within 3 months, we will refund 30% of the
+                    amount and retain 10% as a platform fee.
+                  </p>
+                )}
+              </>
             )}
           </div>
         )}
