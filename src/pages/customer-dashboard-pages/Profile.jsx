@@ -78,6 +78,8 @@ const Profile = () => {
     setShowEditModal(false);
   };
 
+  const role = localStorage.getItem('role')
+
   return (
     <div className="bg-[#FAFAFA] min-h-screen poppins-regular">
       {/* Top Navbar */}
@@ -115,12 +117,22 @@ const Profile = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-3 w-44 bg-white border rounded-md shadow-lg z-50">
                 <ul className="py-2 text-sm">
-                  <li
-                    className="cursor-pointer p-2 flex items-center gap-2 hover:bg-gray-100"
-                    onClick={() => navigate("/")}
-                  >
-                    <RxDashboard /> Dashboard
-                  </li>
+                {role === 'admin' ?
+                    <>
+                      <li
+                        className="cursor-pointer p-2 flex items-center gap-2 hover:bg-gray-100"
+                        onClick={() => navigate("/admin/dashboard")}
+                      >
+                        <RxDashboard /> Dashboard
+                      </li>
+                    </> : <>
+                      <li
+                        className="cursor-pointer p-2 flex items-center gap-2 hover:bg-gray-100"
+                        onClick={() => navigate("/")}
+                      >
+                        <RxDashboard /> Home
+                      </li>
+                    </>}
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
