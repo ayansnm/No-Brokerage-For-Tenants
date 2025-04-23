@@ -24,14 +24,43 @@ const Navbar = () => {
     year: "numeric",
   });
 
-
   const menuItems = [
-    { label: "Dashboard", path: "/admin/dashboard", icon: <RxDashboard />, role: "admin" },
-    { label: "All Properties", path: "/admin/properties", icon: <HiOutlineBuildingOffice2 />, role: "admin" },
-    { label: "All Customers", path: "/admin/customers", icon: <FiUser />, role: "admin" },
-    { label: "All Brokers", path: "/admin/brokers", icon: <FaUsers />, role: "admin" },
-    { label: "All Tickets", path: "/admin/tickets", icon: <LuTickets />, role: "admin" },
-    { label: "Payments", path: "/admin/payments", icon: <TbCashBanknote />, role: "admin" },
+    {
+      label: "Dashboard",
+      path: "/admin/dashboard",
+      icon: <RxDashboard />,
+      role: "admin",
+    },
+    {
+      label: "All Properties",
+      path: "/admin/properties",
+      icon: <HiOutlineBuildingOffice2 />,
+      role: "admin",
+    },
+    {
+      label: "All Customers",
+      path: "/admin/customers",
+      icon: <FiUser />,
+      role: "admin",
+    },
+    {
+      label: "All Brokers",
+      path: "/admin/brokers",
+      icon: <FaUsers />,
+      role: "admin",
+    },
+    {
+      label: "All Tickets",
+      path: "/admin/tickets",
+      icon: <LuTickets />,
+      role: "admin",
+    },
+    {
+      label: "Payments",
+      path: "/admin/payments",
+      icon: <TbCashBanknote />,
+      role: "admin",
+    },
     // { label: "Property Details", path: "/PropertyDetails", icon: <TbCashBanknote /> },
     // { label: "My Tickets", path: "/MyTickets", icon: <TbCashBanknote /> },
   ];
@@ -88,9 +117,11 @@ const Navbar = () => {
                     {localStorage.getItem("userName") || "No Name"}
                   </p>
                   <p className="poppins-medium text-sm text-gray-600">
-                    {localStorage.getItem("role") == "user"
-                      ? "Customer"
-                      : "Admin"}
+                    {{
+                      user: "Customer",
+                      broker: "Broker",
+                      admin: "Admin",
+                    }[localStorage.getItem("role")] || ""}
                   </p>
                 </div>
               </div>
@@ -132,7 +163,6 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-300 shadow-md p-4 z-50 fixed top-20 right-4 left-4 rounded-xl">
           <ul className="space-y-2 text-gray-800 text-sm">
-
             {/* Show only if role is admin */}
             {role === "admin" &&
               menuItems.map((item) => (
@@ -205,7 +235,6 @@ const Navbar = () => {
           </ul>
         </div>
       )}
-
     </>
   );
 };

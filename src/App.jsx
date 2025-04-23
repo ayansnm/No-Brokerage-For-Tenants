@@ -40,7 +40,7 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={authUser ? <Dashboard /> : <Navigate to="/Login" />}
+          element={authUser && localStorage.getItem("role") == "user" ? <Dashboard /> : <Navigate to="/Login" />}
         />
         <Route path="/RoleSelect" element={<RoleSelect />} />
         <Route path="/Registration" element={<Registration />} />
@@ -48,25 +48,25 @@ const App = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/Profile" element={authUser ? <Profile/> : <Navigate to="/Login" />} />
         <Route path="/PropertyDetails" element={authUser ? <PropertyDetails /> : <Navigate to="/Login" />} />
-        <Route path="/MyTickets" element={authUser ? <MyTickets /> : <Navigate to="/Login" />} />
+        <Route path="/MyTickets" element={authUser&& localStorage.getItem("role") == "user" ? <MyTickets /> : <Navigate to="/Login" />} />
         <Route
           path="/Requirements"
-          element={authUser ? <Requirements /> : <Navigate to="/Login" />}
+          element={authUser&& localStorage.getItem("role") == "user" ? <Requirements /> : <Navigate to="/Login" />}
         />
 
         {/* Admin Dashboard */}
         <Route path="/admin/dashboard" element={authUser && localStorage.getItem("role") == "admin" ? <AdminDashboard /> : <Navigate to="/Login" />} />
-        <Route path="/admin/properties" element={authUser ? <AllProperties /> : <Navigate to="/Login" />} />
-        <Route path="/admin/brokers" element={authUser ? <Brokers /> : <Navigate to="/Login" />} />
-        <Route path="/admin/payments" element={authUser ? <AllPayments /> : <Navigate to="/Login" />} />
-        <Route path="/admin/customers" element={authUser ? <AllCustomers /> : <Navigate to="/Login" />} />
-        <Route path="/admin/tickets" element={authUser ? <AllTickets /> : <Navigate to="/Login" />} />
+        <Route path="/admin/properties" element={authUser && localStorage.getItem("role") == "admin"? <AllProperties /> : <Navigate to="/Login" />} />
+        <Route path="/admin/brokers" element={authUser && localStorage.getItem("role") == "admin"? <Brokers /> : <Navigate to="/Login" />} />
+        <Route path="/admin/payments" element={authUser&& localStorage.getItem("role") == "admin" ? <AllPayments /> : <Navigate to="/Login" />} />
+        <Route path="/admin/customers" element={authUser && localStorage.getItem("role") == "admin"? <AllCustomers /> : <Navigate to="/Login" />} />
+        <Route path="/admin/tickets" element={authUser && localStorage.getItem("role") == "admin"? <AllTickets /> : <Navigate to="/Login" />} />
 
 
         {/* Broker Dashboard */}
-        <Route path="/broker/dashboard" element={authUser ? <BrokerDashboard /> : <Navigate to="/Login" />} />
-        <Route path="/broker/suggestedcustomer" element={authUser ? <SuggestedCustomer /> : <Navigate to="/Login" />} />
-        <Route path="/broker/addproperty" element={authUser ? <AddProperty /> : <Navigate to="/Login" />} />
+        <Route path="/broker/dashboard" element={authUser&& localStorage.getItem("role") == "broker" ? <BrokerDashboard /> : <Navigate to="/Login" />} />
+        <Route path="/broker/suggestedcustomer" element={authUser&& localStorage.getItem("role") == "broker" ? <SuggestedCustomer /> : <Navigate to="/Login" />} />
+        <Route path="/broker/addproperty" element={authUser&& localStorage.getItem("role") == "broker" ? <AddProperty /> : <Navigate to="/Login" />} />
       </Routes>
       <div>
         <Toaster />
