@@ -18,6 +18,7 @@ import { IoClose } from "react-icons/io5";
 import notfound from "../../assets/notfound.png";
 import Navbar from "../../components/Fields/Navbar";
 import { FaHandsHelping, FaPlus, FaUserTie } from "react-icons/fa";
+import useGetProperties from "../../hooks/broker-hooks/useGetProperties";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -40,6 +41,15 @@ const Dashboard = () => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const { loading, properties, getProperties } = useGetProperties()
+  // console.log(properties);
+  const fetchProp = async () => {
+    getProperties();
+  }
+  useEffect(() => {
+    fetchProp()
   }, []);
 
   const [filter, setFilter] = useState({});
@@ -117,6 +127,7 @@ const Dashboard = () => {
               <p className="poppins-medium text-2xl sm:text-3xl mt-1">5729</p>
             </div>
           </div>
+          {/* {JSON.stringify(properties)} */}
 
           {/* Wishlist */}
           <div className="flex items-start gap-4 flex-1">
@@ -143,7 +154,7 @@ const Dashboard = () => {
                 <p className="text-lg poppins-semibold text-gray-800">
                   Your all properties!
                 </p>
-                <button className="flex flex-row justify-center items-center bg-primary text-white px-3 rounded-full text-sm gap-2 hover:opacity-95" onClick={()=>navigate("/broker/addproperty")}>
+                <button className="flex flex-row justify-center items-center bg-primary text-white px-3 rounded-full text-sm gap-2 hover:opacity-95" onClick={() => navigate("/broker/addproperty")}>
                   <FaPlus />
                   Add Property
                 </button>
@@ -156,11 +167,10 @@ const Dashboard = () => {
                     <button
                       key={tab.value}
                       onClick={() => setActiveTab(tab.value)}
-                      className={`px-3 py-0.5 text-xs rounded-full border transition-all ${
-                        activeTab === tab.value
-                          ? "bg-[#174c45] text-white"
-                          : "bg-white text-[#7f7f7f] border-[#e7e4e7]"
-                      }`}
+                      className={`px-3 py-0.5 text-xs rounded-full border transition-all ${activeTab === tab.value
+                        ? "bg-[#174c45] text-white"
+                        : "bg-white text-[#7f7f7f] border-[#e7e4e7]"
+                        }`}
                     >
                       {tab.label}
                     </button>
@@ -187,13 +197,15 @@ const Dashboard = () => {
                   </select>
                 </div>
               </div>
-              {/* </div> */}
-
               {/* Property Cards */}
               <div className="flex flex-col gap-4 mt-2">
-                <PropertyCard />
-                <PropertyCard />
-                <PropertyCard />
+                {/* <PropertyCard /> */}
+                {properties && properties.map((item, index) => {
+                  console.log("Floor :", properties.floor);
+                  return (
+                    <PropertyCard key={index} title={item.title} price={item.price} address={item.address} image={item.images[0]} area={item.area} floor={item.floor} sizeType={item.sizeType} description={item.description} type={item.type} />
+                  )
+                })}
               </div>
             </div>
             {/* Right Section - 1/3 width - Hidden on mobile */}

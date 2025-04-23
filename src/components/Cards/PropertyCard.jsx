@@ -4,54 +4,56 @@ import { BsFillHeartFill } from "react-icons/bs";
 import PropertyImg from "../../assets/property.jpg";
 import { useNavigate } from "react-router-dom";
 
-const PropertyCard = () => {
+const PropertyCard = ({ title, price, image, area, floor, sizeType, description, type}) => {
   const navigate = useNavigate();
   return (
     <div
-      
+
       className="w-full  bg-white border border-gray-200 rounded-xl h-auto sm:h-[160px] flex flex-col sm:flex-row items-stretch px-3 py-2 shadow-sm gap-3 sm:gap-0"
     >
       {/* Image - Full width on mobile, 35% on desktop */}
       <div
         className="h-40 sm:h-full w-full sm:w-[35%] rounded-lg bg-cover bg-center"
-        style={{ backgroundImage: `url(${PropertyImg})` }}
+        style={{ backgroundImage: `url(http://145.223.20.218:2025/${image})` }}
       ></div>
+      {console.log(`http://145.223.20.218:2025/${image}`)
+      }
+
 
       {/* Details - Full width on mobile, 45% on desktop */}
       <div className="flex flex-col justify-between w-full sm:w-[45%] px-0 sm:px-4 h-full py-1 sm:py-2">
         <div className="flex justify-between items-start">
           <h3 className="text-sm sm:text-[15px] font-semibold line-clamp-2">
-            Swarnim Business Center
+            {title}
           </h3>
           <span className="bg-green-100 text-green-600 text-xs sm:text-[10px] font-semibold px-2 mx-2 py-1 rounded-full whitespace-nowrap ml-2">
             NEW
           </span>
         </div>
 
-        <div className="text-sm sm:text-[14px] font-bold mt-1">25,751/-</div>
+        <div className="text-sm sm:text-[14px] font-bold mt-1">{price}/-</div>
         <div className="text-xs sm:text-[12px] text-gray-500">
-          750 Sqft · Ground floor
+          {sizeType} · {floor}
         </div>
 
         <div className="flex items-center gap-1 text-xs sm:text-[12px] text-gray-500 mt-1">
           <FiMapPin size={13} />
-          <span className="line-clamp-1">South bopal, Ahmedabad</span>
+          <span className="line-clamp-1">{area}</span>
         </div>
 
         <p className="text-xs sm:text-[12px] text-gray-400 mt-1 leading-tight line-clamp-2">
-          Golden swarnim business center is a commercial development in
-          khoraj...
+          {description}
         </p>
 
         <div className="flex flex-row justify-between items-center">
-        <a
-          // href="#"
-          onClick={() => navigate("/PropertyDetails")}
-          className="text-blue-500 cursor-pointer text-xs sm:text-[12px] mt-1 inline-block"
-        >
-          View Details →
-        </a>
-        <p className="text-xs mt-2 poppins-medium text-gray-600">Commercial</p>
+          <a
+            // href="#"
+            onClick={() => navigate("/PropertyDetails")}
+            className="text-blue-500 cursor-pointer text-xs sm:text-[12px] mt-1 inline-block"
+          >
+            View Details →
+          </a>
+          <p className="text-xs mt-2 poppins-medium text-gray-600">{type}</p>
         </div>
       </div>
 

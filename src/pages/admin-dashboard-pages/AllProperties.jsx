@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Sidebar from '../../components/Fields/Sidebar'
 import Navbar from '../../components/Fields/Navbar'
 import PropertyCard from '../../components/Cards/PropertyCard'
@@ -10,6 +10,7 @@ import notfound from "../../assets/notfound.png";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import AnimatedButton from "../../components/Fields/AnimatedButton";
 import { IoClose } from "react-icons/io5";
+import useGetProperties from '../../hooks/broker-hooks/useGetProperties'
 
 const AllProperties = () => {
     const [filterModalOpen, setFilterModalOpen] = useState(false);
