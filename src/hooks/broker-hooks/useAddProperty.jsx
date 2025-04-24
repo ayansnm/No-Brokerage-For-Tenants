@@ -20,6 +20,7 @@ const useAddProperty = () => {
       formData.append("category", data?.type);
       formData.append("format", data?.format);
       formData.append("sizeType", data?.sizetype);
+      formData.append("size", data?.size);
       formData.append("furnished", data?.furnished);
       formData.append("location", data?.location);
       formData.append("description", data?.description);

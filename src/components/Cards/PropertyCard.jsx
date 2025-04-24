@@ -1,82 +1,113 @@
 import React from "react";
-import { FiMapPin } from "react-icons/fi";
-import { BsFillHeartFill } from "react-icons/bs";
-import PropertyImg from "../../assets/property.jpg";
+import { FiMapPin, FiEdit2, FiUsers, FiHeart } from "react-icons/fi";
+import { FaHandshake } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const PropertyCard = ({ title, price, image, area, floor, sizeType, description, type}) => {
+const PropertyCard = ({
+  id,
+  title = "No Title",
+  price = "000",
+  image = "NO",
+  area = "NO DATA",
+  floor = "",
+  sizeType = "",
+  description = "",
+  type = "",
+  size = "00",
+  isNew = true
+}) => {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
+
   return (
-    <div
-
-      className="w-full  bg-white border border-gray-200 rounded-xl h-auto sm:h-[160px] flex flex-col sm:flex-row items-stretch px-3 py-2 shadow-sm gap-3 sm:gap-0"
-    >
-      {/* Image - Full width on mobile, 35% on desktop */}
-      <div
-        className="h-40 sm:h-full w-full sm:w-[35%] rounded-lg bg-cover bg-center"
+    <div onClick={() => navigate(`/PropertyDetails/${id}`)} className="w-full bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
+      {/* Property Image */}
+      <div 
+        className="relative h-48 w-full bg-gray-100 bg-cover bg-center"
         style={{ backgroundImage: `url(http://145.223.20.218:2025/${image})` }}
-      ></div>
-      {console.log(`http://145.223.20.218:2025/${image}`)
-      }
-
-
-      {/* Details - Full width on mobile, 45% on desktop */}
-      <div className="flex flex-col justify-between w-full sm:w-[45%] px-0 sm:px-4 h-full py-1 sm:py-2">
-        <div className="flex justify-between items-start">
-          <h3 className="text-sm sm:text-[15px] font-semibold line-clamp-2">
-            {title}
-          </h3>
-          <span className="bg-green-100 text-green-600 text-xs sm:text-[10px] font-semibold px-2 mx-2 py-1 rounded-full whitespace-nowrap ml-2">
+      >
+        {/* Status Badge */}
+        {isNew && (
+          <span className="absolute top-3 left-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
             NEW
           </span>
+        )}
+        
+        {/* Favorite Button */}
+        {role === "user" && (
+          <button className="absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow-sm hover:bg-red-100 transition-colors">
+            <FiHeart className="text-gray-600 hover:text-red-500" />
+          </button>
+        )}
+      </div>
+
+      {/* Property Details */}
+      <div className="p-4">
+        {/* Title and Price */}
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+            {title}
+          </h3>
+          <p className="text-lg font-bold text-primary whitespace-nowrap ml-2">
+            ₹{price}
+          </p>
         </div>
 
-        <div className="text-sm sm:text-[14px] font-bold mt-1">{price}/-</div>
-        <div className="text-xs sm:text-[12px] text-gray-500">
-          {sizeType} · {floor}
-        </div>
-
-        <div className="flex items-center gap-1 text-xs sm:text-[12px] text-gray-500 mt-1">
-          <FiMapPin size={13} />
+        {/* Location */}
+        <div className="flex items-center text-gray-600 text-sm mb-2">
+          <FiMapPin className="mr-1" />
           <span className="line-clamp-1">{area}</span>
         </div>
 
-        <p className="text-xs sm:text-[12px] text-gray-400 mt-1 leading-tight line-clamp-2">
+        {/* Size and Type */}
+        <div className="flex items-center text-sm text-gray-500 mb-3">
+          <span className="mr-2">{size} {sizeType}</span>
+          <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
+          <span>{type}</span>
+        </div>
+
+        {/* Description */}
+        <p className="text-sm text-gray-500 mb-4 line-clamp-2">
           {description}
         </p>
 
-        <div className="flex flex-row justify-between items-center">
-          <a
-            // href="#"
-            onClick={() => navigate("/PropertyDetails")}
-            className="text-blue-500 cursor-pointer text-xs sm:text-[12px] mt-1 inline-block"
-          >
-            View Details →
-          </a>
-          <p className="text-xs mt-2 poppins-medium text-gray-600">{type}</p>
-        </div>
-      </div>
+        {/* Divider */}
+        <div className="border-t border-gray-100 my-2"></div>
 
-      {/* Right Actions - Full width on mobile, 20% on desktop */}
-      <div className={`w-full sm:w-[20%] flex flex-row sm:flex-col justify-between items-center sm:items-end h-auto sm:h-full py-2 ${localStorage.getItem("role") == "broker" ? 'sm:py-8' : ""} gap-2 sm:gap-0`}>
-        {localStorage.getItem("role") == "user" && (
-          <>
-            <button className="bg-[#265953] cursor-pointer text-white text-xs sm:text-[12px] font-medium px-3 sm:px-4 py-[6px] rounded-full hover:bg-[#15452d] transition whitespace-nowrap">
-              Contact Broker
+        {/* Action Buttons */}
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => navigate(`/PropertyDetails/${id}`)}
+            className="text-primary hover:text-primary-dark text-sm font-medium flex items-center"
+          >
+            View Details
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {role === "user" ? (
+            <button className="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center transition-colors">
+              <FaHandshake className="mr-1" />
+              Contact
             </button>
-            <BsFillHeartFill className="text-red-500 text-[18px]" />
-          </>
-        )}
-        {localStorage.getItem("role") == "broker" && (
-          <>
-            <button className="bg-[#265953] cursor-pointer text-white text-xs sm:text-[12px] font-medium px-3 sm:px-4 py-[6px] rounded-full hover:bg-[#15452d] transition whitespace-nowrap">
-              Edit Property
-            </button>
-            <button className="bg-[#265953] cursor-pointer text-white text-xs sm:text-[12px] font-medium px-3 sm:px-4 py-[6px] rounded-full hover:bg-[#15452d] transition whitespace-nowrap">
-              Customer Details
-            </button>
-          </>
-        )}
+          ) : (
+            <div className="flex space-x-2">
+              <button 
+                className="p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
+                title="Edit Property"
+              >
+                <FiEdit2 />
+              </button>
+              <button 
+                className="p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
+                title="Customer Details"
+              >
+                <FiUsers />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

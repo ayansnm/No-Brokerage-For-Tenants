@@ -1,58 +1,51 @@
 import React, { useEffect, useState, useRef } from "react";
-import { VscBell } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
-import Profile from "../../assets/profile.png";
-import { BsFillBuildingsFill, BsFillHeartFill } from "react-icons/bs";
-import {
-  MdArrowOutward,
-  MdOutlinePendingActions,
-  MdOutlineSort,
-} from "react-icons/md";
-import { CiFilter, CiSearch } from "react-icons/ci";
+import { BsFillBuildingsFill, BsGraphUp, BsFilter } from "react-icons/bs";
+import { FaHandsHelping, FaPlus, FaSearch } from "react-icons/fa";
+import { MdOutlinePendingActions } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
+import PropertyCard from "../../components/Cards/PropertyCard";
+import Navbar from "../../components/Fields/Navbar";
+import useGetProperties from "../../hooks/broker-hooks/useGetProperties";
+import Footer from "../../components/Fields/Footer";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSlider";
-import AnimatedButton from "../../components/Fields/AnimatedButton";
-import { FiSearch, FiUser } from "react-icons/fi";
-import PropertyCard from "../../components/Cards/PropertyCard";
-import { IoClose } from "react-icons/io5";
-import notfound from "../../assets/notfound.png";
-import Navbar from "../../components/Fields/Navbar";
-import { FaHandsHelping, FaPlus, FaUserTie } from "react-icons/fa";
-import useGetProperties from "../../hooks/broker-hooks/useGetProperties";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const dropdownRef = useRef();
+  const [activeTab, setActiveTab] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("");
+  const [filter, setFilter] = useState({
+    priceRange:[0,50000]
+  });
+  const [filter2, setFilter2] = useState();
 
-  useEffect(() => {
+  const { loading, properties, getProperties } = useGetProperties();
+  const applyFilters = () => {
+    console.log(filter);
+    fetchData();
+  };
+  const fetchData = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/Login");
     }
-  }, [navigate]);
-
+    await getProperties({
+      searchQuery,
+      category: activeTab || "",
+      floor: filter.floor || "",
+      format: filter.format || "",
+      priceRange: filter.priceRange[1],
+      type: filter.type || "",
+      furnished: filter.furnished || "",
+    });
+  };
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    fetchData();
+  }, [searchQuery, activeTab, filter2]);
 
-  const { loading, properties, getProperties } = useGetProperties()
-  // console.log(properties);
-  const fetchProp = async () => {
-    getProperties();
-  }
-  useEffect(() => {
-    fetchProp()
-  }, []);
-
-  const [filter, setFilter] = useState({});
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFilter((prev) => ({
@@ -61,177 +54,224 @@ const Dashboard = () => {
     }));
   };
 
-  const currentDate = new Date();
-  const formattedDate = currentDate.toLocaleDateString("en-GB", {
-    weekday: "long",
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-  const [activeTab, setActiveTab] = useState("all");
-
   const tabs = [
-    { label: "All", value: "all" },
-    { label: "Residential", value: "residential" },
-    { label: "Commercial", value: "commercial" },
+    { label: "All", value: "" },
+    { label: "Residential", value: "Residential" },
+    { label: "Commercial", value: "Commercial" },
+  ];
+
+  // Stats cards data
+  const stats = [
+    {
+      title: "Total Properties",
+      value: properties.length,
+      icon: <BsFillBuildingsFill size={24} />,
+      color: "bg-primary",
+      trend: "15.35% increase",
+    },
+    {
+      title: "Pending Properties",
+      value: "5,729",
+      icon: <MdOutlinePendingActions size={26} />,
+      color: "bg-yellow-500",
+      trend: "8.2% increase",
+    },
+    {
+      title: "Deal Closed",
+      value: "2,849",
+      icon: <FaHandsHelping size={24} />,
+      color: "bg-green-500",
+      trend: "22.1% increase",
+    },
+    {
+      title: "Revenue",
+      value: "₹12.8M",
+      icon: <BsGraphUp size={24} />,
+      color: "bg-purple-500",
+      trend: "18.7% increase",
+    },
   ];
 
   return (
-    <div className="bg-[#FAFAFA] min-h-screen poppins-regular">
-      {/* Top Navbar */}
+    <div className="min-h-screen bg-gray-50 poppins-regular">
       <Navbar />
 
-      <div className="w-full flex justify-center p-3">
-        <div className="w-full md:w-[90vw] lg:w-[75vw] flex flex-col md:flex-row justify-between bg-white rounded-2xl border border-[#D4D4D4] p-4 sm:p-6 gap-6">
-          {/* Total Properties Suggested */}
-          <div className="flex items-start gap-3 flex-1">
-            {/* Icon */}
-            <div className="p-3 h-14 w-14 rounded-full flex justify-center items-center bg-primary">
-              <BsFillBuildingsFill size={24} className="text-white" />
-            </div>
-
-            {/* Text Block */}
-            <div className="flex flex-col">
-              <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
-                Total Properties
-              </p>
-
-              {/* Number + Growth block */}
-              <div className="flex items-end gap-3 mt-1">
-                {/* Number */}
-                <p className="poppins-medium text-2xl sm:text-3xl">4578</p>
-
-                {/* Percentage & Text */}
-                {/* <div className="flex flex-col">
-                  <div className="poppins-semibold text-xs bg-[#beffd3] text-[#3fbe67] flex flex-row justify-center items-center rounded-full px-2 w-fit">
-                    <MdArrowOutward size={15} />
-                    <p className="poppins-medium ml-1">15.35%</p>
-                  </div>
-                  <p className="poppins-medium text-[#777777] text-xs sm:text-sm">
-                    Growth in properties
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-sm p-6">
+              <div className="flex items-center justify-between">
+                <div className={`p-3 rounded-lg ${stat.color} text-white`}>
+                  {stat.icon}
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-500">
+                    {stat.title}
                   </p>
-                </div> */}
+                  <p className="text-2xl font-bold">{stat.value}</p>
+                </div>
+              </div>
+              <div className="mt-4">
+                <p className="text-xs text-green-600 font-medium">
+                  <span className="inline-flex items-center">
+                    <svg
+                      className="w-3 h-3 mr-1"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {stat.trend}
+                  </span>
+                </p>
               </div>
             </div>
-          </div>
-
-          {/* Total Brokers */}
-          <div className="flex items-start gap-4 flex-1">
-            <div className="p-3 h-14 w-14 rounded-full flex justify-center items-center bg-[#2ad284]">
-              <MdOutlinePendingActions size={26} className="text-white" />
-            </div>
-            <div>
-              <p className="text-lg sm:text-lg text-[#777777] poppins-medium font-semibold">
-                Pending Properties
-              </p>
-              <p className="poppins-medium text-2xl sm:text-3xl mt-1">5729</p>
-            </div>
-          </div>
-          {/* {JSON.stringify(properties)} */}
-
-          {/* Wishlist */}
-          <div className="flex items-start gap-4 flex-1">
-            {/* <div className="w-px h-16 bg-gray-400 hidden sm:block"></div> */}
-            <div className="p-3 h-14 w-14 rounded-full flex justify-center items-center bg-[#2ad235]">
-              <FaHandsHelping size={24} className="text-white" />
-            </div>
-            <div>
-              <p className="text-lg sm:text-lg text-[#777777] poppins-medium font-semibold">
-                Deal Closed
-              </p>
-              <p className="poppins-medium text-2xl sm:text-3xl mt-1">5729</p>
-            </div>
-          </div>
+          ))}
         </div>
-      </div>
 
-      <div className="flex-1">
-        <div className="w-full flex justify-center p-4">
-          <div className="w-full md:w-[90vw] lg:w-[75vw] flex flex-col md:flex-row gap-4">
-            {/* Left Section */}
-            <div className="w-full md:w-2/3 flex flex-col gap-2">
-              <div className="flex flex-row justify-between">
-                <p className="text-lg poppins-semibold text-gray-800">
-                  Your all properties!
-                </p>
-                <button className="flex flex-row justify-center items-center bg-primary text-white px-3 rounded-full text-sm gap-2 hover:opacity-95" onClick={() => navigate("/broker/addproperty")}>
-                  <FaPlus />
+        {/* Main Content */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Property List Section */}
+          <div className="lg:w-2/3">
+            {/* Header with actions */}
+            <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <h2 className="text-xl font-bold text-gray-800">
+                  Your Properties
+                </h2>
+                <button
+                  onClick={() => navigate("/broker/addproperty")}
+                  className="flex items-center gap-2 bg-primary hover:opacity-90 cursor-pointer text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  <FaPlus size={14} />
                   Add Property
                 </button>
               </div>
-              {/* Search & Sort container */}
-              <div className="flex flex-col sm:flex-row text-sm justify-between gap-2 w-full sm:w-auto">
+
+              {/* Tabs, Search and Filter */}
+              <div className="mt-6 flex flex-col sm:flex-row justify-between gap-4">
                 {/* Tabs */}
-                <div className="flex gap-1 bg-white p-1 rounded-full border border-gray-300">
+                <div className="flex bg-gray-100 p-1 rounded-lg">
                   {tabs.map((tab) => (
                     <button
                       key={tab.value}
                       onClick={() => setActiveTab(tab.value)}
-                      className={`px-3 py-0.5 text-xs rounded-full border transition-all ${activeTab === tab.value
-                        ? "bg-[#174c45] text-white"
-                        : "bg-white text-[#7f7f7f] border-[#e7e4e7]"
-                        }`}
+                      className={`px-4 py-2 text-sm rounded-md transition-colors ${
+                        activeTab === tab.value
+                          ? "bg-white shadow-sm text-primary poppins-semibold"
+                          : "text-gray-600 hover:text-gray-800"
+                      }`}
                     >
                       {tab.label}
                     </button>
                   ))}
                 </div>
-                {/* <div className="flex flex-row"> */}
-                {/* Search input */}
-                <div className="flex flex-row items-center px-2 bg-white border rounded-lg py-1 border-[#e7e4e7] focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f]  transition-all h-[33px] w-full sm:w-[230px]">
-                  <FiSearch size={21} color="#7f7f7f" />
-                  <input
-                    type="text"
-                    className="p-2 py-1 outline-none w-full"
-                    placeholder="Search..."
-                  />
-                </div>
 
-                {/* Sort dropdown */}
-                <div className="flex flex-row items-center px-2 bg-white border rounded-lg border-[#e7e4e7] text-[#7f7f7f] pr-2 focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all h-[33px] w-full sm:w-[140px]">
-                  <MdOutlineSort size={25} className="mr-1 text-[#7f7f7f]" />
-                  <select className="w-full px-1 py-2 outline-none border-none bg-transparent rounded-lg transition-all">
-                    <option value="">Sort by</option>
-                    <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
-                  </select>
+                {/* Search and Sort */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FaSearch className="text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      placeholder="Search properties..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <select
+                      className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      value={sortOption}
+                      onChange={(e) => setSortOption(e.target.value)}
+                    >
+                      <option value="">Sort by</option>
+                      <option value="price-asc">Price: Low to High</option>
+                      <option value="price-desc">Price: High to Low</option>
+                      <option value="date-asc">Date: Oldest</option>
+                      <option value="date-desc">Date: Newest</option>
+                    </select>
+                    <button
+                      onClick={() => setFilterModalOpen(true)}
+                      className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm hover:bg-gray-50 text-sm font-medium text-gray-700 md:hidden"
+                    >
+                      <BsFilter size={16} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-              {/* Property Cards */}
-              <div className="flex flex-col gap-4 mt-2">
-                {/* <PropertyCard /> */}
-                {properties && properties.map((item, index) => {
-                  console.log("Floor :", properties.floor);
-                  return (
-                    <PropertyCard key={index} title={item.title} price={item.price} address={item.address} image={item.images[0]} area={item.area} floor={item.floor} sizeType={item.sizeType} description={item.description} type={item.type} />
-                  )
-                })}
               </div>
             </div>
-            {/* Right Section - 1/3 width - Hidden on mobile */}
-            <div className="hidden md:block md:w-1/3 bg-white rounded-2xl border border-[#D4d4d4] shadow-sm">
-              <p className="text-lg flex gap-2 pt-4 px-4 flex-row items-center font-semibold text-gray-700">
-                <CiFilter size={25} /> Filter
-              </p>
-              <hr className="mt-4 text-gray-300" />
-              <div className="p-4">
-                <div>
-                  <AnimatedRadioButtons
-                    label="Floor"
-                    name="floor"
-                    options={[
-                      { label: "Ground", value: "Ground" },
-                      { label: "First", value: "First" },
-                      { label: "Second", value: "Second" },
-                      { label: "Third", value: "Third" },
-                      { label: "Fourth", value: "Fourth" },
-                    ]}
-                    selectedColor={"bg-[#E9FFFC] text-primary border-primary"}
-                    value={filter.floor}
-                    onChange={handleChange}
+
+            {/* Property Cards */}
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+              </div>
+            ) : properties && properties.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6">
+                {properties.map((item) => (
+                  <PropertyCard
+                    key={item?._id}
+                    id={item?._id}
+                    title={item?.title}
+                    price={item?.price}
+                    address={item?.address}
+                    image={item?.images[0]}
+                    area={item?.area}
+                    floor={item?.floor}
+                    sizeType={item?.sizeType}
+                    size={item?.size}
+                    description={item?.description}
+                    type={item?.type}
                   />
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+                <div className="max-w-md mx-auto">
+                  {/* <img
+                    src="/empty-state.svg"
+                    alt="No properties found"
+                    className="mx-auto h-40 w-40 mb-4"
+                  /> */}
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No properties found
+                  </h3>
+                  <p className="text-gray-500 mb-6">
+                    You don't have any properties listed yet. Add your first
+                    property to get started.
+                  </p>
+                  <button
+                    onClick={() => navigate("/broker/addproperty")}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <FaPlus className="-ml-1 mr-2 h-4 w-4" />
+                    Add Property
+                  </button>
                 </div>
-                <div className="mt-3">
+              </div>
+            )}
+          </div>
+
+          {/* Filter Sidebar - Desktop */}
+          <div className="hidden lg:block lg:w-1/3">
+            <div className="bg-white rounded-xl shadow-sm p-6 sticky top-2">
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+                <BsFilter size={18} /> Filters
+              </h3>
+
+              <div className="space-y-3">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    Price Range
+                  </h4>
                   <PriceRangeSlider
                     value={filter.priceRange}
                     onChange={(range) =>
@@ -239,9 +279,12 @@ const Dashboard = () => {
                     }
                   />
                 </div>
-                <div className="mt-3">
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    Property Type
+                  </h4>
                   <AnimatedRadioButtons
-                    label="Category"
                     name="type"
                     options={[
                       { value: "House", label: "House" },
@@ -250,14 +293,52 @@ const Dashboard = () => {
                       { value: "Office", label: "Office" },
                       { value: "Shop", label: "Shop" },
                     ]}
-                    selectedColor={"bg-[#E9FFFC] text-primary border-primary"}
+                    selectedColor="bg-green-100 text-primary border-primary"
                     value={filter.type}
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mt-3">
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    Furnished
+                  </h4>
                   <AnimatedRadioButtons
-                    label="Format"
+                    name="furnished"
+                    options={[
+                        { label: "Unfurnished", value: "Unfurnished" },
+                        { label: "Furnished", value: "Fully" },
+                        { label: "Semi-furnished", value: "Semi" },
+                    ]}
+                    selectedColor="bg-green-100 text-primary border-primary"
+                    value={filter.furnished}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    Floor
+                  </h4>
+                  <AnimatedRadioButtons
+                    name="floor"
+                    options={[
+                      { label: "Ground", value: "Ground" },
+                      { label: "First", value: "First" },
+                      { label: "Second", value: "Second" },
+                      { label: "Third", value: "Third" },
+                      { label: "Fourth", value: "Fourth" },
+                    ]}
+                    selectedColor="bg-green-100 text-primary border-primary"
+                    value={filter.floor}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    Format
+                  </h4>
+                  <AnimatedRadioButtons
                     name="format"
                     options={[
                       { label: "1BHK", value: "1BHK" },
@@ -265,177 +346,151 @@ const Dashboard = () => {
                       { label: "3BHK", value: "3BHK" },
                       { label: "4BHK", value: "4BHK" },
                     ]}
-                    selectedColor={"bg-[#E9FFFC] text-primary border-primary"}
+                    selectedColor="bg-green-100 text-primary border-primary"
                     value={filter.format}
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mt-3">
-                  <AnimatedRadioButtons
-                    label="Size Type"
-                    name="sizetype"
-                    options={[
-                      { label: "sqft", value: "sqft" },
-                      { label: "Vigha", value: "vigha" },
-                      { label: "SqYard", value: "sqyard" },
-                    ]}
-                    selectedColor={"bg-[#E9FFFC] text-primary border-primary"}
-                    value={filter.sizetype}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mt-3">
-                  <AnimatedRadioButtons
-                    label="Furnished"
-                    name="furnished"
-                    options={[
-                      { label: "Un Furnished", value: "any" },
-                      { label: "Fully", value: "fully-furnished" },
-                      { label: "Semi", value: "semi-furnished" },
-                    ]}
-                    selectedColor={"bg-[#E9FFFC] text-primary border-primary"}
-                    value={filter.furnished}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mt-3 flex flex-row gap-2">
-                  <AnimatedButton text={"Filter"} />
-                  <AnimatedButton
-                    text={"Clear"}
-                    otherStyles={"bg-gray-200 text-black"}
-                  />
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    className="flex-1 bg-primary hover:opacity-90 text-white py-2 rounded-lg font-medium transition-colors"
+                    onClick={applyFilters}
+                  >
+                    Apply Filters
+                  </button>
+                  <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-medium transition-colors">
+                    Clear
+                  </button>
                 </div>
               </div>
             </div>
-            {/* Filter Modal - Only for mobile */}
-            {filterModalOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end md:hidden">
-                <div className="bg-white w-full max-w-md h-full overflow-y-auto px-4">
-                  <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center">
-                    <p className="text-lg font-semibold flex items-center gap-2">
-                      <CiFilter size={25} /> Filter Properties
-                    </p>
-                    <button
-                      onClick={() => setFilterModalOpen(false)}
-                      className="p-1 rounded-full hover:bg-gray-100"
-                    >
-                      <IoClose size={24} />
-                    </button>
-                  </div>
-
-                  <div className="p-4">
-                    <div>
-                      <AnimatedRadioButtons
-                        label="Floor"
-                        name="floor"
-                        options={[
-                          { label: "Ground", value: "Ground" },
-                          { label: "First", value: "First" },
-                          { label: "Second", value: "Second" },
-                          { label: "Third", value: "Third" },
-                          { label: "Fourth", value: "Fourth" },
-                        ]}
-                        selectedColor={
-                          "bg-[#E9FFFC] text-primary border-primary"
-                        }
-                        value={filter.floor}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <PriceRangeSlider
-                        value={filter.priceRange}
-                        onChange={(range) =>
-                          setFilter((prev) => ({ ...prev, priceRange: range }))
-                        }
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <AnimatedRadioButtons
-                        label="Category"
-                        name="type"
-                        options={[
-                          { value: "House", label: "House" },
-                          { value: "Bunglow", label: "Bunglow" },
-                          { value: "Flat", label: "Flat" },
-                          { value: "Office", label: "Office" },
-                          { value: "Shop", label: "Shop" },
-                        ]}
-                        selectedColor={
-                          "bg-[#E9FFFC] text-primary border-primary"
-                        }
-                        value={filter.type}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <AnimatedRadioButtons
-                        label="Format"
-                        name="format"
-                        options={[
-                          { label: "1BHK", value: "1BHK" },
-                          { label: "2BHK", value: "2BHK" },
-                          { label: "3BHK", value: "3BHK" },
-                          { label: "4BHK", value: "4BHK" },
-                        ]}
-                        selectedColor={
-                          "bg-[#E9FFFC] text-primary border-primary"
-                        }
-                        value={filter.format}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <AnimatedRadioButtons
-                        label="Size Type"
-                        name="sizetype"
-                        options={[
-                          { label: "sqft", value: "sqft" },
-                          { label: "Vigha", value: "vigha" },
-                          { label: "SqYard", value: "sqyard" },
-                        ]}
-                        selectedColor={
-                          "bg-[#E9FFFC] text-primary border-primary"
-                        }
-                        value={filter.sizetype}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <AnimatedRadioButtons
-                        label="Furnished"
-                        name="furnished"
-                        options={[
-                          { label: "Un Furnished", value: "any" },
-                          { label: "Fully", value: "fully-furnished" },
-                          { label: "Semi", value: "semi-furnished" },
-                        ]}
-                        selectedColor={
-                          "bg-[#E9FFFC] text-primary border-primary"
-                        }
-                        value={filter.furnished}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mt-6 flex flex-row gap-2 sticky bottom-0 bg-white py-3 border-t">
-                      <AnimatedButton
-                        text={"Apply Filters"}
-                        onClick={() => setFilterModalOpen(false)}
-                        fullWidth
-                      />
-                      <AnimatedButton
-                        text={"Clear All"}
-                        otherStyles={"bg-red-200"}
-                        fullWidth
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
+
+      {/* Filter Modal - Mobile */}
+      {filterModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 transition-opacity"
+              onClick={() => setFilterModalOpen(false)}
+            >
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen">
+              &#8203;
+            </span>
+            <div className="inline-block align-bottom bg-white rounded-t-xl overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold flex items-center gap-2">
+                    <BsFilter size={18} /> Filters
+                  </h3>
+                  <button
+                    onClick={() => setFilterModalOpen(false)}
+                    className="text-gray-400 hover:text-gray-500"
+                  >
+                    <IoClose size={24} />
+                  </button>
+                </div>
+
+                <div className="space-y-6 max-h-[70vh] overflow-y-auto">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Price Range
+                    </h4>
+                    <PriceRangeSlider
+                      value={filter.priceRange}
+                      onChange={(range) =>
+                        setFilter((prev) => ({ ...prev, priceRange: range }))
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Property Type
+                    </h4>
+                    <AnimatedRadioButtons
+                      name="type"
+                      options={[
+                        { value: "House", label: "House" },
+                        { value: "Bunglow", label: "Bunglow" },
+                        { value: "Flat", label: "Flat" },
+                        { value: "Office", label: "Office" },
+                        { value: "Shop", label: "Shop" },
+                      ]}
+                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
+                      value={filter.type}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Floor
+                    </h4>
+                    <AnimatedRadioButtons
+                      name="floor"
+                      options={[
+                        { label: "Ground", value: "Ground" },
+                        { label: "First", value: "First" },
+                        { label: "Second", value: "Second" },
+                        { label: "Third", value: "Third" },
+                        { label: "Fourth", value: "Fourth" },
+                      ]}
+                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
+                      value={filter.floor}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Format
+                    </h4>
+                    <AnimatedRadioButtons
+                      name="format"
+                      options={[
+                        { label: "1BHK", value: "1BHK" },
+                        { label: "2BHK", value: "2BHK" },
+                        { label: "3BHK", value: "3BHK" },
+                        { label: "4BHK", value: "4BHK" },
+                      ]}
+                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
+                      value={filter.format}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse sticky bottom-0 border-t">
+                <button
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={() => setFilterModalOpen(false)}
+                >
+                  Apply Filters
+                </button>
+                <button
+                  type="button"
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={() => {
+                    setFilter({});
+                    setFilterModalOpen(false);
+                  }}
+                >
+                  Clear All
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Footer />
     </div>
   );
 };

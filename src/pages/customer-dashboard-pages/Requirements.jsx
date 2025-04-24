@@ -416,7 +416,7 @@ const Requirements = () => {
                   label="Furnished"
                   name="furnished"
                   options={[
-                    { label: "Unfurnished", value: "any" },
+                    { label: "Unfurnished", value: "Unfurnished" },
                     { label: "Furnished", value: "fully-furnished" },
                     { label: "Semi-furnished", value: "semi-furnished" },
                   ]}

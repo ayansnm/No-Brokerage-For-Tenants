@@ -47,7 +47,7 @@ const App = () => {
         <Route path="/VerifyOtp" element={<VerifyOtp />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Profile" element={authUser ? <Profile/> : <Navigate to="/Login" />} />
-        <Route path="/PropertyDetails" element={authUser ? <PropertyDetails /> : <Navigate to="/Login" />} />
+        <Route path="/PropertyDetails/:id" element={authUser ? <PropertyDetails /> : <Navigate to="/Login" />} />
         <Route path="/MyTickets" element={authUser&& localStorage.getItem("role") == "user" ? <MyTickets /> : <Navigate to="/Login" />} />
         <Route
           path="/Requirements"

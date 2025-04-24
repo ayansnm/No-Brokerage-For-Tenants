@@ -6,13 +6,15 @@ const useGetProperties = () => {
   const [properties, setProperties] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const getProperties = async () => {
+  const getProperties = async ({searchQuery,category, floor,format,priceRange,type}) => {
     try {
       setLoading(true);
       const userId = localStorage.getItem("userId")
       const token = localStorage.getItem("token");
+      console.log(`${API_URL}/api/property/getbybrokerid/${userId}?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${""}`);
+      
       const response = await fetch(
-        `${API_URL}/api/property/getbybrokerid/${userId}`,
+        `${API_URL}/api/property/getbybrokerid/${userId}?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${category || ""}`,
         {
           method: "GET",
           headers: {
@@ -22,10 +24,13 @@ const useGetProperties = () => {
         }
       );
       const result = await response.json();
-      console.log(JSON.stringify(result));
+    //   console.log(JSON.stringify(result));
       
       if (response.ok) {
         setProperties(result?.data || []);
+      }
+      else{
+        setProperties([])
       }
     } catch (error) {
       toast.error(error.message || "Error fetching properties");
