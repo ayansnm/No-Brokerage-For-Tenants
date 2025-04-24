@@ -42,12 +42,10 @@ const NextArrow = ({ onClick }) => (
 );
 
 const PropertyDetails = () => {
-  const [selectedThumbIndex, setSelectedThumbIndex] = useState(0);
+    const [selectedThumbIndex, setSelectedThumbIndex] = useState(0);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const [currentFullScreenIndex, setCurrentFullScreenIndex] = useState(0);
   const { id } = useParams();
 
   const { loading, property, getPropertyDetails } = useGetPropertyDetails();
@@ -58,8 +56,6 @@ const PropertyDetails = () => {
       getPropertyDetails(id);
     }
   }, [id]);
-
-
 
   if (loading)
     return (
@@ -146,12 +142,26 @@ const PropertyDetails = () => {
                     href="/broker/dashboard"
                     className="inline-flex items-center text-gray-600 hover:text-primary"
                   >
+                    {/* <svg
+                      className="w-4 h-4 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 20V14H14V20H19V12H16L10 3L4 12H1V20H6V14H10V20Z" />
+                    </svg> */}
                     Home
                   </a>
                 </li>
                 <li>
                   <div className="flex items-center">
                     /
+                    {/* <svg
+                      className="w-4 h-4 text-gray-400 mx-1"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M6 9L12 15L18 9H6Z" />
+                    </svg> */}
                     <a
                       href="/properties"
                       className="ml-1 text-gray-600 hover:text-primary md:ml-2"
@@ -162,19 +172,22 @@ const PropertyDetails = () => {
                 </li>
               </ol>
             </nav>
-            <div className="p-3 mb-5 rounded-xl ">
-              {/* Property Title */}
-              <h1 className="text-3xl font-bold mb-2 p-3">{title}</h1>
-              <div className="bg-white rounded-xl border border-gray-300 shadow-md overflow-hidden mb-8">
+
+            {/* Property Title */}
+            <h1 className="text-3xl font-bold mb-2">{title}</h1>
+            <div className="flex items-center gap-2 text-gray-600 mb-6">
+              <FaMapMarkerAlt className="text-primary" />
+              <span>{location?.address}</span>
+            </div>
+
+            {/* Image Gallery */}
+            <div className="p-3 mb-5 bg-white rounded-xl border border-gray-300">
+              <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
                 {uniqueImages.length <= 1 ? (
                   <img
                     src={`${API_URL}/${uniqueImages[0]}`}
                     alt={`Property 0`}
-                    className="w-full h-96 object-cover cursor-pointer"
-                    onClick={() => {
-                      setCurrentFullScreenIndex(0);
-                      setIsFullScreen(true);
-                    }}
+                    className="w-full h-96 object-cover"
                   />
                 ) : (
                   <>
@@ -188,17 +201,13 @@ const PropertyDetails = () => {
                           <img
                             src={`${API_URL}/${img}`}
                             alt={`Property ${index}`}
-                            className="w-full h-[500px] object-cover cursor-pointer"
-                            onClick={() => {
-                              setCurrentFullScreenIndex(index);
-                              setIsFullScreen(true);
-                            }}
+                            className="w-full h-96 object-cover"
                           />
                         </div>
                       ))}
                     </Slider>
 
-                    <div className="p-4 pt-9 border-t border-gray-300">
+                    <div className="p-4 pt-9">
                       <Slider
                         {...thumbnailSliderSettings}
                         asNavFor={nav1}
@@ -212,15 +221,11 @@ const PropertyDetails = () => {
                             <img
                               src={`${API_URL}/${img}`}
                               alt={`Thumbnail ${index}`}
-                              className={`h-36 w-full object-cover rounded-md cursor-pointer transition-all duration-200 ${
+                              className={`h-20 w-full object-cover rounded-md cursor-pointer transition-all duration-200 ${
                                 index === selectedThumbIndex
                                   ? "border-4 border-primary shadow-lg"
-                                  : "border-4 border-gray-300"
+                                  : "border border-gray-300"
                               }`}
-                              onClick={() => {
-                                setCurrentFullScreenIndex(index);
-                                setIsFullScreen(true);
-                              }}
                             />
                           </div>
                         ))}
@@ -228,6 +233,26 @@ const PropertyDetails = () => {
                     </div>
                   </>
                 )}
+
+                <div className="absolute top-4 right-4 flex gap-2">
+                  <button
+                    className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+                    onClick={() => setIsFavorite(!isFavorite)}
+                    aria-label={
+                      isFavorite ? "Remove from favorites" : "Add to favorites"
+                    }
+                  >
+                    <BsFillHeartFill
+                      className={isFavorite ? "text-red-500" : "text-gray-400"}
+                    />
+                  </button>
+                  <button
+                    className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+                    aria-label="Share property"
+                  >
+                    <BsShareFill className="text-gray-600" />
+                  </button>
+                </div>
               </div>
 
               {/* Property Highlights */}
@@ -255,6 +280,8 @@ const PropertyDetails = () => {
                   label="Type"
                   value={type}
                 />
+                {/* <PropertyFeature icon={<FaBed />} label="Bedrooms" value={bedrooms || "N/A"} /> */}
+                {/* <PropertyFeature icon={<FaBath />} label="Bathrooms" value={bathrooms || "N/A"} /> */}
                 <PropertyFeature
                   icon={<FaRulerCombined />}
                   label="Area"
@@ -316,11 +343,50 @@ const PropertyDetails = () => {
           {/* Right Column - Agent and Contact */}
           <div className="lg:w-1/3 space-y-6">
             <AgentCard agent={postedBy} price={price} propertyTitle={title} />
+
+            {/* Price Summary */}
+            {/* <div className="bg-white rounded-xl shadow-md p-6">
+              <h3 className="text-xl font-bold mb-4">Price Summary</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Listing Price</span>
+                  <span className="font-medium">₹{price}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Price per {sizeType}</span>
+                  <span className="font-medium">₹{(price / size).toFixed(2)}</span>
+                </div>
+                <div className="border-t border-gray-200 my-2"></div>
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Total</span>
+                  <span className="text-primary">₹{price}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 rounded-xl shadow-md p-6">
+              <h3 className="text-xl font-bold mb-3 text-blue-800">Safety Tips</h3>
+              <ul className="space-y-2 text-sm text-blue-700">
+                <li className="flex items-start gap-2">
+                  <span>✓</span>
+                  <span>Don't pay any amount before visiting the property</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span>✓</span>
+                  <span>Verify all documents before making any payment</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span>✓</span>
+                  <span>Meet the agent in person before finalizing the deal</span>
+                </li>
+              </ul>
+            </div> */}
           </div>
         </div>
-      </div>
 
-      
+        {/* Similar Properties */}
+        {/* <SimilarProperties currentPropertyId={id} /> */}
+      </div>
 
       <Footer />
     </div>
