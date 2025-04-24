@@ -3,10 +3,10 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
 const PriceRangeSlider = ({ 
-  value = [0, 50000],  // Default value if not provided
+  value = [0, 1000000],  // Default value if not provided
   onChange, 
   min = 0, 
-  max = 50000 
+  max = 1000000 
 }) => {
   const [minValue, maxValue] = value;
 

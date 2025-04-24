@@ -11,6 +11,7 @@ import { TbCashBanknote } from "react-icons/tb";
 import { RiCustomerServiceFill, RiLogoutCircleRLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineHome } from "react-icons/md";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -70,7 +71,9 @@ const Navbar = () => {
   ];
 
   const role = localStorage.getItem("role");
-  const currentMenuItem = menuItems.find(item => item.path === location.pathname);
+  const currentMenuItem = menuItems.find(
+    (item) => item.path === location.pathname
+  );
   const pageHeading = currentMenuItem?.label || "Dashboard";
 
   // Close dropdown when clicking outside
@@ -79,7 +82,10 @@ const Navbar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
         setMobileMenuOpen(false);
       }
     };
@@ -89,7 +95,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 sm:px-6">
+      <nav className="bg-white shadow-sm border-b  border-gray-200 px-4 py-3 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Left side - Hamburger menu and page title */}
           <div className="flex items-center">
@@ -100,7 +106,9 @@ const Navbar = () => {
               <VscMenu size={24} />
             </button>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">{pageHeading}</h1>
+              <h1 className="text-xl font-semibold text-gray-900">
+                {pageHeading}
+              </h1>
               <p className="text-xs text-gray-500">{formattedDate}</p>
             </div>
           </div>
@@ -116,11 +124,17 @@ const Navbar = () => {
                 <RiCustomerServiceFill size={20} />
               </button>
             )}
-            
+
             <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full relative">
               <VscBell size={20} />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
             </button>
+            {localStorage.getItem("role") == "user" && (
+              <button onClick={()=>navigate("/MyTickets")} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full relative">
+                <TfiHeadphoneAlt size={20} />
+                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+              </button>
+            )}
 
             {/* Profile dropdown */}
             <div className="relative" ref={dropdownRef}>
@@ -136,13 +150,19 @@ const Navbar = () => {
                 <span className="hidden md:inline text-sm font-medium text-gray-700">
                   {localStorage.getItem("userName") || "User"}
                 </span>
-                <FaChevronDown className={`hidden md:inline text-gray-500 text-xs transition-transform ${dropdownOpen ? "transform rotate-180" : ""}`} />
+                <FaChevronDown
+                  className={`hidden md:inline text-gray-500 text-xs transition-transform ${
+                    dropdownOpen ? "transform rotate-180" : ""
+                  }`}
+                />
               </button>
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                   <div className="px-4 py-2 border-b border-gray-100">
-                    <p className="text-sm font-medium">{localStorage.getItem("userName")}</p>
+                    <p className="text-sm font-medium">
+                      {localStorage.getItem("userName")}
+                    </p>
                     <p className="text-xs text-gray-500 capitalize">
                       {role || "user"}
                     </p>
@@ -173,7 +193,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div 
+        <div
           ref={mobileMenuRef}
           className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
           onClick={() => setMobileMenuOpen(false)}
@@ -185,8 +205,18 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-gray-500 hover:text-gray-700"
               >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -202,7 +232,11 @@ const Navbar = () => {
                           navigate(item.path);
                           setMobileMenuOpen(false);
                         }}
-                        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${location.pathname === item.path ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-100"}`}
+                        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                          location.pathname === item.path
+                            ? "bg-blue-50 text-blue-700"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
                       >
                         <span className="mr-3">{item.icon}</span>
                         {item.label}
@@ -221,7 +255,9 @@ const Navbar = () => {
                         }}
                         className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                       >
-                        <span className="mr-3"><MdOutlineHome size={20} /></span>
+                        <span className="mr-3">
+                          <MdOutlineHome size={20} />
+                        </span>
                         Home
                       </a>
                     </li>
@@ -235,7 +271,9 @@ const Navbar = () => {
                         }}
                         className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
                       >
-                        <span className="mr-3"><RiCustomerServiceFill size={20} /></span>
+                        <span className="mr-3">
+                          <RiCustomerServiceFill size={20} />
+                        </span>
                         Customer Support
                       </a>
                     </li>
@@ -251,7 +289,9 @@ const Navbar = () => {
                     }}
                     className="flex items-center px-3 py-2 text-sm font-medium text-red-600 rounded-md hover:bg-gray-100"
                   >
-                    <span className="mr-3"><RiLogoutCircleRLine size={20} /></span>
+                    <span className="mr-3">
+                      <RiLogoutCircleRLine size={20} />
+                    </span>
                     Sign Out
                   </a>
                 </li>

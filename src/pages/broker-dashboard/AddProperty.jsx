@@ -249,7 +249,7 @@ const AddProperty = () => {
       <div
         style={{
           minHeight: "100vh",
-          // backgroundImage: `url(${bgImage})`,
+          backgroundImage: `url(${bgImage})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "bottom center",

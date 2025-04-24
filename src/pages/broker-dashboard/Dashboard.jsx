@@ -9,7 +9,7 @@ import Navbar from "../../components/Fields/Navbar";
 import useGetProperties from "../../hooks/broker-hooks/useGetProperties";
 import Footer from "../../components/Fields/Footer";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
-import PriceRangeSlider from "../../components/Fields/PriceRangeSlider";
+import PriceRangeSlider from "../../components/Fields/PriceRangeSelector";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("");
   const [filter, setFilter] = useState({
-    priceRange:[0,50000]
+    priceRange: [0, 1000000],
   });
   const [filter2, setFilter2] = useState();
 
@@ -180,7 +180,7 @@ const Dashboard = () => {
                     </div>
                     <input
                       type="text"
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#265953] focus:border-primary sm:text-sm"
                       placeholder="Search properties..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -188,7 +188,7 @@ const Dashboard = () => {
                   </div>
                   <div className="flex gap-2">
                     <select
-                      className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#265953] focus:border-primary sm:text-sm"
                       value={sortOption}
                       onChange={(e) => setSortOption(e.target.value)}
                     >
@@ -269,7 +269,7 @@ const Dashboard = () => {
 
               <div className="space-y-3">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">
                     Price Range
                   </h4>
                   <PriceRangeSlider
@@ -306,9 +306,9 @@ const Dashboard = () => {
                   <AnimatedRadioButtons
                     name="furnished"
                     options={[
-                        { label: "Unfurnished", value: "Unfurnished" },
-                        { label: "Furnished", value: "Fully" },
-                        { label: "Semi-furnished", value: "Semi" },
+                      { label: "Unfurnished", value: "Unfurnished" },
+                      { label: "Furnished", value: "Fully" },
+                      { label: "Semi-furnished", value: "Semi" },
                     ]}
                     selectedColor="bg-green-100 text-primary border-primary"
                     value={filter.furnished}
@@ -359,7 +359,14 @@ const Dashboard = () => {
                   >
                     Apply Filters
                   </button>
-                  <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-medium transition-colors">
+                  <button
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-medium transition-colors"
+                    onClick={() => {
+                      setFilter({});
+                    //   setFilter2({});
+                      fetchData();
+                    }}
+                  >
                     Clear
                   </button>
                 </div>

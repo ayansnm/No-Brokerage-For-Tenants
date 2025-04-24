@@ -3,10 +3,10 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
 const PriceRangeSlider = ({ 
-  value = [0, 50000], 
+  value = [0, 100000], 
   onChange, 
   min = 0, 
-  max = 50000 
+  max = 100000 
 }) => {
   const [minValue, maxValue] = value;
 
@@ -28,7 +28,7 @@ const PriceRangeSlider = ({
 
   return (
     <div className="w-full rounded-md">
-      <label className="text-black poppins-medium text-sm mt-1 block">Price-Range</label>
+      {/* <label className="text-black poppins-medium text-sm mt-1 block">Price-Range</label> */}
 
       <div className="flex justify-between poppins-regular text-xs mb-1 text-black">
         <span>Min</span>
@@ -56,7 +56,7 @@ const PriceRangeSlider = ({
 
       {/* Show current price values above (optional) */}
 
-      {/* <Slider
+      <Slider
         range
         min={min}
         max={max}
@@ -83,13 +83,13 @@ const PriceRangeSlider = ({
           },
         ]}
         railStyle={{ backgroundColor: "#ddd", height: 10, borderRadius: 20, margin: "0px 5px" }}
-      /> */}
+      />
 
       {/* Static labels below slider */}
-      {/* <div className="flex justify-between mt-2 poppins-regular text-gray-600 text-xs px-1">
+      <div className="flex justify-between mt-2 poppins-regular text-gray-600 text-xs px-1">
         <span>₹{min.toLocaleString()}</span>
         <span>₹{max.toLocaleString()}</span>
-      </div> */}
+      </div>
     </div>
   );
 };

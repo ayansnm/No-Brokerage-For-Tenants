@@ -9,6 +9,7 @@ import TextInput from "../../components/Fields/TextInput";
 import useProfileEdit from "../../hooks/useProfileEdit";
 import { AnimatePresence, motion } from "framer-motion";
 import { IoCloseSharp } from "react-icons/io5";
+import Navbar from "../../components/Fields/Navbar";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -82,72 +83,7 @@ const Profile = () => {
 
   return (
     <div className="bg-[#FAFAFA] min-h-screen poppins-regular">
-      {/* Top Navbar */}
-      <nav className="p-5">
-        <div className="flex justify-between items-start md:items-center">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold">Profile</h1>
-            <p className="text-sm text-gray-600">{currentDate}</p>
-          </div>
-
-          <div className="relative" ref={dropdownRef}>
-            <div className="flex items-center gap-4 cursor-pointer">
-              <div className="p-2 rounded-full bg-white border border-gray-400">
-                <VscBell size={24} className="text-gray-600" />
-              </div>
-
-              <div className="hidden sm:block w-px h-8 bg-gray-400" />
-
-              <div
-                className="flex items-center gap-2"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <img
-                  src={ProfileImg}
-                  alt="Profile"
-                  className="h-12 w-12 sm:h-16 sm:w-16 rounded-full object-cover"
-                />
-                <div className="hidden sm:block">
-                  <p className="font-medium text-sm">{userName}</p>
-                  <p className="text-sm text-gray-600">Customer</p>
-                </div>
-              </div>
-            </div>
-
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-3 w-44 bg-white border rounded-md shadow-lg z-50">
-                <ul className="py-2 text-sm">
-                {role === 'admin' ?
-                    <>
-                      <li
-                        className="cursor-pointer p-2 flex items-center gap-2 hover:bg-gray-100"
-                        onClick={() => navigate("/admin/dashboard")}
-                      >
-                        <RxDashboard /> Dashboard
-                      </li>
-                    </> : <>
-                      <li
-                        className="cursor-pointer p-2 flex items-center gap-2 hover:bg-gray-100"
-                        onClick={() => navigate("/")}
-                      >
-                        <RxDashboard /> Home
-                      </li>
-                    </>}
-                  <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      localStorage.clear();
-                      navigate("/Login");
-                    }}
-                  >
-                    Logout
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
+      <Navbar/>
 
       {/* Profile Card */}
       <div className="flex justify-center p-4">
