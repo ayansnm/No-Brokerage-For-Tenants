@@ -162,7 +162,7 @@ export default function Stepper({
                     isLastStep
                       ? typeofstepper == "requirement"
                         ? "Pay Subscription"
-                        : "Add Property"
+                        : typeofstepper == "updateproperty" ? "Update Property" : "Add Property"
                       : nextButtonText
                   }
                   onClick={isLastStep ? handleSubmit : handleNext}

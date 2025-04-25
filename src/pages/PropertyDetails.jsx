@@ -42,7 +42,7 @@ const NextArrow = ({ onClick }) => (
 );
 
 const PropertyDetails = () => {
-    const [selectedThumbIndex, setSelectedThumbIndex] = useState(0);
+  const [selectedThumbIndex, setSelectedThumbIndex] = useState(0);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -177,7 +177,7 @@ const PropertyDetails = () => {
             <h1 className="text-3xl font-bold mb-2">{title}</h1>
             <div className="flex items-center gap-2 text-gray-600 mb-6">
               <FaMapMarkerAlt className="text-primary" />
-              <span>{location?.address}</span>
+              <span>{location}</span>
             </div>
 
             {/* Image Gallery */}
@@ -191,21 +191,41 @@ const PropertyDetails = () => {
                   />
                 ) : (
                   <>
-                    <Slider
-                      {...mainSliderSettings}
-                      asNavFor={nav2}
-                      ref={setNav1}
-                    >
-                      {uniqueImages.map((img, index) => (
-                        <div key={index} className="relative">
-                          <img
-                            src={`${API_URL}/${img}`}
-                            alt={`Property ${index}`}
-                            className="w-full h-96 object-cover"
-                          />
-                        </div>
-                      ))}
-                    </Slider>
+                    <div className="relative">
+                      {/* Heart Icon - stays fixed in the top-right corner */}
+                      <button
+                        className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 z-10"
+                        onClick={() => setIsFavorite(!isFavorite)}
+                        aria-label={
+                          isFavorite
+                            ? "Remove from favorites"
+                            : "Add to favorites"
+                        }
+                      >
+                        <BsFillHeartFill
+                          className={
+                            isFavorite ? "text-red-500" : "text-gray-400"
+                          }
+                        />
+                      </button>
+
+                      {/* Main Image Slider */}
+                      <Slider
+                        {...mainSliderSettings}
+                        asNavFor={nav2}
+                        ref={setNav1}
+                      >
+                        {uniqueImages.map((img, index) => (
+                          <div key={index}>
+                            <img
+                              src={`${API_URL}/${img}`}
+                              alt={`Property ${index}`}
+                              className="w-full h-96 object-cover"
+                            />
+                          </div>
+                        ))}
+                      </Slider>
+                    </div>
 
                     <div className="p-4 pt-9">
                       <Slider
@@ -233,26 +253,6 @@ const PropertyDetails = () => {
                     </div>
                   </>
                 )}
-
-                <div className="absolute top-4 right-4 flex gap-2">
-                  <button
-                    className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
-                    onClick={() => setIsFavorite(!isFavorite)}
-                    aria-label={
-                      isFavorite ? "Remove from favorites" : "Add to favorites"
-                    }
-                  >
-                    <BsFillHeartFill
-                      className={isFavorite ? "text-red-500" : "text-gray-400"}
-                    />
-                  </button>
-                  <button
-                    className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
-                    aria-label="Share property"
-                  >
-                    <BsShareFill className="text-gray-600" />
-                  </button>
-                </div>
               </div>
 
               {/* Property Highlights */}
@@ -326,16 +326,16 @@ const PropertyDetails = () => {
             {/* Location Map */}
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-300">
               <h2 className="text-xl font-bold mb-4">Location</h2>
-              <div className="h-64 bg-gray-200 rounded-lg flex items-center justify-center">
+              {/* <div className="h-64 bg-gray-200 rounded-lg flex items-center justify-center">
                 <p className="text-gray-500">Map would be displayed here</p>
-              </div>
+              </div> */}
               <div className="mt-4">
-                <p className="font-semibold">Address: </p>
+                {/* <p className="font-semibold">Address: </p> */}
                 <p className="text-gray-700 flex items-center gap-2">
                   <FaMapMarkerAlt />
                   {area}
                 </p>
-                <p className="text-gray-700">{location?.address}</p>
+                <p className="text-gray-700">{location}</p>
               </div>
             </div>
           </div>
