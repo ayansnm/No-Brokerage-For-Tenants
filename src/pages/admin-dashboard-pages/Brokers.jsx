@@ -1,27 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Fields/Navbar';
 import Sidebar from '../../components/Fields/Sidebar';
 import { FiSearch, FiEdit2, FiTrash2 } from 'react-icons/fi';
 import { FaFilter } from 'react-icons/fa';
 import { IoAddOutline } from 'react-icons/io5';
+import useGetAllBrokers from '../../hooks/admin-hooks/useGetAllBrokers';
 
 const Brokers = () => {
-    const brokers = Array.from({ length: 30 }, (_, i) => ({
-        id: i + 1,
-        name: `Broker ${i + 1}`,
-        email: `broker${i + 1}@example.com`,
-        status: i % 3 === 0 ? 'Active' : 'Inactive',
-        rate: `${20000 + i * 1000}`,
-        properties: i % 2 === 0 ? 'Residential' : 'Commercial',
-        share: ``,
-    }));
+    const { loading, allBrokers, fetchAllBrokers } = useGetAllBrokers();
+    const [search, setSearch] = useState("");
+    // const brokers = Array.from({ length: 30 }, (_, i) => ({
+    //     id: i + 1,
+    //     name: `Broker ${i + 1}`,
+    //     email: `broker${i + 1}@example.com`,
+    //     status: i % 3 === 0 ? 'Active' : 'Inactive',
+    //     rate: `${20000 + i * 1000}`,
+    //     properties: i % 2 === 0 ? 'Residential' : 'Commercial',
+    //     share: ``,
+    // }));
+
+    const fetchData = async () => {
+        await fetchAllBrokers(currentPage, itemsPerPage, search);
+    }    
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentBrokers = brokers.slice(indexOfFirstItem, indexOfLastItem);
+    const currentBrokers = allBrokers.slice(indexOfFirstItem, indexOfLastItem);
+
+    useEffect(() => {
+        fetchData()
+    }, [currentPage, search])
 
     return (
         <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular">
@@ -42,6 +53,10 @@ const Brokers = () => {
                                 type="text"
                                 placeholder="Search..."
                                 className="w-full pl-2 py-1 text-sm outline-none bg-transparent"
+                                value={search}
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                }}
                             />
                         </div>
                     </div>
@@ -67,24 +82,24 @@ const Brokers = () => {
                             </tr>
                         </thead>
                         <tbody className="text-sm text-gray-700">
-                            {currentBrokers.map((broker, index) => (
-                                <tr key={broker.id} className="border-b border-gray-200 hover:bg-gray-50">
+                            {currentBrokers.map((item, index) => (
+                                <tr key={item._id} className="border-b border-gray-200 hover:bg-gray-50">
                                     <td className="px-4 py-3">{indexOfFirstItem + index + 1}</td>
-                                    <td className="px-4 py-3">{broker.name}</td>
-                                    <td className="px-4 py-3">{broker.email}</td>
+                                    <td className="px-4 py-3">{item.fullName}</td>
+                                    <td className="px-4 py-3">{item.email}</td>
                                     <td className="px-4 py-3">
                                         <span
-                                            className={`px-2 py-1 rounded-full text-xs font-medium ${broker.status === 'Active'
+                                            className={`px-2 py-1 rounded-full text-xs font-medium ${item.isActive
                                                 ? 'bg-green-100 text-green-700'
                                                 : 'bg-red-100 text-red-700'
                                                 }`}
                                         >
-                                            {broker.status}
+                                            {item.isActive ? 'Active' : 'Inactive'}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3">
                                         <div className="flex flex-col">
-                                            <span>{broker.rate}</span>
+                                            <span>{item.rate || 'N/A'}</span>
                                             <span className="text-xs text-gray-500">INR</span>
                                         </div>
                                     </td>
@@ -96,8 +111,8 @@ const Brokers = () => {
                                             <FiEdit2 size={16} />
                                         </button>
                                     </td>
-                                    <td className="px-4 py-3">{broker.properties}</td>
-
+                                    <td className="px-4 py-3">{item.properties || 'N/A'}</td>
+                                    <td className="px-4 py-3">{item.share || 'N/A'}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -106,12 +121,12 @@ const Brokers = () => {
                     {/* Pagination Controls */}
                     <div className="flex pb-4 flex-col sm:flex-row sm:items-center justify-between mt-4 px-1 text-sm text-gray-700">
                         <div>
-                            Showing {indexOfFirstItem + 1}–{Math.min(indexOfLastItem, brokers.length)} of {brokers.length}
+                            Showing {indexOfFirstItem + 1}–{Math.min(indexOfLastItem, allBrokers.length)} of {allBrokers.length}
                         </div>
 
                         <div className="flex items-center gap-4 mt-2 sm:mt-0">
                             <span>Rows per page: {itemsPerPage}</span>
-                            <span>Page {currentPage} of {Math.ceil(brokers.length / itemsPerPage)}</span>
+                            <span>Page {currentPage} of {Math.ceil(allBrokers.length / itemsPerPage)}</span>
 
                             <button
                                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -123,7 +138,7 @@ const Brokers = () => {
 
                             <button
                                 onClick={() => setCurrentPage(prev => prev + 1)}
-                                disabled={indexOfLastItem >= brokers.length}
+                                disabled={indexOfLastItem >= allBrokers.length}
                                 className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
                             >
                                 {'>'}

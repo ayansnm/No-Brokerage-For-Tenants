@@ -8,6 +8,7 @@ import { VscVmActive } from "react-icons/vsc";
 import { FaHandshakeAngle } from "react-icons/fa6";
 import Sidebar from "../../components/Fields/Sidebar";
 import Navbar from "../../components/Fields/Navbar";
+import useTotalCount from "../../hooks/admin-hooks/useTotalCount";
 
 const AdminDashboard = () => {
     const data = [
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
         { name: 'Sat', customers: 1600 },
         { name: 'Sun', customers: 1950 },
     ];
+    const { counts, loading } = useTotalCount();
 
     return (
         <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular no-scrollbar">
@@ -45,7 +47,7 @@ const AdminDashboard = () => {
                                 {/* Number + Growth block */}
                                 <div className="flex items-end gap-3 mt-1">
                                     {/* Number */}
-                                    <p className="poppins-medium text-2xl sm:text-3xl">4578</p>
+                                    <p className="poppins-medium text-2xl sm:text-3xl">{counts.propertyCount}</p>
 
                                     {/* Percentage & Text */}
                                     <div className="flex flex-col">
@@ -66,7 +68,7 @@ const AdminDashboard = () => {
                             </div>
                             <div>
                                 <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">Total Brokers</p>
-                                <p className="poppins-medium text-2xl sm:text-3xl mt-1">5729</p>
+                                <p className="poppins-medium text-2xl sm:text-3xl mt-1">{counts.brokerCount}</p>
                             </div>
                         </div>
 
@@ -78,7 +80,7 @@ const AdminDashboard = () => {
                             </div>
                             <div>
                                 <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">Total Users</p>
-                                <p className="poppins-medium text-2xl sm:text-3xl mt-1">5729</p>
+                                <p className="poppins-medium text-2xl sm:text-3xl mt-1">{counts.userCount}</p>
                             </div>
                         </div>
                     </div>
