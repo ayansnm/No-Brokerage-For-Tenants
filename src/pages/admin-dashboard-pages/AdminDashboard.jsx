@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FiUser } from "react-icons/fi";
 import { BsFillBuildingsFill } from "react-icons/bs";
 import { MdArrowOutward } from "react-icons/md";
@@ -9,6 +9,8 @@ import { FaHandshakeAngle } from "react-icons/fa6";
 import Sidebar from "../../components/Fields/Sidebar";
 import Navbar from "../../components/Fields/Navbar";
 import useTotalCount from "../../hooks/admin-hooks/useTotalCount";
+import useGetAllBrokers from '../../hooks/admin-hooks/useGetAllBrokers';
+import useFetchAllCustomers from "../../hooks/admin-hooks/useFetchAllCustomers";
 
 const AdminDashboard = () => {
     const data = [
@@ -21,6 +23,27 @@ const AdminDashboard = () => {
         { name: 'Sun', customers: 1950 },
     ];
     const { counts, loading } = useTotalCount();
+    const { allBrokers, fetchAllBrokers } = useGetAllBrokers();
+    const [activeCount, setActiveCount] = useState(0);
+    const activeBrokers = allBrokers.filter((broker) => broker.isActive);
+
+    const { allCustomers, fetchAllCustomers } = useFetchAllCustomers();
+    const [activeUserCount, setUserActiveCount] = useState(0);
+
+    const fetchData = async () => {
+        await fetchAllBrokers();
+        await fetchAllCustomers()
+    }
+    useEffect(() => {
+        fetchData(); // Only called once on component mount
+    }, []);
+    
+    useEffect(() => {
+        const activeBrokers = allBrokers.filter((broker) => broker.isActive);
+        const activeUsers = allCustomers.filter((customer) => customer.isActive);
+        setActiveCount(activeBrokers.length);
+        setUserActiveCount(activeUsers.length);
+    }, [allBrokers, allCustomers]);    
 
     return (
         <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular no-scrollbar">
@@ -132,7 +155,7 @@ const AdminDashboard = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-[#777777] font-semibold poppins-medium">Active Users</p>
-                                    <p className="text-xl font-semibold poppins-medium mt-1">154</p>
+                                    <p className="text-xl font-semibold poppins-medium mt-1">{activeUserCount}</p>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +168,7 @@ const AdminDashboard = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-[#777777] font-semibold poppins-medium">Active Brokers</p>
-                                    <p className="text-xl font-semibold poppins-medium mt-1">745</p>
+                                    <p className="text-xl font-semibold poppins-medium mt-1">{activeCount}</p>
                                 </div>
                             </div>
                         </div>
