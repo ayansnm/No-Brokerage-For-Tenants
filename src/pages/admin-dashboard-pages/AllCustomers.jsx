@@ -31,6 +31,7 @@ const AllCustomers = () => {
     setSelectedUserId(userId);
     setShowDeletePopup(true);
   };
+  
   const confirmEdit = (userId, fullName, email, address) => {
     setSelectedUserId(userId);
     setId(userId);

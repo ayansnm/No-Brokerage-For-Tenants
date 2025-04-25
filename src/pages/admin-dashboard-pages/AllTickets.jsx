@@ -123,7 +123,7 @@ const TicketCard = ({ onResponseClick }) => (
                 ABCD NAME
               </h3>
               <button
-                className="bg-green-900 rounded-full px-3 py-1 text-sm text-white self-start sm:self-auto"
+                className="bg-green-900 hover:bg-green-800 rounded-full px-3 py-1 text-sm text-white self-start sm:self-auto cursor-pointer"
                 onClick={onResponseClick}
               >
                 Give Response
