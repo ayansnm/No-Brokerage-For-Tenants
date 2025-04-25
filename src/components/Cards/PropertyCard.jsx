@@ -2,8 +2,10 @@ import React from "react";
 import { FiMapPin, FiEdit2, FiUsers, FiHeart } from "react-icons/fi";
 import { FaHandshake } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import useShareProperty from "../../hooks/admin-hooks/useShareProperty";
 
 const PropertyCard = ({
+  customerId = "",
   id,
   title = "No Title",
   price = "000",
@@ -18,6 +20,11 @@ const PropertyCard = ({
 }) => {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
+  const { loading, shareProperty } = useShareProperty();
+  const handleShareProperty = async () => {
+    console.log({ customerId, propertyId: id });
+    await shareProperty({customerId, propertyId:id});
+  };
 
   return (
     <div className="w-full bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
@@ -44,7 +51,7 @@ const PropertyCard = ({
 
       {/* Property Details */}
       <div className="p-4">
-        <div  onClick={() => navigate(`/PropertyDetails/${id}`)}>
+        <div onClick={() => navigate(`/PropertyDetails/${id}`)}>
           {/* Title and Price */}
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
@@ -109,6 +116,14 @@ const PropertyCard = ({
             </button>
           ) : (
             <div className="flex space-x-2">
+              {customerId != "" && (
+                <button
+                  onClick={handleShareProperty}
+                  className="bg-primary rounded-full  px-4 text-white"
+                >
+                  Share Property
+                </button>
+              )}
               <button
                 className="p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
                 onClick={() => navigate(`/broker/editproperty/${id}`)}

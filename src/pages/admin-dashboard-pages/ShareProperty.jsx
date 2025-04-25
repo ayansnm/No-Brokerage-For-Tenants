@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BsFilter } from "react-icons/bs";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -10,8 +10,9 @@ import Footer from "../../components/Fields/Footer";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSelector";
 import useGetAllProperties from "../../hooks/admin-hooks/useGetAllProperties";
+import useGetCustomer from "../../hooks/admin-hooks/useGetCustomerShareProp";
 
-const AllProperties = () => {
+const ShareProperty = () => {
   const navigate = useNavigate();
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("");
@@ -57,26 +58,56 @@ const AllProperties = () => {
     { label: "Commercial", value: "Commercial" },
   ];
 
+  const { loading: loadCustomer, getCustomer, user } = useGetCustomer();
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      getCustomer({ id });
+    };
+    fetchCustomer();
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-50 poppins-regular">
       <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1">
-        <Navbar pageName="All Properties" />
-        
+        <Navbar pageName="Share Property" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Property List Section */}
             <div className="lg:w-2/3">
               {/* Header with actions */}
+              {user && (
+                <div className="bg-white rounded-xl shadow-md p-6 mb-4">
+                  <h2 className="text-xl font-semibold text-primary mb-4">
+                    User Profile
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+                    <div>
+                      <span className="font-medium">Full Name:</span>{" "}
+                      {user.fullName}
+                    </div>
+                    <div>
+                      <span className="font-medium">Mobile No:</span>{" "}
+                      {user.mobileNo}
+                    </div>
+                    <div>
+                      <span className="font-medium">Email:</span> {user.email}
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="bg-white rounded-xl shadow-sm p-3 mb-6">
                 {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"> */}
-                  {/* <h2 className="text-xl font-bold text-gray-800">
+                {/* <h2 className="text-xl font-bold text-gray-800">
                     All Properties
                   </h2> */}
-                  {/* <button
+                {/* <button
                     onClick={() => navigate("/broker/addproperty")}
                     className="flex items-center gap-2 bg-primary hover:opacity-90 cursor-pointer text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   >
@@ -162,6 +193,7 @@ const AllProperties = () => {
                       size={item?.size}
                       description={item?.description}
                       type={item?.type}
+                      customerId={id}
                     />
                   ))}
                 </div>
@@ -432,4 +464,4 @@ const AllProperties = () => {
   );
 };
 
-export default AllProperties;
+export default ShareProperty;

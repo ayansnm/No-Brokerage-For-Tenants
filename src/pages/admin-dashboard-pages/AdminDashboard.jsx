@@ -51,7 +51,7 @@ const AdminDashboard = () => {
 
             {/* Main Content */}
             <div className="flex-1">
-                <Navbar />
+                <Navbar pageName="Dashboard"/>
 
                 {/* Main Content */}
                 <div className="w-full flex justify-center p-3">

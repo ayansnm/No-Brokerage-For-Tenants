@@ -61,7 +61,12 @@ const useUpdateProperty = () => {
 
       if (response.ok) {
         toast.success("Property updated successfully!");
-        navigate("/broker/dashboard");
+        if (localStorage.getItem("role") == "admin") {
+          navigate("/admin/properties");
+        }
+        else if (localStorage.getItem("role") == "broker") {
+          navigate("/broker/dashboard");
+        }
       } else {
         toast.error(result?.message || "Failed to update property.");
       }

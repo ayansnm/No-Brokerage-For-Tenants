@@ -27,7 +27,7 @@ const AllPayments = () => {
             <Sidebar />
 
             <div className="flex-1">
-                <Navbar />
+                <Navbar pageName="All Payments" />
 
                 <div className="w-full px-5 my-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">

@@ -78,7 +78,7 @@ const MyTickets = () => {
 
   return (
     <div className="min-h-screen poppins-regular bg-[#f9f9f9]">
-      <Navbar />
+      <Navbar pageName="My Tickets" />
 
       <div className="w-full flex justify-center p-4">
         <div className="w-full md:w-[90vw] lg:w-[75vw] rounded-2xl p-2 sm:p-6">

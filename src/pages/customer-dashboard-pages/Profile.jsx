@@ -61,7 +61,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <Navbar pageName="Profile" />
       
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Profile Header */}

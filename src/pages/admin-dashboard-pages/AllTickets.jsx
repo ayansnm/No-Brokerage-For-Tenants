@@ -14,7 +14,7 @@ const AllTickets = () => {
             <Sidebar />
 
             <div className="flex-1">
-                <Navbar />
+                <Navbar pageName="All Tickets" />
 
                 {/* Search & Sort */}
                 <div className="flex justify-center mt-6 px-4">

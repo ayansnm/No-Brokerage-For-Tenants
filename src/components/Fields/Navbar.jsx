@@ -13,7 +13,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineHome } from "react-icons/md";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
 
-const Navbar = () => {
+const Navbar = ({pageName}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -71,10 +71,7 @@ const Navbar = () => {
   ];
 
   const role = localStorage.getItem("role");
-  const currentMenuItem = menuItems.find(
-    (item) => item.path === location.pathname
-  );
-  const pageHeading = currentMenuItem?.label || "Dashboard";
+  
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -107,7 +104,7 @@ const Navbar = () => {
             </button>
             <div>
               <h1 className="text-xl font-semibold text-gray-900">
-                {pageHeading}
+                {pageName}
               </h1>
               <p className="text-xs text-gray-500">{formattedDate}</p>
             </div>

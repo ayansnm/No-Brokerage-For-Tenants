@@ -29,6 +29,7 @@ import AllTickets from "./pages/admin-dashboard-pages/AllTickets";
 import BrokerDashboard from "./pages/broker-dashboard/Dashboard";
 import SuggestedCustomer from "./pages/broker-dashboard/SuggestedCustomer";
 import AddProperty from "./pages/broker-dashboard/AddProperty";
+import ShareProperty from "./pages/admin-dashboard-pages/ShareProperty";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -61,13 +62,14 @@ const App = () => {
         <Route path="/admin/payments" element={authUser&& localStorage.getItem("role") == "admin" ? <AllPayments /> : <Navigate to="/Login" />} />
         <Route path="/admin/customers" element={authUser && localStorage.getItem("role") == "admin"? <AllCustomers /> : <Navigate to="/Login" />} />
         <Route path="/admin/tickets" element={authUser && localStorage.getItem("role") == "admin"? <AllTickets /> : <Navigate to="/Login" />} />
+        <Route path="/admin/shareproperty/:id" element={authUser && localStorage.getItem("role") == "admin"? <ShareProperty /> : <Navigate to="/Login" />} />
 
 
         {/* Broker Dashboard */}
         <Route path="/broker/dashboard" element={authUser&& localStorage.getItem("role") == "broker" ? <BrokerDashboard /> : <Navigate to="/Login" />} />
         <Route path="/broker/suggestedcustomer" element={authUser&& localStorage.getItem("role") == "broker" ? <SuggestedCustomer /> : <Navigate to="/Login" />} />
         <Route path="/broker/addproperty" element={authUser&& localStorage.getItem("role") == "broker" ? <AddProperty /> : <Navigate to="/Login" />} />
-        <Route path="/broker/editproperty/:id" element={authUser&& localStorage.getItem("role") == "broker" ? <AddProperty /> : <Navigate to="/Login" />} />
+        <Route path="/broker/editproperty/:id" element={authUser ? <AddProperty /> : <Navigate to="/Login" />} />
       </Routes>
       <div>
         <Toaster />

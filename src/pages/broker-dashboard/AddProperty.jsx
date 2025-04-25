@@ -328,7 +328,7 @@ const AddProperty = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar pageName="Add Property" />
       {() => {
         if (id) {
           JSON.stringify(property);
@@ -687,11 +687,9 @@ const AddProperty = () => {
                       value={formData.floor}
                       onChange={handleChange}
                       options={[
-                        { label: "Ground", value: "Ground" },
-                        { label: "First", value: "First" },
-                        { label: "Second", value: "Second" },
-                        { label: "Third", value: "Third" },
-                        { label: "Fourth", value: "Fourth" },
+                        { value: "Top", label: "Top" },
+                        { value: "Middle", label: "Middle" },
+                        { value: "Bottom", label: "Bottom" },
                       ]}
                       placeholder="Select floor"
                       error={errors.floor}

@@ -35,7 +35,7 @@ const SuggestedCustomer = () => {
     return (
         <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular">
             <div className="flex-1">
-                <Navbar />
+                <Navbar pageName="Suggested Customer" />
 
                 <div className="p-4 mx-10 border rounded-2xl border-gray-300 bg-white">
                     {/* Filters and Search */}

@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import TextInput from "../../components/Fields/TextInput";
 import useProfileEdit from "../../hooks/useProfileEdit";
 import useHandleStatus from "../../hooks/admin-hooks/useHandleStatus";
+import { useNavigate } from "react-router-dom";
 
 const AllCustomers = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +22,7 @@ const AllCustomers = () => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const navigate = useNavigate();
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -89,7 +91,7 @@ const AllCustomers = () => {
     <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular">
       <Sidebar />
       <div className="flex-1">
-        <Navbar />
+        <Navbar pageName="All Customer" />
 
         {/* Top Filters & Button */}
         <div className="w-full px-5 my-2 flex  flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -227,9 +229,9 @@ const AllCustomers = () => {
                       : "No Requirements"}
                   </td>
                   <td>
-                    <p className="p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white">
+                    <button onClick={()=>navigate(`/admin/shareproperty/${item._id}`)} className="p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white">
                       Share Property
-                    </p>
+                    </button>
                   </td>
                 </tr>
               ))}

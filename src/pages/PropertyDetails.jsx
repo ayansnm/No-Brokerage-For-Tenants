@@ -127,7 +127,7 @@ const PropertyDetails = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen poppins-regular">
-      <Navbar />
+      <Navbar pageName="Property Details" />
 
       {/* Main Property Section */}
       <div className="container mx-auto px-4 py-8">

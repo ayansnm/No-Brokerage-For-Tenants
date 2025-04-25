@@ -94,7 +94,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 poppins-regular">
-      <Navbar />
+      <Navbar pageName="Dashboard" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
@@ -442,11 +442,9 @@ const Dashboard = () => {
                     <AnimatedRadioButtons
                       name="floor"
                       options={[
-                        { label: "Ground", value: "Ground" },
-                        { label: "First", value: "First" },
-                        { label: "Second", value: "Second" },
-                        { label: "Third", value: "Third" },
-                        { label: "Fourth", value: "Fourth" },
+                        { value: "Top", label: "Top" },
+                      { value: "Middle", label: "Middle" },
+                      { value: "Bottom", label: "Bottom" },
                       ]}
                       selectedColor="bg-blue-100 text-blue-700 border-blue-300"
                       value={filter.floor}

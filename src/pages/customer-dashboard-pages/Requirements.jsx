@@ -174,8 +174,8 @@ const Requirements = () => {
       propertyPurpose: formData.purpose,
       propertyType: formData.type,
       floor: formData.floor,
-      furnishedType: formData.furnished,
-      bhk: formData.format,
+      furnished: formData.furnished,
+      format: formData.format,
       state: formData.state,
       city: formData.city,
       area: formData.area,
@@ -244,11 +244,11 @@ const Requirements = () => {
               <button
                 type="button"
                 className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${
-                  formData.purpose === "commercial"
+                  formData.purpose === "Commercial"
                     ? "bg-primary text-white border-primary"
                     : "bg-white text-primary border-primary hover:bg-primary hover:text-white"
                 }`}
-                onClick={() => handlePurposeSelect("commercial")}
+                onClick={() => handlePurposeSelect("Commercial")}
               >
                 <div className="flex flex-row items-center gap-3">
                   <FaRegBuilding size={20} className="" />
@@ -277,11 +277,11 @@ const Requirements = () => {
               <button
                 type="button"
                 className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${
-                  formData.purpose === "residential"
+                  formData.purpose === "Residential"
                     ? "bg-primary text-white border-primary"
                     : "bg-white text-primary border-primary hover:bg-primary hover:text-white"
                 }`}
-                onClick={() => handlePurposeSelect("residential")}
+                onClick={() => handlePurposeSelect("Residential")}
               >
                 <div className="flex flex-row items-center gap-3">
                   <FaHome size={20} className="" />
@@ -396,7 +396,7 @@ const Requirements = () => {
                   value={formData.type}
                   onChange={handleChange}
                   options={
-                    formData.purpose === "residential"
+                    formData.purpose === "Residential"
                       ? [
                           { value: "House", label: "House" },
                           { value: "Bunglow", label: "Bunglow" },
@@ -417,15 +417,15 @@ const Requirements = () => {
                   name="furnished"
                   options={[
                     { label: "Unfurnished", value: "Unfurnished" },
-                    { label: "Furnished", value: "fully-furnished" },
-                    { label: "Semi-furnished", value: "semi-furnished" },
+                    { label: "Furnished", value: "Fully" },
+                    { label: "Semi-furnished", value: "Semi" },
                   ]}
                   value={formData.furnished}
                   onChange={handleChange}
                   error={errors.furnished}
                 />
               </div>
-              {formData.purpose == "residential" && (
+              {formData.purpose == "Residential" && (
                 <div className="form-group">
                   <AnimatedRadioButtons
                     label="Format"
@@ -450,11 +450,9 @@ const Requirements = () => {
                     value={formData.floor}
                     onChange={handleChange}
                     options={[
-                      { value: "Ground", label: "Ground Floor" },
-                      { value: "First", label: "First Floor" },
-                      { value: "Second", label: "Second Floor" },
-                      { value: "Third", label: "Third Floor" },
-                      { value: "Fourth", label: "Fourth Floor" },
+                      { value: "Top", label: "Top" },
+                      { value: "Middle", label: "Middle" },
+                      { value: "Bottom", label: "Bottom" },
                     ]}
                     placeholder="Select floor"
                     error={errors.floor}
