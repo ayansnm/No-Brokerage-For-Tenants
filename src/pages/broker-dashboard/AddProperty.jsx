@@ -16,6 +16,9 @@ import useGetProperties from "../../hooks/broker-hooks/useGetProperties";
 import Navbar from "../../components/Fields/Navbar";
 import Footer from "../../components/Fields/Footer";
 import { IoIosImages } from "react-icons/io";
+import useGetPropertyDetails from "../../hooks/broker-hooks/useGetPropertyDetails";
+import { useParams } from "react-router-dom";
+import useUpdateProperty from "../../hooks/broker-hooks/useUpdateProperty";
 
 const AddProperty = () => {
   const [formData, setFormData] = useState({
@@ -182,6 +185,29 @@ const AddProperty = () => {
   };
 
   const { loading: addPropLoad, addProperty } = useAddProperty();
+  const { loading: updateLoad, updateProperty } = useUpdateProperty();
+  const handleUpdate = async () => {
+    console.log(formData);
+    const data = {
+      propertyPurpose: formData.purpose,
+      propertyType: formData.type,
+      floor: formData.floor,
+      furnishedType: formData.furnished,
+      bhk: formData.format,
+      state: formData.state,
+      city: formData.city,
+      area: formData.area,
+      size: formData.size + " " + formData.sizetype,
+      priceRange: formData.priceRange,
+      scheme: formData.scheme,
+      amount:
+        formData.purpose === "residential"
+          ? formData.priceRange[1] / 5
+          : formData.priceRange[1] / 2.5,
+    };
+    console.log(data);
+    await updateProperty(formData, id);
+  };
   const handleSubmit = async () => {
     const data = {
       propertyPurpose: formData.purpose,
@@ -243,9 +269,71 @@ const AddProperty = () => {
     [formData.images.length]
   );
 
+  // edit property
+
+  const { id } = useParams();
+  const {
+    loading: getPropertyLoad,
+    property,
+    getPropertyDetails,
+  } = useGetPropertyDetails();
+
+  const fetchDetails = async () => {
+    if (id) {
+      await getPropertyDetails(id);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetails();
+  }, [id]);
+
+  // Update formData when property data is loaded for editing
+  useEffect(() => {
+    if (property && id) {
+      // Split the size into value and type
+      const sizeParts = property.size?.split(" ") || ["", "sqft"];
+      console.log("IMAGES:", property.images);
+
+      // Convert server image paths into preview objects
+      const existingImages = (property.images || []).map((imgPath, index) => ({
+        id: `existing-${index}`,
+        preview: `http://145.223.20.218:2025/${imgPath}`,
+        file: null,
+        isExisting: true,
+        serverPath: imgPath,
+      }));
+
+      setFormData({
+        purpose: property.type === "Residential" ? "residential" : "commercial",
+        category: "Rent", // Assuming this is always rent for editing
+        location: property.location || "",
+        priceRange: property.price || "",
+        state: property.location?.state || "Gujarat",
+        city: property.location?.city || "Ahmedabad",
+        area: property.area || "",
+        type: property.category || "",
+        furnished: property.furnished || "",
+        format: property.format || "",
+        floor: property.floor || "",
+        sizetype: property.sizeType || "",
+        size: property.size || "",
+        scheme: "",
+        images: existingImages, // Set converted images here
+        title: property.title || "",
+        description: property.description || "",
+      });
+    }
+  }, [property, id]);
+
   return (
     <>
       <Navbar />
+      {() => {
+        if (id) {
+          JSON.stringify(property);
+        }
+      }}
       <div
         style={{
           minHeight: "100vh",
@@ -262,6 +350,7 @@ const AddProperty = () => {
         }}
         className="px-[1rem]"
       >
+        {}
         <div
           style={{
             width: "100%",
@@ -272,16 +361,16 @@ const AddProperty = () => {
           <Stepper
             initialStep={1}
             onStepChange={handleStepChange}
-            onFinalStepCompleted={handleSubmit}
+            onFinalStepCompleted={id ? handleUpdate : handleSubmit}
             backButtonText="Previous"
             nextButtonText="Next"
             Heading="Want to rent out your property?"
-            handleSubmit={handleSubmit}
+            handleSubmit={id ? handleUpdate : handleSubmit}
             purpose={formData.purpose}
             validateStep={validateCurrentStep}
             errors={errors} // Pass errors to Stepper
             setErrors={setErrors} // Pass setErrors to Stepper
-            typeofstepper={"addproperty"}
+            typeofstepper={id ? "updateproperty" : "addproperty"}
           >
             <Step>
               <h2 className="w-full text-center poppins-semibold mb-4">
