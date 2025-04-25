@@ -129,12 +129,12 @@ const Navbar = () => {
               <VscBell size={20} />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
             </button>
-            {localStorage.getItem("role") == "user" && (
+            {/* {localStorage.getItem("role") == "user" && (
               <button onClick={()=>navigate("/MyTickets")} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full relative">
                 <TfiHeadphoneAlt size={20} />
                 <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
               </button>
-            )}
+            )} */}
 
             {/* Profile dropdown */}
             <div className="relative" ref={dropdownRef}>
