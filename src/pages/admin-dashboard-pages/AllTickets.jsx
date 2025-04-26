@@ -6,13 +6,23 @@ import { MdOutlineSort } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 import useGetAllTickets from "../../hooks/admin-hooks/useGetAllTickets";
+import useGiveResponseTicket from "../../hooks/admin-hooks/useGiveResponseTicket";
 
 const AllTickets = () => {
     const [showModal, setShowModal] = useState(false);
     const { loading, tickets, getAllTickets } = useGetAllTickets();
+    const [ticketSelected, setTicketSelected] = useState({})
     const fetchTickets = async () => {
         await getAllTickets();
     };
+
+    const {giveResponse, loading:loadResponse} = useGiveResponseTicket();
+    const [reply, setReply] = useState("");
+    const handleResponse = async (reply) => {
+        await giveResponse(reply, ticketSelected.id);
+        fetchTickets();
+        setShowModal(false)
+    }
     useEffect(() => {
         fetchTickets();
     }, []);
@@ -55,7 +65,15 @@ const AllTickets = () => {
                             message={item?.message}
                             description={item?.description}
                             response={item?.reply}
-                            onResponseClick={() => setShowModal(true)}
+                            onResponseClick={() => {
+                                setTicketSelected({
+                                    fullName: item?.user?.fullName,
+                                    message: item?.message,
+                                    description: item?.description,
+                                    id: item?._id
+                                })    
+                                setShowModal(true)
+                            }}
                         />
                     ))}
                 </div>
@@ -95,14 +113,13 @@ const AllTickets = () => {
                                         {/* Ticket Info */}
                                         <div className="space-y-2 text-sm text-gray-700 w-full sm:w-[50%]">
                                             <p>
-                                                <strong>Username:</strong> John Doe
+                                                <strong>Username:</strong> {ticketSelected?.fullName}
                                             </p>
                                             <p>
-                                                <strong>Question:</strong> Is this property for rent?
+                                                <strong>Question:</strong> {ticketSelected?.message}
                                             </p>
                                             <p>
-                                                <strong>Description:</strong> I want to know whether
-                                                this listing is for rent or sale.
+                                                <strong>Description:</strong> {ticketSelected?.description}
                                             </p>
                                         </div>
                                     </div>
@@ -112,11 +129,13 @@ const AllTickets = () => {
                                         rows={4}
                                         className="w-full cursor-pointer hover:bg-gray-100 flex-col text-sm px-4 py-2 poppins-regular border-2 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#265953] border-primary h-[80px]"
                                         placeholder="Write your response here..."
+                                        onChange={(e) => setReply(e.target.value)}
+                                        value={reply}
                                     ></textarea>
                                 </div>
 
                                 <button
-                                    onClick={() => setShowModal(false)}
+                                    onClick={()=>handleResponse(reply)}
                                     className="mt-4 w-full bg-green-900 text-white py-2 rounded-lg hover:bg-green-800"
                                 >
                                     Submit Response

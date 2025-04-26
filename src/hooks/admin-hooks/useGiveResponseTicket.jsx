@@ -3,11 +3,13 @@ import toast from "react-hot-toast";
 
 const useGiveResponseTicket = () => {
   const [loading, setLoading] = useState(false);
-  const giveResponse = async (response, id) => {
-    const data = { reply: response };
+  const giveResponse = async (reply, id) => {
+    const data = { reply: reply };
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
+      console.log(`${import.meta.env.VITE_API_URL}/api/support/replytocustomer/${id}`);
+      
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/support/replytocustomer/${id}`,
         {
@@ -16,18 +18,18 @@ const useGiveResponseTicket = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({reply : response}),
+          body: JSON.stringify(data),
         }
       );
       const result = await response.json();
-      console.log(JSON.stringify(data));
+      console.log(JSON.stringify(result));
 
       if (response.ok) {
-        return result;
+        toast.success("Replied successfully!");
       }
     } catch (error) {
-      toast.error(error.message || "Error fetching customer");
-      console.error("Error fetching customer:", error);
+      toast.error(error.message || "Error replying");
+      console.error("Error replying:", error);
     } finally {
       setLoading(false);
     }
