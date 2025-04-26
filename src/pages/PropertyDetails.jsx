@@ -20,6 +20,9 @@ import PropertyFeature from "./PropertyFeature";
 import AgentCard from "./AgentCard";
 import SimilarProperties from "./SimilarProperties";
 import PropertyHighlights from "./PropertyHighlights";
+import { GiSofa } from "react-icons/gi";
+import { GrStatusInfo } from "react-icons/gr";
+import { PiMapPinAreaFill } from "react-icons/pi";
 
 const PrevArrow = ({ onClick }) => (
   <button
@@ -288,17 +291,17 @@ const PropertyDetails = () => {
                   value={`${size} ${sizeType}`}
                 />
                 <PropertyFeature
-                  icon={<MdVerified />}
+                  icon={<GiSofa />}
                   label="Furnishing"
                   value={furnished}
                 />
                 <PropertyFeature
-                  icon={<MdVerified />}
+                  icon={<GrStatusInfo />}
                   label="Status"
                   value={status}
                 />
                 <PropertyFeature
-                  icon={<MdVerified />}
+                  icon={<PiMapPinAreaFill />}
                   label="Area"
                   value={area}
                 />
