@@ -13,15 +13,6 @@ import useGetAllBrokers from '../../hooks/admin-hooks/useGetAllBrokers';
 import useFetchAllCustomers from "../../hooks/admin-hooks/useFetchAllCustomers";
 
 const AdminDashboard = () => {
-    const data = [
-        { name: 'Mon', customers: 900 },
-        { name: 'Tue', customers: 2000 },
-        { name: 'Wed', customers: 1700 },
-        { name: 'Thu', customers: 2200 },
-        { name: 'Fri', customers: 2300 },
-        { name: 'Sat', customers: 1600 },
-        { name: 'Sun', customers: 1950 },
-    ];
     const { counts, loading } = useTotalCount();
     const { allBrokers, fetchAllBrokers } = useGetAllBrokers();
     const [activeCount, setActiveCount] = useState(0);
@@ -34,16 +25,26 @@ const AdminDashboard = () => {
         await fetchAllBrokers();
         await fetchAllCustomers()
     }
+    const data = [
+        { name: 'Mon', customers: activeUserCount },
+        { name: 'Tue', customers: 20 },
+        { name: 'Wed', customers: 17 },
+        { name: 'Thu', customers: 22 },
+        { name: 'Fri', customers: 25 },
+        { name: 'Sat', customers: 16 },
+        { name: 'Sun', customers: 19 },
+    ];
+
     useEffect(() => {
         fetchData(); // Only called once on component mount
     }, []);
-    
+
     useEffect(() => {
         const activeBrokers = allBrokers.filter((broker) => broker.isActive);
         const activeUsers = allCustomers.filter((customer) => customer.isActive);
         setActiveCount(activeBrokers.length);
         setUserActiveCount(activeUsers.length);
-    }, [allBrokers, allCustomers]);    
+    }, [allBrokers, allCustomers]);
 
     return (
         <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular no-scrollbar">
@@ -51,7 +52,7 @@ const AdminDashboard = () => {
 
             {/* Main Content */}
             <div className="flex-1">
-                <Navbar pageName="Dashboard"/>
+                <Navbar pageName="Dashboard" />
 
                 {/* Main Content */}
                 <div className="w-full flex justify-center p-3">

@@ -10,7 +10,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import TextInput from "../../components/Fields/TextInput";
 import useProfileEdit from "../../hooks/useProfileEdit";
 import useHandleStatus from "../../hooks/admin-hooks/useHandleStatus";
-import { useNavigate } from "react-router-dom";
 
 const AllCustomers = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,7 +21,6 @@ const AllCustomers = () => {
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const navigate = useNavigate();
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -33,7 +31,7 @@ const AllCustomers = () => {
     setSelectedUserId(userId);
     setShowDeletePopup(true);
   };
-  
+
   const confirmEdit = (userId, fullName, email, address) => {
     setSelectedUserId(userId);
     setId(userId);
@@ -78,8 +76,8 @@ const AllCustomers = () => {
     fetchAllCustomers(currentPage, itemsPerPage);
     setShowEditPopup(false);
   };
-  const {loading:loadStatus, handleStatus} = useHandleStatus();
-  const handleStatusToggle = async(id, newStatus) => {
+  const { loading: loadStatus, handleStatus } = useHandleStatus();
+  const handleStatusToggle = async (id, newStatus) => {
     // Call your API or update state here
     await handleStatus(id, newStatus)
     console.log("Toggle ID:", id, "New Status:", newStatus);
@@ -88,9 +86,9 @@ const AllCustomers = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular">
-      <Sidebar />
-      <div className="flex-1">
+    <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
+      <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
+      <div className="flex-1 overflow-y-auto h-screen">
         <Navbar pageName="All Customer" />
 
         {/* Top Filters & Button */}
@@ -148,15 +146,14 @@ const AllCustomers = () => {
                   <td className="px-4 py-3">{item?.email}</td>
                   <td className="px-4 py-3">
                     <div
-                      className={`px-2 py-1 rounded-full text-xs text-center font-medium ${
-                        item?.isSubscribedForCommercial ||
-                        item?.isSubscribedForResidential
+                      className={`px-2 py-1 rounded-full text-xs text-center font-medium ${item?.isSubscribedForCommercial ||
+                          item?.isSubscribedForResidential
                           ? "text-green-700 bg-green-200"
                           : "text-red-700 bg-red-200"
-                      }`}
+                        }`}
                     >
                       {item?.isSubscribedForCommercial ||
-                      item?.isSubscribedForResidential
+                        item?.isSubscribedForResidential
                         ? "Deal Completed"
                         : "Unpaid"}
                     </div>
@@ -203,17 +200,15 @@ const AllCustomers = () => {
                           }
                           className="sr-only"
                         />
-                        <div className={`w-10 h-5 ${
-                              item?.isActive
-                                ? " bg-green-500"
-                                : "bg-gray-500"
-                            } rounded-full shadow-inner relative transition-all duration-300`}>
+                        <div className={`w-10 h-5 ${item?.isActive
+                            ? " bg-green-500"
+                            : "bg-gray-500"
+                          } rounded-full shadow-inner relative transition-all duration-300`}>
                           <div
-                            className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
-                              item?.isActive
+                            className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${item?.isActive
                                 ? "translate-x-5 bg-green-500"
                                 : "bg-gray-500"
-                            }`}
+                              }`}
                           ></div>
                         </div>
                       </label>
@@ -223,15 +218,15 @@ const AllCustomers = () => {
                   <td className="px-4 py-3">
                     {item?.propertyRequirements?.[0]?.propertyPurpose
                       ? item.propertyRequirements[0].propertyPurpose
-                          .charAt(0)
-                          .toUpperCase() +
-                        item.propertyRequirements[0].propertyPurpose.slice(1)
+                        .charAt(0)
+                        .toUpperCase() +
+                      item.propertyRequirements[0].propertyPurpose.slice(1)
                       : "No Requirements"}
                   </td>
                   <td>
-                    <button onClick={()=>navigate(`/admin/shareproperty/${item._id}`)} className="p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white">
+                    <p className="p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white">
                       Share Property
-                    </button>
+                    </p>
                   </td>
                 </tr>
               ))}

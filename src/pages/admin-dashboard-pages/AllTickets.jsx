@@ -10,10 +10,10 @@ const AllTickets = () => {
     const [showModal, setShowModal] = useState(false);
 
     return (
-        <div className="flex flex-col sm:flex-row min-h-screen bg-[#FAFAFA] poppins-regular">
-            <Sidebar />
+        <div className="flex flex-col sm:flex-row min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
+            <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
 
-            <div className="flex-1">
+            <div className="flex-1 overflow-y-auto h-screen">
                 <Navbar pageName="All Tickets" />
 
                 {/* Search & Sort */}
@@ -40,7 +40,7 @@ const AllTickets = () => {
 
                 {/* Ticket Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 m-5 gap-5">
-                    {[...Array(6)].map((_, index) => (
+                    {[...Array(10)].map((_, index) => (
                         <TicketCard key={index} onResponseClick={() => setShowModal(true)} />
                     ))}
                 </div>

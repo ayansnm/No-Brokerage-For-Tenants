@@ -23,11 +23,10 @@ const AllPayments = () => {
     const currentBrokers = brokers.slice(indexOfFirstItem, indexOfLastItem);
 
     return (
-        <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular">
-            <Sidebar />
-
-            <div className="flex-1">
-                <Navbar pageName="All Payments" />
+        <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
+            <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
+            <div className="flex-1 overflow-y-auto h-screen">
+                <Navbar />
 
                 <div className="w-full px-5 my-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
