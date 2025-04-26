@@ -58,13 +58,12 @@ const AllProperties = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50 poppins-regular">
-      <Sidebar />
+    <div className="flex flex-col sm:flex-row min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
+      <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
 
-      {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto h-screen">
         <Navbar pageName="All Properties" />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
@@ -73,10 +72,10 @@ const AllProperties = () => {
               {/* Header with actions */}
               <div className="bg-white rounded-xl shadow-sm p-3 mb-6">
                 {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"> */}
-                  {/* <h2 className="text-xl font-bold text-gray-800">
+                {/* <h2 className="text-xl font-bold text-gray-800">
                     All Properties
                   </h2> */}
-                  {/* <button
+                {/* <button
                     onClick={() => navigate("/broker/addproperty")}
                     className="flex items-center gap-2 bg-primary hover:opacity-90 cursor-pointer text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   >
@@ -93,11 +92,10 @@ const AllProperties = () => {
                       <button
                         key={tab.value}
                         onClick={() => setActiveTab(tab.value)}
-                        className={`px-4 py-2 text-sm rounded-md transition-colors ${
-                          activeTab === tab.value
+                        className={`px-4 py-2 text-sm rounded-md transition-colors ${activeTab === tab.value
                             ? "bg-white shadow-sm text-primary poppins-semibold"
                             : "text-gray-600 hover:text-gray-800"
-                        }`}
+                          }`}
                       >
                         {tab.label}
                       </button>
