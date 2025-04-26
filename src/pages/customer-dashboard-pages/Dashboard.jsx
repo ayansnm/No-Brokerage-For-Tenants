@@ -1,8 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { BsFillBuildingsFill, BsFillHeartFill, BsGraphUp, BsFilter } from "react-icons/bs";
+import {
+  BsFillBuildingsFill,
+  BsFillHeartFill,
+  BsGraphUp,
+  BsFilter,
+} from "react-icons/bs";
 import { FaHandsHelping, FaSearch } from "react-icons/fa";
-import { MdOutlinePendingActions, MdArrowOutward, MdOutlineSort } from "react-icons/md";
+import {
+  MdOutlinePendingActions,
+  MdArrowOutward,
+  MdOutlineSort,
+} from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import PropertyCard from "../../components/Cards/PropertyCard";
 import Navbar from "../../components/Fields/Navbar";
@@ -10,15 +19,14 @@ import Footer from "../../components/Fields/Footer";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSlider";
 import notfound from "../../assets/notfound.png";
+import useGetMyProperties from "../../hooks/customer-hooks/useGetMyProperties";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("");
-  const [filter, setFilter] = useState({
-    priceRange: [0, 1000000],
-  });
+  const [filter, setFilter] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,6 +42,26 @@ const Dashboard = () => {
       [name]: value,
     }));
   };
+  const { loading, properties, requirement, getProperties } =
+    useGetMyProperties();
+  const fetchProperties = async () => {
+    await getProperties({
+      searchQuery,
+      // category: activeTab || "",
+      floor: filter.floor || "",
+      format: filter.format || "",
+      // priceRange: filter.priceRange[1],
+      type: filter.type || "",
+      furnished: filter.furnished || "",
+    });
+  };
+  const applyFilters = () => {
+    fetchProperties();
+  };
+
+  useEffect(() => {
+    fetchProperties();
+  }, [searchQuery]);
 
   // Stats cards data
   const stats = [
@@ -156,8 +184,8 @@ const Dashboard = () => {
             </div>
 
             {/* Property Cards */}
-            <div className="bg-white rounded-xl shadow-sm p-8 text-center">
-              <div className="max-w-md mx-auto">
+            <div className="bg-white rounded-xl flex flex-col gap-5 shadow-sm p-8 text-center">
+              {/* <div className="max-w-md mx-auto">
                 <p className="text-xl poppins-semibold mb-2">Thank you!</p>
                 <p className="text-xl poppins-semibold mb-6">
                   Soon we will share properties with you!
@@ -167,7 +195,24 @@ const Dashboard = () => {
                   className="w-2/3 mx-auto mb-6"
                   alt="No data found"
                 />
-              </div>
+              </div> */}
+              {properties &&
+                properties.map((item) => (
+                  <PropertyCard
+                    key={item?.property?._id}
+                    id={item?.property?._id}
+                    title={item?.property?.title}
+                    price={item?.property?.price}
+                    address={item?.property?.address}
+                    image={item?.property?.images[0]}
+                    area={item?.property?.area}
+                    floor={item?.property?.floor}
+                    sizeType={item?.property?.sizeType}
+                    size={item?.property?.size}
+                    description={item?.property?.description}
+                    type={item?.property?.type}
+                  />
+                ))}
             </div>
           </div>
 
@@ -179,7 +224,7 @@ const Dashboard = () => {
               </h3>
 
               <div className="space-y-3">
-                <div>
+                {/* <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-2">
                     Price Range
                   </h4>
@@ -189,9 +234,9 @@ const Dashboard = () => {
                       setFilter((prev) => ({ ...prev, priceRange: range }))
                     }
                   />
-                </div>
+                </div> */}
 
-                <div>
+                {/* <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     Property Type
                   </h4>
@@ -208,46 +253,29 @@ const Dashboard = () => {
                     value={filter.type}
                     onChange={handleChange}
                   />
-                </div>
+                </div> */}
+                {requirement?.propertyType !== "House" &&
+                requirement?.propertyType !== "Office" &&
+                requirement?.propertyType !== "Flat" ? (
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Floor
+                    </h4>
+                    <AnimatedRadioButtons
+                      name="floor"
+                      options={[
+                        { label: "Top", value: "Top" },
+                        { label: "Middle", value: "Middle" },
+                        { label: "Bottom", value: "Bottom" },
+                      ]}
+                      selectedColor="bg-green-100 text-primary border-primary"
+                      value={filter.floor}
+                      onChange={handleChange}
+                    />
+                  </div>
+                ) : null}
 
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">
-                    Floor
-                  </h4>
-                  <AnimatedRadioButtons
-                    name="floor"
-                    options={[
-                      { label: "Ground", value: "Ground" },
-                      { label: "First", value: "First" },
-                      { label: "Second", value: "Second" },
-                      { label: "Third", value: "Third" },
-                      { label: "Fourth", value: "Fourth" },
-                    ]}
-                    selectedColor="bg-green-100 text-primary border-primary"
-                    value={filter.floor}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">
-                    Format
-                  </h4>
-                  <AnimatedRadioButtons
-                    name="format"
-                    options={[
-                      { label: "1BHK", value: "1BHK" },
-                      { label: "2BHK", value: "2BHK" },
-                      { label: "3BHK", value: "3BHK" },
-                      { label: "4BHK", value: "4BHK" },
-                    ]}
-                    selectedColor="bg-green-100 text-primary border-primary"
-                    value={filter.format}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div>
+                {/* <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     Size Type
                   </h4>
@@ -262,7 +290,7 @@ const Dashboard = () => {
                     value={filter.sizetype}
                     onChange={handleChange}
                   />
-                </div>
+                </div> */}
 
                 <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
@@ -271,9 +299,9 @@ const Dashboard = () => {
                   <AnimatedRadioButtons
                     name="furnished"
                     options={[
-                      { label: "Un Furnished", value: "any" },
-                      { label: "Fully", value: "fully-furnished" },
-                      { label: "Semi", value: "semi-furnished" },
+                      { label: "Unfurnished", value: "Unfurnished" },
+                      { label: "Furnished", value: "Fully" },
+                      { label: "Semi-furnished", value: "Semi" },
                     ]}
                     selectedColor="bg-green-100 text-primary border-primary"
                     value={filter.furnished}
@@ -282,11 +310,12 @@ const Dashboard = () => {
                 </div>
 
                 <div className="flex gap-3 pt-2">
-                  <button
-                    className="flex-1 bg-primary hover:opacity-90 text-white py-2 rounded-lg font-medium transition-colors"
-                  >
-                    Apply Filters
-                  </button>
+                <button
+                      className="flex-1 bg-primary hover:opacity-90 text-white py-2 rounded-lg font-medium transition-colors"
+                      onClick={applyFilters}
+                    >
+                      Apply Filters
+                    </button>
                   <button
                     className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-medium transition-colors"
                     onClick={() => {
@@ -360,7 +389,9 @@ const Dashboard = () => {
                       onChange={handleChange}
                     />
                   </div>
-
+                  {requirement?.propertyType !== "House" ||
+                requirement?.propertyType !== "Office" ||
+                requirement?.propertyType !== "Flat" ? (
                   <div>
                     <h4 className="text-sm font-medium text-gray-700 mb-3">
                       Floor
@@ -379,6 +410,7 @@ const Dashboard = () => {
                       onChange={handleChange}
                     />
                   </div>
+                ):null}
 
                   <div>
                     <h4 className="text-sm font-medium text-gray-700 mb-3">
@@ -435,9 +467,8 @@ const Dashboard = () => {
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse sticky bottom-0 border-t">
                 <button
-                  type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setFilterModalOpen(false)}
+                  className="flex-1 bg-primary hover:opacity-90 text-white py-2 rounded-lg font-medium transition-colors"
+                  onClick={applyFilters}
                 >
                   Apply Filters
                 </button>

@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Fields/Navbar';
 import Sidebar from '../../components/Fields/Sidebar';
 import { FiSearch } from 'react-icons/fi';
 import { MdOutlineSort } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import { motion, AnimatePresence } from 'framer-motion';
+import useGetAllTickets from '../../hooks/admin-hooks/useGetAllTickets';
 
 const AllTickets = () => {
     const [showModal, setShowModal] = useState(false);
-
+    const {loading, tickets, getAllTickets} = useGetAllTickets();
+    const fetchTickets = async()=>{
+        await getAllTickets();
+    }
+    useEffect(() => {
+        fetchTickets();
+    },[]);
     return (
         <div className="flex flex-col sm:flex-row min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
             <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
 
             <div className="flex-1 overflow-y-auto h-screen">
                 <Navbar pageName="All Tickets" />
-
+                {/* {JSON.stringify(tickets.length)} */}
                 {/* Search & Sort */}
                 <div className="flex justify-center mt-6 px-4">
                     <div className="flex flex-col sm:flex-row gap-4 w-full max-w-4xl">
@@ -40,8 +47,8 @@ const AllTickets = () => {
 
                 {/* Ticket Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 m-5 gap-5">
-                    {[...Array(10)].map((_, index) => (
-                        <TicketCard key={index} onResponseClick={() => setShowModal(true)} />
+                    {tickets.map((item, index) => (
+                        <TicketCard key={index} userName={item?.user?.fullName} message={item?.message} description={item?.description} onResponseClick={() => setShowModal(true)} />
                     ))}
                 </div>
 
@@ -106,7 +113,7 @@ const AllTickets = () => {
     );
 };
 
-const TicketCard = ({ onResponseClick }) => (
+const TicketCard = ({ onResponseClick, userName, message, description }) => (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 w-full">
       <div className="flex flex-col sm:flex-row gap-4">
         
@@ -120,7 +127,7 @@ const TicketCard = ({ onResponseClick }) => (
           <div>
             <div className="flex flex-row sm:flex-row sm:justify-between sm:items-center sm:gap-1 gap-5">
               <h3 className="font-semibold text-gray-800 text-base truncate">
-                ABCD NAME
+                {userName}
               </h3>
               <button
                 className="bg-green-900 hover:bg-green-800 rounded-full px-3 py-1 text-sm text-white self-start sm:self-auto cursor-pointer"
@@ -131,11 +138,11 @@ const TicketCard = ({ onResponseClick }) => (
             </div>
   
             <h4 className="font-semibold text-gray-800 mt-2 truncate">
-              Is this property for rent?
+              {message}
             </h4>
   
             <p className="text-sm text-gray-500 mt-2 line-clamp-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, earum assumenda, id aspernatur quibusdam dolores...
+              {description}
             </p>
           </div>
         </div>

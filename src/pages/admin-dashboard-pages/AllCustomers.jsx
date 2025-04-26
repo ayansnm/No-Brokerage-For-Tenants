@@ -10,10 +10,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import TextInput from "../../components/Fields/TextInput";
 import useProfileEdit from "../../hooks/useProfileEdit";
 import useHandleStatus from "../../hooks/admin-hooks/useHandleStatus";
+import { useNavigate } from "react-router-dom";
 
 const AllCustomers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const navigate = useNavigate();
   const { loading, allCustomers, fetchAllCustomers } = useFetchAllCustomers();
   const { loading: loadingDelete, deleteUser } = useDeleteUser();
   const [search, setSearch] = useState("");
@@ -224,7 +226,7 @@ const AllCustomers = () => {
                       : "No Requirements"}
                   </td>
                   <td>
-                    <p className="p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white">
+                    <p onClick={()=>navigate(`/admin/shareproperty/${item?._id}`)} className="p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white cursor-pointer">
                       Share Property
                     </p>
                   </td>

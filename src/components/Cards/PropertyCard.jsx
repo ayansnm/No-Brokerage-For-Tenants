@@ -78,7 +78,7 @@ const PropertyCard = ({
           </div>
 
           {/* Description */}
-          <p className="text-sm text-gray-500 mb-4 line-clamp-2">
+          <p className="text-sm text-gray-500 text-start mb-4 line-clamp-2">
             {description}
           </p>
         </div>
