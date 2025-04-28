@@ -7,14 +7,16 @@ const useGetProperties = () => {
   const API_URL = import.meta.env.VITE_API_URL;
 
   const getProperties = async ({searchQuery,category, floor,format,priceRange,type}) => {
+
+    const price = priceRange == 0 ? "" : priceRange;
     try {
       setLoading(true);
       const userId = localStorage.getItem("userId")
       const token = localStorage.getItem("token");
-      console.log(`${API_URL}/api/property/getbybrokerid/${userId}?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${""}`);
+      console.log(`${API_URL}/api/property/getbybrokerid/${userId}?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${price || ""}&format=${format || ""}&type=${""}`);
       
       const response = await fetch(
-        `${API_URL}/api/property/getbybrokerid/${userId}?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${category || ""}`,
+        `${API_URL}/api/property/getbybrokerid/${userId}?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${price || ""}&format=${format || ""}&type=${category || ""}`,
         {
           method: "GET",
           headers: {

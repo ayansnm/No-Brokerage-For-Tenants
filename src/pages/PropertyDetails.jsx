@@ -65,7 +65,7 @@ const PropertyDetails = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("role") == "broker") {
+    if (localStorage.getItem("role") == "broker" || localStorage.getItem("role") == "admin") {
       getCustomers();
     }
   }, []);
@@ -78,10 +78,13 @@ const PropertyDetails = () => {
 
   const renderMediaItem = (item, isThumbnail = false) => {
     if (!item) return null;
-    
-    const isVideo = item.type === 'video' || item.path?.endsWith('.mp4') || item.path?.endsWith('.webm');
-    const heightClass = isThumbnail ? 'h-20' : 'h-96';
-    
+
+    const isVideo =
+      item.type === "video" ||
+      item.path?.endsWith(".mp4") ||
+      item.path?.endsWith(".webm");
+    const heightClass = isThumbnail ? "h-20" : "h-96";
+
     if (isVideo) {
       return (
         <video
@@ -103,7 +106,7 @@ const PropertyDetails = () => {
           alt={item.title || "Property media"}
           className={`w-full ${heightClass} object-cover`}
           onError={(e) => {
-            e.target.src = '/image-placeholder.jpg';
+            e.target.src = "/image-placeholder.jpg";
           }}
         />
       );
@@ -146,8 +149,13 @@ const PropertyDetails = () => {
   } = property;
 
   // Fallback to images array if media array is empty (for backward compatibility)
-  const displayMedia = media.length > 0 ? media : 
-    (property.images || []).map(img => ({ path: img, type: img.endsWith('.mp4') ? 'video' : 'image' }));
+  const displayMedia =
+    media.length > 0
+      ? media
+      : (property.images || []).map((img) => ({
+          path: img,
+          type: img.endsWith(".mp4") ? "video" : "image",
+        }));
 
   const mainSliderSettings = {
     dots: true,
@@ -250,9 +258,7 @@ const PropertyDetails = () => {
                         ref={setNav1}
                       >
                         {displayMedia.map((item, index) => (
-                          <div key={index}>
-                            {renderMediaItem(item)}
-                          </div>
+                          <div key={index}>{renderMediaItem(item)}</div>
                         ))}
                       </Slider>
                     </div>
@@ -361,52 +367,139 @@ const PropertyDetails = () => {
 
           {/* Right Column - Agent and Contact */}
           <div className="lg:w-1/3 space-y-6">
-            {localStorage.getItem("role") == "broker" ? (
+            {localStorage.getItem("role") === "broker" ? (
               <div className="bg-white rounded-xl shadow-md p-6 sticky top-6">
                 <h3 className="text-xl font-bold mb-4">Contact Customers</h3>
-
-                {allCustomers &&
-                  allCustomers.map((customer) => (
-                    <div
-                      key={customer._id}
-                      className="border border-gray-400 mb-4 p-4 rounded-xl"
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
-                          <div className="w-full h-full flex items-center justify-center bg-primary text-white text-2xl">
-                            {customer?.sharedWith?.fullName
-                              ?.charAt(0)
-                              .toUpperCase()}
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col min-w-0">
-                          <h4 className="font-bold truncate">
-                            {customer?.sharedWith?.fullName}
-                          </h4>
-
-                          <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
-                            <FaPhoneAlt className="text-primary flex-shrink-0" />
-                            <span className="truncate">
-                              +91 {customer?.sharedWith?.mobileNo}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
-                            <MdEmail className="text-primary flex-shrink-0" />
-                            <span className="truncate">
-                              {customer?.sharedWith?.email}
-                            </span>
-                          </div>
+                {allCustomers?.map((customer) => (
+                  <div
+                    key={customer._id}
+                    className="border border-gray-400 mb-4 p-4 rounded-xl"
+                  >
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+                        <div className="w-full h-full flex items-center justify-center bg-primary text-white text-2xl">
+                          {customer?.sharedWith?.fullName
+                            ?.charAt(0)
+                            ?.toUpperCase()}
                         </div>
                       </div>
-
-                      <button className="w-full bg-primary text-white py-2 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#01946f] transition">
-                        <FaPhoneAlt /> Call Now
-                      </button>
+                      <div className="flex flex-col min-w-0">
+                        <h4 className="font-bold truncate">
+                          {customer?.sharedWith?.fullName}
+                        </h4>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
+                          <FaPhoneAlt className="text-primary flex-shrink-0" />
+                          <span className="truncate">
+                            +91 {customer?.sharedWith?.mobileNo}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
+                          <MdEmail className="text-primary flex-shrink-0" />
+                          <span className="truncate">
+                            {customer?.sharedWith?.email}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  ))}
+                    <button className="w-full bg-primary text-white py-2 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#01946f] transition">
+                      <FaPhoneAlt /> Call Now
+                    </button>
+                  </div>
+                ))}
               </div>
+            ) : localStorage.getItem("role") === "admin" ? (
+              <>
+                <div className="bg-white rounded-xl shadow-md p-6 sticky top-6">
+                  <h3 className="text-xl font-bold mb-4">Contact Agent</h3>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+                      {postedBy?.profilePicture ? (
+                        <img
+                          src={`${import.meta.env.VITE_API_URL}/${
+                            postedBy.profilePicture
+                          }`}
+                          alt={postedBy.fullName}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-primary text-white text-2xl">
+                          {postedBy?.fullName?.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="font-bold">{postedBy?.fullName}</h4>
+                      <p className="text-sm text-gray-600">Real Estate Agent</p>
+                      {postedBy?.verified && (
+                        <div className="flex items-center gap-1 mt-1 text-xs text-green-600">
+                          <span className="bg-green-100 px-2 py-0.5 rounded-full">
+                            Verified
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center gap-2">
+                      <FaPhoneAlt className="text-primary" />
+                      <span>+91 {postedBy?.mobileNo}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MdEmail className="text-primary" />
+                      <span>{postedBy?.email}</span>
+                    </div>
+                  </div>
+                  <button className="w-full bg-primary text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#01946f] transition">
+                    <FaPhoneAlt /> Call Now
+                  </button>
+                  {allCustomers.length > 0 && (
+                    <div className="mt-4">
+                      <h3 className="text-xl font-bold mb-4">
+                        Contact Customers
+                      </h3>
+                      {allCustomers?.map((customer) => (
+                        <div
+                          key={customer._id}
+                          className="border border-gray-400 mb-4 p-4 rounded-xl"
+                        >
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+                              <div className="w-full h-full flex items-center justify-center bg-primary text-white text-2xl">
+                                {customer?.sharedWith?.fullName
+                                  ?.charAt(0)
+                                  ?.toUpperCase()}
+                              </div>
+                            </div>
+                            <div className="flex flex-col min-w-0">
+                              <h4 className="font-bold truncate">
+                                {customer?.sharedWith?.fullName}
+                              </h4>
+                              <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
+                                <FaPhoneAlt className="text-primary flex-shrink-0" />
+                                <span className="truncate">
+                                  +91 {customer?.sharedWith?.mobileNo}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
+                                <MdEmail className="text-primary flex-shrink-0" />
+                                <span className="truncate">
+                                  {customer?.sharedWith?.email}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <button className="w-full bg-primary text-white py-2 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#01946f] transition">
+                            <FaPhoneAlt /> Call Now
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {/* <div className="bg-white rounded-xl shadow-md p-6 sticky top-6">
+                  
+                </div> */}
+              </>
             ) : (
               <AgentCard agent={postedBy} price={price} propertyTitle={title} />
             )}
