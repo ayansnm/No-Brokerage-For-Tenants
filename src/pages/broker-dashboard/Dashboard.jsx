@@ -163,7 +163,7 @@ const Dashboard = () => {
                       onClick={() => setActiveTab(tab.value)}
                       className={`px-4 py-2 text-sm rounded-md transition-colors ${
                         activeTab === tab.value
-                          ? "bg-white shadow-sm text-primary poppins-semibold"
+                          ? "bg-green-900 text-white shadow-sm poppins-semibold"
                           : "text-gray-600 hover:text-gray-800"
                       }`}
                     >

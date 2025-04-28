@@ -118,7 +118,7 @@ const AdminDashboard = () => {
                         {/* Number + Last Week Stats */}
                         <p className="text-md text-[#777777] font-semibold poppins-medium">Active Customers</p>
                         <div className="flex justify-between items-end mb-4">
-                            <p className="text-2xl font-semibold poppins-medium">2,356</p>
+                            <p className="text-2xl font-semibold poppins-medium">{activeUserCount}</p>
 
                             <div className="flex flex-col items-end">
                                 <div className="bg-[#eaf7ee] text-[#56ce7b] text-xs flex items-center gap-1 rounded-full px-3 py-1 font-medium">
