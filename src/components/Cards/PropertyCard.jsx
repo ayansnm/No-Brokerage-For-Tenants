@@ -33,7 +33,7 @@ const PropertyCard = ({
   
 
   return (
-    <div className="w-full bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
+    <div className="w-full bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer">
       {/* Property Media */}
       <div
         onClick={() => navigate(`/PropertyDetails/${id}`)}
