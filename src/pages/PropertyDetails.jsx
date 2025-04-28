@@ -59,19 +59,56 @@ const PropertyDetails = () => {
 
   const { loading, property, getPropertyDetails } = useGetPropertyDetails();
   const API_URL = import.meta.env.VITE_API_URL;
+
   const getCustomers = async () => {
     await getAllCustomers({ propertyId: id });
   };
+
   useEffect(() => {
     if (localStorage.getItem("role") == "broker") {
       getCustomers();
     }
   }, []);
+
   useEffect(() => {
     if (id) {
       getPropertyDetails(id);
     }
   }, [id]);
+
+  const renderMediaItem = (item, isThumbnail = false) => {
+    if (!item) return null;
+    
+    const isVideo = item.type === 'video' || item.path?.endsWith('.mp4') || item.path?.endsWith('.webm');
+    const heightClass = isThumbnail ? 'h-20' : 'h-96';
+    
+    if (isVideo) {
+      return (
+        <video
+          className={`w-full ${heightClass} object-cover`}
+          controls={!isThumbnail}
+          muted={isThumbnail}
+          playsInline
+          disablePictureInPicture
+          controlsList="nodownload"
+        >
+          <source src={`${API_URL}${item.path}`} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    } else {
+      return (
+        <img
+          src={`${API_URL}${item.path}`}
+          alt={item.title || "Property media"}
+          className={`w-full ${heightClass} object-cover`}
+          onError={(e) => {
+            e.target.src = '/image-placeholder.jpg';
+          }}
+        />
+      );
+    }
+  };
 
   if (loading)
     return (
@@ -88,7 +125,7 @@ const PropertyDetails = () => {
     );
 
   const {
-    images = [],
+    media = [],
     title,
     price,
     size,
@@ -108,7 +145,9 @@ const PropertyDetails = () => {
     amenities = [],
   } = property;
 
-  const uniqueImages = [...new Set(images)];
+  // Fallback to images array if media array is empty (for backward compatibility)
+  const displayMedia = media.length > 0 ? media : 
+    (property.images || []).map(img => ({ path: img, type: img.endsWith('.mp4') ? 'video' : 'image' }));
 
   const mainSliderSettings = {
     dots: true,
@@ -121,7 +160,7 @@ const PropertyDetails = () => {
   };
 
   const thumbnailSliderSettings = {
-    slidesToShow: Math.min(uniqueImages.length, 4),
+    slidesToShow: Math.min(displayMedia.length, 4),
     slidesToScroll: 1,
     focusOnSelect: true,
     arrows: false,
@@ -129,13 +168,13 @@ const PropertyDetails = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: Math.min(uniqueImages.length, 3),
+          slidesToShow: Math.min(displayMedia.length, 3),
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: Math.min(uniqueImages.length, 2),
+          slidesToShow: Math.min(displayMedia.length, 2),
         },
       },
     ],
@@ -145,12 +184,10 @@ const PropertyDetails = () => {
     <div className="bg-gray-50 min-h-screen poppins-regular">
       <Navbar pageName="Property Details" />
 
-      {/* Main Property Section */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column - Images and Details */}
+          {/* Left Column - Media and Details */}
           <div className="lg:w-2/3">
-            {/* Breadcrumbs */}
             <nav className="text-sm text-gray-600 mb-6" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-3">
                 <li className="inline-flex items-center">
@@ -158,26 +195,12 @@ const PropertyDetails = () => {
                     href="/broker/dashboard"
                     className="inline-flex items-center text-gray-600 hover:text-primary"
                   >
-                    {/* <svg
-                      className="w-4 h-4 mr-2"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 20V14H14V20H19V12H16L10 3L4 12H1V20H6V14H10V20Z" />
-                    </svg> */}
                     Home
                   </a>
                 </li>
                 <li>
                   <div className="flex items-center">
                     /
-                    {/* <svg
-                      className="w-4 h-4 text-gray-400 mx-1"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M6 9L12 15L18 9H6Z" />
-                    </svg> */}
                     <a
                       href="/properties"
                       className="ml-1 text-gray-600 hover:text-primary md:ml-2"
@@ -189,26 +212,22 @@ const PropertyDetails = () => {
               </ol>
             </nav>
 
-            {/* Property Title */}
             <h1 className="text-3xl font-bold mb-2">{title}</h1>
             <div className="flex items-center gap-2 text-gray-600 mb-6">
               <FaMapMarkerAlt className="text-primary" />
               <span>{location}</span>
             </div>
 
-            {/* Image Gallery */}
+            {/* Media Gallery */}
             <div className="p-3 mb-5 bg-white rounded-xl border border-gray-300">
               <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-                {uniqueImages.length <= 1 ? (
-                  <img
-                    src={`${API_URL}/${uniqueImages[0]}`}
-                    alt={`Property 0`}
-                    className="w-full h-96 object-cover"
-                  />
+                {displayMedia.length <= 1 ? (
+                  <div className="relative">
+                    {renderMediaItem(displayMedia[0])}
+                  </div>
                 ) : (
                   <>
                     <div className="relative">
-                      {/* Heart Icon - stays fixed in the top-right corner */}
                       <button
                         className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 z-10"
                         onClick={() => setIsFavorite(!isFavorite)}
@@ -225,19 +244,14 @@ const PropertyDetails = () => {
                         />
                       </button>
 
-                      {/* Main Image Slider */}
                       <Slider
                         {...mainSliderSettings}
                         asNavFor={nav2}
                         ref={setNav1}
                       >
-                        {uniqueImages.map((img, index) => (
+                        {displayMedia.map((item, index) => (
                           <div key={index}>
-                            <img
-                              src={`${API_URL}/${img}`}
-                              alt={`Property ${index}`}
-                              className="w-full h-96 object-cover"
-                            />
+                            {renderMediaItem(item)}
                           </div>
                         ))}
                       </Slider>
@@ -252,17 +266,17 @@ const PropertyDetails = () => {
                           setSelectedThumbIndex(newIndex)
                         }
                       >
-                        {uniqueImages.map((img, index) => (
+                        {displayMedia.map((item, index) => (
                           <div key={index} className="px-1">
-                            <img
-                              src={`${API_URL}/${img}`}
-                              alt={`Thumbnail ${index}`}
-                              className={`h-20 w-full object-cover rounded-md cursor-pointer transition-all duration-200 ${
+                            <div
+                              className={`rounded-md cursor-pointer transition-all duration-200 ${
                                 index === selectedThumbIndex
                                   ? "border-4 border-primary shadow-lg"
                                   : "border border-gray-300"
                               }`}
-                            />
+                            >
+                              {renderMediaItem(item, true)}
+                            </div>
                           </div>
                         ))}
                       </Slider>
@@ -271,7 +285,6 @@ const PropertyDetails = () => {
                 )}
               </div>
 
-              {/* Property Highlights */}
               <PropertyHighlights
                 price={price}
                 bedrooms={bedrooms}
@@ -281,13 +294,11 @@ const PropertyDetails = () => {
               />
             </div>
 
-            {/* Property Description */}
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-300">
               <h2 className="text-xl font-bold mb-4">Description</h2>
               <p className="text-gray-700 leading-relaxed">{description}</p>
             </div>
 
-            {/* Property Features */}
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-300">
               <h2 className="text-xl font-bold mb-4">Features</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -296,8 +307,6 @@ const PropertyDetails = () => {
                   label="Type"
                   value={type}
                 />
-                {/* <PropertyFeature icon={<FaBed />} label="Bedrooms" value={bedrooms || "N/A"} /> */}
-                {/* <PropertyFeature icon={<FaBath />} label="Bathrooms" value={bathrooms || "N/A"} /> */}
                 <PropertyFeature
                   icon={<FaRulerCombined />}
                   label="Area"
@@ -321,9 +330,8 @@ const PropertyDetails = () => {
               </div>
             </div>
 
-            {/* Amenities */}
             {amenities.length > 0 && (
-              <div className="bg-white rounded-xl shadow-md p-6 mb-8 ">
+              <div className="bg-white rounded-xl shadow-md p-6 mb-8">
                 <h2 className="text-xl font-bold mb-4">Amenities</h2>
                 <div className="flex flex-wrap gap-4">
                   {amenities.map((amenity, index) => (
@@ -339,14 +347,9 @@ const PropertyDetails = () => {
               </div>
             )}
 
-            {/* Location Map */}
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-300">
               <h2 className="text-xl font-bold mb-4">Location</h2>
-              {/* <div className="h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500">Map would be displayed here</p>
-              </div> */}
               <div className="mt-4">
-                {/* <p className="font-semibold">Address: </p> */}
                 <p className="text-gray-700 flex items-center gap-2">
                   <FaMapMarkerAlt />
                   {area}
@@ -368,9 +371,7 @@ const PropertyDetails = () => {
                       key={customer._id}
                       className="border border-gray-400 mb-4 p-4 rounded-xl"
                     >
-                      {/* Profile + Info Section */}
                       <div className="flex items-center gap-4 mb-4">
-                        {/* Profile Circle */}
                         <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
                           <div className="w-full h-full flex items-center justify-center bg-primary text-white text-2xl">
                             {customer?.sharedWith?.fullName
@@ -379,7 +380,6 @@ const PropertyDetails = () => {
                           </div>
                         </div>
 
-                        {/* Name, Phone, Email */}
                         <div className="flex flex-col min-w-0">
                           <h4 className="font-bold truncate">
                             {customer?.sharedWith?.fullName}
@@ -401,7 +401,6 @@ const PropertyDetails = () => {
                         </div>
                       </div>
 
-                      {/* Call Now Button */}
                       <button className="w-full bg-primary text-white py-2 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#01946f] transition">
                         <FaPhoneAlt /> Call Now
                       </button>
@@ -413,9 +412,6 @@ const PropertyDetails = () => {
             )}
           </div>
         </div>
-
-        {/* Similar Properties */}
-        {/* <SimilarProperties currentPropertyId={id} /> */}
       </div>
 
       <Footer />

@@ -204,7 +204,7 @@ const Dashboard = () => {
                     title={item?.property?.title}
                     price={item?.property?.price}
                     address={item?.property?.address}
-                    image={item?.property?.images[0]}
+                    media={item?.property?.media}
                     area={item?.property?.area}
                     floor={item?.property?.floor}
                     sizeType={item?.property?.sizeType}
