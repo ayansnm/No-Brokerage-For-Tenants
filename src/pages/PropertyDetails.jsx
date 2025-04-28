@@ -9,7 +9,7 @@ import {
   FaRulerCombined,
 } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { MdApartment, MdVerified } from "react-icons/md";
+import { MdApartment, MdEmail, MdVerified } from "react-icons/md";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -23,6 +23,7 @@ import PropertyHighlights from "./PropertyHighlights";
 import { GiSofa } from "react-icons/gi";
 import { GrStatusInfo } from "react-icons/gr";
 import { PiMapPinAreaFill } from "react-icons/pi";
+import useGetAllSharedCustomersList from "../hooks/broker-hooks/useGetAllSharedCustomersList";
 
 const PrevArrow = ({ onClick }) => (
   <button
@@ -50,10 +51,22 @@ const PropertyDetails = () => {
   const [nav2, setNav2] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const { id } = useParams();
+  const {
+    loading: getCustomersLoad,
+    allCustomers,
+    getAllCustomers,
+  } = useGetAllSharedCustomersList();
 
   const { loading, property, getPropertyDetails } = useGetPropertyDetails();
   const API_URL = import.meta.env.VITE_API_URL;
-
+  const getCustomers = async () => {
+    await getAllCustomers({ propertyId: id });
+  };
+  useEffect(() => {
+    if (localStorage.getItem("role") == "broker") {
+      getCustomers();
+    }
+  }, []);
   useEffect(() => {
     if (id) {
       getPropertyDetails(id);
@@ -345,45 +358,59 @@ const PropertyDetails = () => {
 
           {/* Right Column - Agent and Contact */}
           <div className="lg:w-1/3 space-y-6">
-            <AgentCard agent={postedBy} price={price} propertyTitle={title} />
+            {localStorage.getItem("role") == "broker" ? (
+              <div className="bg-white rounded-xl shadow-md p-6 sticky top-6">
+                <h3 className="text-xl font-bold mb-4">Contact Customers</h3>
 
-            {/* Price Summary */}
-            {/* <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="text-xl font-bold mb-4">Price Summary</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Listing Price</span>
-                  <span className="font-medium">₹{price}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Price per {sizeType}</span>
-                  <span className="font-medium">₹{(price / size).toFixed(2)}</span>
-                </div>
-                <div className="border-t border-gray-200 my-2"></div>
-                <div className="flex justify-between text-lg font-bold">
-                  <span>Total</span>
-                  <span className="text-primary">₹{price}</span>
-                </div>
+                {allCustomers &&
+                  allCustomers.map((customer) => (
+                    <div
+                      key={customer._id}
+                      className="border border-primary mb-4 p-4 rounded-xl"
+                    >
+                      {/* Profile + Info Section */}
+                      <div className="flex items-center gap-4 mb-4">
+                        {/* Profile Circle */}
+                        <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+                          <div className="w-full h-full flex items-center justify-center bg-primary text-white text-2xl">
+                            {customer?.sharedWith?.fullName
+                              ?.charAt(0)
+                              .toUpperCase()}
+                          </div>
+                        </div>
+
+                        {/* Name, Phone, Email */}
+                        <div className="flex flex-col min-w-0">
+                          <h4 className="font-bold truncate">
+                            {customer?.sharedWith?.fullName}
+                          </h4>
+
+                          <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
+                            <FaPhoneAlt className="text-primary flex-shrink-0" />
+                            <span className="truncate">
+                              +91 {customer?.sharedWith?.mobileNo}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
+                            <MdEmail className="text-primary flex-shrink-0" />
+                            <span className="truncate">
+                              {customer?.sharedWith?.email}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Call Now Button */}
+                      <button className="w-full bg-primary text-white py-2 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#01946f] transition">
+                        <FaPhoneAlt /> Call Now
+                      </button>
+                    </div>
+                  ))}
               </div>
-            </div>
-            
-            <div className="bg-blue-50 rounded-xl shadow-md p-6">
-              <h3 className="text-xl font-bold mb-3 text-blue-800">Safety Tips</h3>
-              <ul className="space-y-2 text-sm text-blue-700">
-                <li className="flex items-start gap-2">
-                  <span>✓</span>
-                  <span>Don't pay any amount before visiting the property</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span>✓</span>
-                  <span>Verify all documents before making any payment</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span>✓</span>
-                  <span>Meet the agent in person before finalizing the deal</span>
-                </li>
-              </ul>
-            </div> */}
+            ) : (
+              <AgentCard agent={postedBy} price={price} propertyTitle={title} />
+            )}
           </div>
         </div>
 

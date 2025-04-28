@@ -182,9 +182,9 @@ const TicketCard = ({ onResponseClick, userName, message, description, photo, re
                         <p className="text-sm text-gray-500 mt-2 line-clamp-3">
                             {description.slice(0, 40)}
                         </p>
-                        {response ? <p className="text-sm text-gray-500 mt-2 line-clamp-3">
-                            {response}
-                        </p> : <p className="text-sm text-gray-500 mt-2 line-clamp-3">
+                        {response ? <p className="text-sm text-gray-500 text-primary font-semibold mt-2 line-clamp-3">
+                            Response : {response}
+                        </p> : <p className="text-sm text-primary font-semibold text-gray-500 mt-2 line-clamp-3">
                             No Response
                         </p>}
                     </div>

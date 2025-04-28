@@ -83,13 +83,13 @@ const Dashboard = () => {
       color: "bg-green-500",
       trend: "22.1% increase",
     },
-    {
-      title: "Revenue",
-      value: "₹12.8M",
-      icon: <BsGraphUp size={24} />,
-      color: "bg-purple-500",
-      trend: "18.7% increase",
-    },
+    // {
+    //   title: "Revenue",
+    //   value: "₹12.8M",
+    //   icon: <BsGraphUp size={24} />,
+    //   color: "bg-purple-500",
+    //   trend: "18.7% increase",
+    // },
   ];
 
   return (
@@ -98,7 +98,7 @@ const Dashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-8">
           {stats.map((stat, index) => (
             <div key={index} className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between">

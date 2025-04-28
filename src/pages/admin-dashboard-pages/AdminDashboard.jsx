@@ -175,43 +175,7 @@ const AdminDashboard = () => {
                         </div>
 
                         {/* All Units */}
-                        <div className="bg-white rounded-2xl border border-[#D4D4D4] p-4 shadow-sm">
-                            {/* Heading */}
-                            <p className="text-sm text-[#777777] font-semibold poppins-medium">All Units</p>
-                            <p className="text-xs text-gray-500 mt-1">Sold all the time</p>
-
-                            {/* Number + Label */}
-                            <div className="flex items-end gap-1 mt-2">
-                                <p className="text-xl font-semibold poppins-medium">7,893</p>
-                                <span className="text-sm text-gray-500 poppins-regular mb-[2px]">Units</span>
-                            </div>
-
-                            {/* Divider Line */}
-                            <div className="w-full h-px bg-gray-200 my-3"></div>
-
-                            {/* Colored Status Boxes */}
-                            <div className="flex gap-2">
-                                {/* Available */}
-                                <div className="flex flex-col gap-1">
-                                    <div className="w-20 h-16 rounded bg-[darkgreen]"></div>
-                                    <p className="text-xs text-[#777777]">House</p>
-                                    <p className="text-sm font-semibold poppins-medium">7,521</p>
-                                </div>
-                                {/* Pending */}
-                                <div className="flex flex-col gap-1">
-                                    <div className="w-20 h-16 rounded bg-orange-600"></div>
-                                    <p className="text-xs text-[#777777]">Appartment</p>
-                                    <p className="text-sm font-semibold poppins-medium">7,521</p>
-                                </div>
-
-                                {/* Sold */}
-                                <div className="flex flex-col gap-1">
-                                    <div className="w-20 h-16 rounded bg-yellow-500"></div>
-                                    <p className="text-xs text-[#777777]">Villa</p>
-                                    <p className="text-sm font-semibold poppins-medium">7,521</p>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
