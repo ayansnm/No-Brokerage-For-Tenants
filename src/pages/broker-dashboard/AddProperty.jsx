@@ -706,9 +706,9 @@ const AddProperty = () => {
                       value={formData.floor}
                       onChange={handleChange}
                       options={[
-                        { value: "Top", label: "Top" },
-                        { value: "Middle", label: "Middle" },
-                        { value: "Bottom", label: "Bottom" },
+                        { value: "Top", label: "Top (Nineth and Above)" },
+                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
+                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
                       ]}
                       placeholder="Select floor"
                       error={errors.floor}

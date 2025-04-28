@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("");
   const [filter, setFilter] = useState({
-    priceRange: [0, 1000000],
+    priceRange: [0, 0],
   });
   const [filter2, setFilter2] = useState();
 
@@ -442,9 +442,9 @@ const Dashboard = () => {
                     <AnimatedRadioButtons
                       name="floor"
                       options={[
-                        { value: "Top", label: "Top" },
-                      { value: "Middle", label: "Middle" },
-                      { value: "Bottom", label: "Bottom" },
+                        { value: "Top", label: "Top (Nineth and Above)" },
+                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
+                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
                       ]}
                       selectedColor="bg-blue-100 text-blue-700 border-blue-300"
                       value={filter.floor}

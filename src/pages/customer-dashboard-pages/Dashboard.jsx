@@ -264,9 +264,9 @@ const Dashboard = () => {
                     <AnimatedRadioButtons
                       name="floor"
                       options={[
-                        { label: "Top", value: "Top" },
-                        { label: "Middle", value: "Middle" },
-                        { label: "Bottom", value: "Bottom" },
+                        { value: "Top", label: "Top (Nineth and Above)" },
+                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
+                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
                       ]}
                       selectedColor="bg-green-100 text-primary border-primary"
                       value={filter.floor}
