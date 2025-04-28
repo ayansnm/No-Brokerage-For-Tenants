@@ -9,7 +9,7 @@ const PropertyCard = ({
   id,
   title = "No Title",
   price = "000",
-  image = "NO",
+  media = [], // Changed from image to media array
   area = "NO DATA",
   floor = "",
   sizeType = "",
@@ -21,19 +21,41 @@ const PropertyCard = ({
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const { loading, shareProperty } = useShareProperty();
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const handleShareProperty = async () => {
-    console.log({ customerId, propertyId: id });
-    await shareProperty({customerId, propertyId:id});
+    await shareProperty({ customerId, propertyId: id });
   };
+
+  // Get the first media item
+  const firstMedia = media?.[0];
+  console.log("FIRST MEDIA: ", firstMedia);
+  
 
   return (
     <div className="w-full bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
-      {/* Property Image */}
+      {/* Property Media */}
       <div
         onClick={() => navigate(`/PropertyDetails/${id}`)}
-        className="relative h-48 w-full bg-gray-100 bg-cover bg-center"
-        style={{ backgroundImage: `url(http://145.223.20.218:2025/${image})` }}
+        className="relative h-48 w-full bg-gray-100"
       >
+        {firstMedia?.type === 'video' ? (
+          <video
+            className="w-full h-full object-cover"
+            controls
+            muted
+            poster="/video-poster-placeholder.jpg"
+          >
+            <source src={`${API_URL}${firstMedia.path}`} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <div 
+            className="w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${API_URL}${firstMedia?.path})` }}
+          />
+        )}
+
         {/* Status Badge */}
         {isNew && (
           <span className="absolute top-3 left-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
@@ -119,7 +141,7 @@ const PropertyCard = ({
               {customerId != "" && (
                 <button
                   onClick={handleShareProperty}
-                  className="bg-primary rounded-full  px-4 text-white"
+                  className="bg-primary rounded-full px-4 text-white"
                 >
                   Share Property
                 </button>

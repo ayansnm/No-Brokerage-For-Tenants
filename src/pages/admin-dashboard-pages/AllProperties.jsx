@@ -153,7 +153,7 @@ const AllProperties = () => {
                       title={item?.title}
                       price={item?.price}
                       address={item?.address}
-                      image={item?.images[0]}
+                      media={item?.media}
                       area={item?.area}
                       floor={item?.floor}
                       sizeType={item?.sizeType}
