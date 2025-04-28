@@ -250,20 +250,26 @@ const AddProperty = () => {
   const handleImageUpload = useCallback(
     (e) => {
       const files = Array.from(e.target.files);
+
+      // Check total files won't exceed 10
       if (files.length + formData.images.length > 10) {
-        alert("You can upload a maximum of 10 images");
+        alert("You can upload a maximum of 10 files (images + videos)");
         return;
       }
 
-      const newImages = files.map((file) => ({
-        file,
-        preview: URL.createObjectURL(file),
-        id: Math.random().toString(36).substring(2, 9), // unique ID for each image
-      }));
+      const newFiles = files.map((file) => {
+        const isVideo = file.type.includes("video");
+        return {
+          file,
+          preview: URL.createObjectURL(file),
+          id: Math.random().toString(36).substring(2, 9),
+          type: isVideo ? "video" : "image",
+        };
+      });
 
       setFormData((prev) => ({
         ...prev,
-        images: [...prev.images, ...newImages],
+        images: [...prev.images, ...newFiles],
       }));
     },
     [formData.images.length]
@@ -464,20 +470,20 @@ const AddProperty = () => {
               </div> */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Property Images (Max 10)
+                    Property Media (Max 10 - Images/Videos)
                   </label>
                   <div className="border-2 border-dashed border-primary rounded-xl p-4 text-center cursor-pointer hover:bg-primary-light/10">
                     <label className="flex flex-col items-center justify-center space-y-2">
                       <IoIosImages size={48} className="text-primary" />
                       <span className="text-primary font-medium">
-                        Click to upload images
+                        Click to upload images/videos
                       </span>
                       <span className="text-xs text-gray-500">
-                        {formData.images.length} images selected
+                        {formData.images.length} files selected
                       </span>
                       <input
                         type="file"
-                        accept="image/*"
+                        accept="image/*,video/*"
                         multiple
                         className="hidden"
                         onChange={handleImageUpload}
@@ -485,20 +491,33 @@ const AddProperty = () => {
                     </label>
                   </div>
 
-                  {/* Image Previews */}
+                  {/* Media Previews */}
                   {formData.images.length > 0 && (
                     <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                      {formData.images.map((image) => (
-                        <div key={image.id} className="relative group">
-                          <img
-                            src={image.preview}
-                            alt="Property preview"
-                            className="w-full h-24 object-cover rounded-lg"
-                          />
+                      {formData.images.map((media) => (
+                        <div key={media.id} className="relative group">
+                          {media.type === "video" ? (
+                            <video
+                              controls
+                              className="w-full h-24 object-cover rounded-lg"
+                            >
+                              <source
+                                src={media.preview}
+                                type={media.file.type}
+                              />
+                              Your browser does not support the video tag.
+                            </video>
+                          ) : (
+                            <img
+                              src={media.preview}
+                              alt="Property preview"
+                              className="w-full h-24 object-cover rounded-lg"
+                            />
+                          )}
                           <button
                             type="button"
                             className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => removeImage(image.id)}
+                            onClick={() => removeImage(media.id)}
                           >
                             ×
                           </button>

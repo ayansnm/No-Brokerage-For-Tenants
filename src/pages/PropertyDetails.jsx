@@ -366,7 +366,7 @@ const PropertyDetails = () => {
                   allCustomers.map((customer) => (
                     <div
                       key={customer._id}
-                      className="border border-primary mb-4 p-4 rounded-xl"
+                      className="border border-gray-400 mb-4 p-4 rounded-xl"
                     >
                       {/* Profile + Info Section */}
                       <div className="flex items-center gap-4 mb-4">

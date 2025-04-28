@@ -25,17 +25,37 @@ const useAddProperty = () => {
       formData.append("location", data?.location);
       formData.append("description", data?.description);
 
-      // Append multiple images
-      if (data?.images?.length > 0) {
-        data.images.forEach((image) => {
-          if (image?.file) {
-            formData.append("images", image.file);
+      // Separate images and videos
+      const images = [];
+      const videos = [];
+
+      data?.images?.forEach((media) => {
+        if (media?.file) {
+          if (media.file.type.includes('image')) {
+            images.push(media.file);
+          } else if (media.file.type.includes('video')) {
+            videos.push(media.file);
           }
-        });
-      }
-      
-      console.log("FORMDATA :",JSON.stringify(data));
-      
+        }
+      });
+
+      // Append images
+      images.forEach((image, index) => {
+        formData.append(`images`, image);
+      });
+
+      // Append videos
+      videos.forEach((video, index) => {
+        formData.append(`videos`, video);
+      });
+
+      console.log("FORMDATA:", {
+        title: data?.title,
+        area: data?.area,
+        price: data?.priceRange,
+        imagesCount: images.length,
+        videosCount: videos.length
+      });
 
       const response = await fetch(`${API_URL}/api/property/addproperty`, {
         method: "POST",
@@ -46,12 +66,11 @@ const useAddProperty = () => {
       });
 
       const result = await response.json();
-      console.log(JSON.stringify(result));
-      
+      console.log("API Response:", result);
 
       if (response.ok) {
         toast.success("Property added successfully!");
-        navigate("/broker/dashboard")
+        navigate("/broker/dashboard");
       } else {
         toast.error(result?.message || "Failed to add property.");
       }
