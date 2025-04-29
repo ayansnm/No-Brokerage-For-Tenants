@@ -16,14 +16,14 @@ const Sidebar = () => {
         <>
             {/* Sidebar */}
             <aside className="w-64 bg-white shadow-md p-5 hidden md:block border-r-2 border-[#b5b5b5]">
-                <h1 className="text-2xl font-semibold mb-4 text-[#2E073F]">PROPCONNECT</h1>
+                <h1 className="text-2xl font-semibold mb-4 text-[#2E073F]">NBFT</h1>
                 <hr className="mb-4" />
 
                 {/* Search Bar */}
-                <div className="relative mb-6">
+                {/* <div className="relative mb-6">
                     <input type="text" placeholder="Search..." className="w-full px-4 py-2 pl-10 text-sm border rounded-md focus:outline-none" />
                     <FiSearch className="absolute left-3 top-3 text-gray-500" />
-                </div>
+                </div> */}
 
                 {/* Navigation Menu */}
                 <ul className="space-y-3 text-gray-700 text-sm">
