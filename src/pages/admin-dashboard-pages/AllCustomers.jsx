@@ -149,15 +149,14 @@ const AllCustomers = () => {
                   <td className="px-4 py-3">{item?.email}</td>
                   <td className="px-4 py-3">
                     <div
-                      className={`px-2 py-1 rounded-full text-xs text-center font-medium ${
-                        item?.isSubscribedForCommercial ||
-                        item?.isSubscribedForResidential
+                      className={`px-2 py-1 rounded-full text-xs text-center font-medium ${item?.isSubscribedForCommercial ||
+                          item?.isSubscribedForResidential
                           ? "text-green-700 bg-green-200"
                           : "text-red-700 bg-red-200"
-                      }`}
+                        }`}
                     >
                       {item?.isSubscribedForCommercial ||
-                      item?.isSubscribedForResidential
+                        item?.isSubscribedForResidential
                         ? "Deal Completed"
                         : "Unpaid"}
                     </div>
@@ -205,16 +204,14 @@ const AllCustomers = () => {
                           className="sr-only"
                         />
                         <div
-                          className={`w-10 h-5 ${
-                            item?.isActive ? " bg-green-500" : "bg-gray-500"
-                          } rounded-full shadow-inner relative transition-all duration-300`}
+                          className={`w-10 h-5 ${item?.isActive ? " bg-green-500" : "bg-gray-500"
+                            } rounded-full shadow-inner relative transition-all duration-300`}
                         >
                           <div
-                            className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
-                              item?.isActive
+                            className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${item?.isActive
                                 ? "translate-x-5 bg-green-500"
                                 : "bg-gray-500"
-                            }`}
+                              }`}
                           ></div>
                         </div>
                       </label>
@@ -224,9 +221,9 @@ const AllCustomers = () => {
                   <td className="px-4 py-3">
                     {item?.propertyRequirements?.[0]?.propertyPurpose
                       ? item.propertyRequirements[0].propertyPurpose
-                          .charAt(0)
-                          .toUpperCase() +
-                        item.propertyRequirements[0].propertyPurpose.slice(1)
+                        .charAt(0)
+                        .toUpperCase() +
+                      item.propertyRequirements[0].propertyPurpose.slice(1)
                       : "No Requirements"}
                   </td>
                   <td>
