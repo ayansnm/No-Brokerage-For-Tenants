@@ -10,6 +10,7 @@ import useGetProperties from "../../hooks/broker-hooks/useGetProperties";
 import Footer from "../../components/Fields/Footer";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSelector";
+import useGetBrokerDashboard from "../../hooks/broker-hooks/useGetBrokerDashboard";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -59,26 +60,35 @@ const Dashboard = () => {
     { label: "Residential", value: "Residential" },
     { label: "Commercial", value: "Commercial" },
   ];
-
+  const {loading:dashboardLoad, dashboard, getBrokerDashboard} = useGetBrokerDashboard();
+  const getDashboard = async()=>{
+    await getBrokerDashboard();
+  }
+  useEffect(()=>{
+    getDashboard();
+  },[]);
+  // useEffect(()=>{
+  //   getDashboard();
+  // },[]);
   // Stats cards data
   const stats = [
     {
       title: "Total Properties",
-      value: properties.length,
+      value: dashboard?.totalProperties,
       icon: <BsFillBuildingsFill size={24} />,
       color: "bg-primary",
-      trend: "15.35% increase",
+      // trend: "15.35% increase",
     },
     {
       title: "Pending Properties",
-      value: "5,729",
+      value: dashboard?.activeProperties,
       icon: <MdOutlinePendingActions size={26} />,
       color: "bg-yellow-500",
       trend: "8.2% increase",
     },
     {
       title: "Deal Closed",
-      value: "2,849",
+      value: dashboard?.closedDeals,
       icon: <FaHandsHelping size={24} />,
       color: "bg-green-500",
       trend: "22.1% increase",
@@ -112,7 +122,7 @@ const Dashboard = () => {
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>
               </div>
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <p className="text-xs text-green-600 font-medium">
                   <span className="inline-flex items-center">
                     <svg
@@ -129,7 +139,7 @@ const Dashboard = () => {
                     {stat.trend}
                   </span>
                 </p>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
