@@ -11,6 +11,7 @@ import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSelector";
 import useGetAllProperties from "../../hooks/admin-hooks/useGetAllProperties";
 import useGetCustomer from "../../hooks/admin-hooks/useGetCustomerShareProp";
+import useGetUserProperties from "../../hooks/admin-hooks/useGetUserProperties";
 
 const ShareProperty = () => {
   const navigate = useNavigate();
@@ -66,6 +67,14 @@ const ShareProperty = () => {
       getCustomer({ id });
     };
     fetchCustomer();
+  }, []);
+
+  const {loading:loadProp, allProperties, fetchSharingProperty, user:getUser} = useGetUserProperties();
+  const fetchProperties = async()=>{
+    await fetchSharingProperty({ userId: id });
+  }
+  useEffect(() => {
+    fetchProperties();
   }, []);
 
   return (
