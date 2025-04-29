@@ -6,15 +6,15 @@ const useGetAllProperties = () => {
   const [properties, setProperties] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const getAllProperties = async ({searchQuery,category, floor,format,priceRange,type}) => {
+  const getAllProperties = async ({searchQuery,category, floor,format,priceRange,type, furnished}) => {
     try {
       setLoading(true);
       const userId = localStorage.getItem("userId")
       const token = localStorage.getItem("token");
-      console.log(`${API_URL}/api/property/getallproperties?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${""}`);
+      console.log(`${API_URL}/api/property/getallproperties?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${""}&furnished=${furnished || ""}`);
       
       const response = await fetch(
-        `${API_URL}/api/property/getallproperties?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${category || ""}`,
+        `${API_URL}/api/property/getallproperties?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${category || ""}&furnished=${furnished || ""}`,
         {
           method: "GET",
           headers: {
