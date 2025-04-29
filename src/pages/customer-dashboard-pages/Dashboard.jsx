@@ -64,7 +64,8 @@ const Dashboard = () => {
     fetchProperties();
   }, [searchQuery]);
 
-  const { totalSharedWithCount, getSuggestedProperties } = useGetSuggestedProperty();
+  const { totalSharedWithCount, getSuggestedProperties } =
+    useGetSuggestedProperty();
 
   useEffect(() => {
     getSuggestedProperties();
@@ -254,8 +255,14 @@ const Dashboard = () => {
                       name="floor"
                       options={[
                         { value: "Top", label: "Top (Nineth and Above)" },
-                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
-                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
+                        {
+                          value: "Middle",
+                          label: "Middle (Fourth to Nineth floor)",
+                        },
+                        {
+                          value: "Bottom",
+                          label: "Bottom (Ground to Fourth floor)",
+                        },
                       ]}
                       selectedColor="bg-green-100 text-primary border-primary"
                       value={filter.floor}
@@ -299,12 +306,12 @@ const Dashboard = () => {
                 </div>
 
                 <div className="flex gap-3 pt-2">
-                <button
-                      className="flex-1 bg-primary hover:opacity-90 text-white py-2 rounded-lg font-medium transition-colors"
-                      onClick={applyFilters}
-                    >
-                      Apply Filters
-                    </button>
+                  <button
+                    className="flex-1 bg-primary hover:opacity-90 text-white py-2 rounded-lg font-medium transition-colors"
+                    onClick={applyFilters}
+                  >
+                    Apply Filters
+                  </button>
                   <button
                     className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-medium transition-colors"
                     onClick={() => {
@@ -323,116 +330,72 @@ const Dashboard = () => {
       {/* Filter Modal - Mobile */}
       {filterModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            {/* Background overlay */}
             <div
               className="fixed inset-0 transition-opacity"
+              aria-hidden="true"
               onClick={() => setFilterModalOpen(false)}
             >
               <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen">
-              &#8203;
-            </span>
-            <div className="inline-block align-bottom bg-white rounded-t-xl overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+
+            {/* Modal container */}
+            <div
+              className="inline-block align-bottom bg-white rounded-lg shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              style={{
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                margin: "0 auto",
+                maxHeight: "90vh",
+                overflowY: "auto",
+              }}
+            >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="flex justify-between items-center mb-4">
+                {/* Modal header */}
+                <div className="flex justify-between items-center mb-4 sticky top-0 bg-white z-10">
                   <h3 className="text-lg font-bold flex items-center gap-2">
                     <BsFilter size={18} /> Filters
                   </h3>
                   <button
                     onClick={() => setFilterModalOpen(false)}
                     className="text-gray-400 hover:text-gray-500"
+                    aria-label="Close"
                   >
                     <IoClose size={24} />
                   </button>
                 </div>
 
-                <div className="space-y-6 max-h-[70vh] overflow-y-auto">
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">
-                      Price Range
-                    </h4>
-                    <PriceRangeSlider
-                      value={filter.priceRange}
-                      onChange={(range) =>
-                        setFilter((prev) => ({ ...prev, priceRange: range }))
-                      }
-                    />
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">
-                      Property Type
-                    </h4>
-                    <AnimatedRadioButtons
-                      name="type"
-                      options={[
-                        { value: "House", label: "House" },
-                        { value: "Bunglow", label: "Bunglow" },
-                        { value: "Flat", label: "Flat" },
-                        { value: "Office", label: "Office" },
-                        { value: "Shop", label: "Shop" },
-                      ]}
-                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
-                      value={filter.type}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  {requirement?.propertyType !== "House" ||
-                requirement?.propertyType !== "Office" ||
-                requirement?.propertyType !== "Flat" ? (
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">
-                      Floor
-                    </h4>
-                    <AnimatedRadioButtons
-                      name="floor"
-                      options={[
-                        { value: "Top", label: "Top (Nineth and Above)" },
-                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
-                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
-                      ]}
-                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
-                      value={filter.floor}
-                      onChange={handleChange}
-                    />
-                  </div>
-                ):null}
-
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">
-                      Format
-                    </h4>
-                    <AnimatedRadioButtons
-                      name="format"
-                      options={[
-                        { label: "1BHK", value: "1BHK" },
-                        { label: "2BHK", value: "2BHK" },
-                        { label: "3BHK", value: "3BHK" },
-                        { label: "4BHK", value: "4BHK" },
-                      ]}
-                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
-                      value={filter.format}
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">
-                      Size Type
-                    </h4>
-                    <AnimatedRadioButtons
-                      name="sizetype"
-                      options={[
-                        { label: "sqft", value: "sqft" },
-                        { label: "Vigha", value: "vigha" },
-                        { label: "SqYard", value: "sqyard" },
-                      ]}
-                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
-                      value={filter.sizetype}
-                      onChange={handleChange}
-                    />
-                  </div>
+                {/* Modal content */}
+                <div className="space-y-3">
+                  {requirement?.propertyType !== "House" &&
+                  requirement?.propertyType !== "Office" &&
+                  requirement?.propertyType !== "Flat" ? (
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-3">
+                        Floor
+                      </h4>
+                      <AnimatedRadioButtons
+                        name="floor"
+                        options={[
+                          { value: "Top", label: "Top (Nineth and Above)" },
+                          {
+                            value: "Middle",
+                            label: "Middle (Fourth to Nineth floor)",
+                          },
+                          {
+                            value: "Bottom",
+                            label: "Bottom (Ground to Fourth floor)",
+                          },
+                        ]}
+                        selectedColor="bg-green-100 text-primary border-primary"
+                        value={filter.floor}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  ) : null}
 
                   <div>
                     <h4 className="text-sm font-medium text-gray-700 mb-3">
@@ -441,34 +404,38 @@ const Dashboard = () => {
                     <AnimatedRadioButtons
                       name="furnished"
                       options={[
-                        { label: "Un Furnished", value: "any" },
-                        { label: "Fully", value: "fully-furnished" },
-                        { label: "Semi", value: "semi-furnished" },
+                        { label: "Unfurnished", value: "Unfurnished" },
+                        { label: "Furnished", value: "Fully" },
+                        { label: "Semi-furnished", value: "Semi" },
                       ]}
-                      selectedColor="bg-blue-100 text-blue-700 border-blue-300"
+                      selectedColor="bg-green-100 text-primary border-primary"
                       value={filter.furnished}
                       onChange={handleChange}
                     />
                   </div>
+
+                  {/* Action buttons */}
+                  <div className="flex gap-3 pt-2 sticky bottom-0 bg-white pb-4">
+                    <button
+                      className="flex-1 bg-primary hover:opacity-90 text-white py-3 rounded-lg font-medium transition-colors"
+                      onClick={() => {
+                        applyFilters();
+                        setFilterModalOpen(false); // Close modal after applying filters
+                      }}
+                    >
+                      Apply Filters
+                    </button>
+                    <button
+                      className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg font-medium transition-colors"
+                      onClick={() => {
+                        setFilter({ priceRange: [0, 1000000] });
+                        setFilterModalOpen(false); // Close modal after clearing
+                      }}
+                    >
+                      Clear
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse sticky bottom-0 border-t">
-                <button
-                  className="flex-1 bg-primary hover:opacity-90 text-white py-2 rounded-lg font-medium transition-colors"
-                  onClick={applyFilters}
-                >
-                  Apply Filters
-                </button>
-                <button
-                  type="button"
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => {
-                    setFilter({ priceRange: [0, 1000000] });
-                    setFilterModalOpen(false);
-                  }}
-                >
-                  Clear All
-                </button>
               </div>
             </div>
           </div>

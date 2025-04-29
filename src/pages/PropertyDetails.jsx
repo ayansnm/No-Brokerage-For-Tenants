@@ -418,12 +418,12 @@ const PropertyDetails = () => {
                     </button>
                   </div>
                 ))}
-                {allCustomers?.length > 3 && (
+                {allCustomers?.length > 0 && (
                   <button
-                    onClick={() => navigate("/broker/suggestedcustomer")}
+                    onClick={() => navigate(`/broker/suggestedcustomer/${id}`)}
                     className="w-full mt-2 border bg-gray-100 py-2 rounded-lg font-medium hover:bg-green-900 text-green-900 hover:text-white transition cursor-pointer"
                   >
-                    Show All Customers
+                    Show All Details of Customers
                   </button>
                 )}
               </div>
@@ -512,6 +512,14 @@ const PropertyDetails = () => {
                           </button>
                         </div>
                       ))}
+                      {allCustomers?.length > 0 && (
+                  <button
+                    onClick={() => navigate(`/broker/suggestedcustomer/${id}`)}
+                    className="w-full mt-2 border bg-gray-100 py-2 rounded-lg font-medium hover:bg-green-900 text-green-900 hover:text-white transition cursor-pointer"
+                  >
+                    Show All Details of Customers
+                  </button>
+                )}
                     </div>
                   )}
                 </div>

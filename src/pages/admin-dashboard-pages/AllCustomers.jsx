@@ -128,7 +128,7 @@ const AllCustomers = () => {
                 <th className="text-left px-4 py-3">NAME</th>
                 <th className="text-left px-4 py-3">EMAIL</th>
                 <th className="text-left px-4 py-3">STATUS</th>
-                <th className="text-left px-4 py-3">RATE</th>
+                <th className="text-left px-4 py-3">PRICE RANGE</th>
                 <th className="text-left px-4 py-3">ACTION</th>
                 <th className="text-left px-4 py-3">PROPERTY</th>
                 <th className="text-left px-4 py-3">SHARE</th>

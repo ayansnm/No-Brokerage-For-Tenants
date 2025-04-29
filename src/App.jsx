@@ -67,7 +67,7 @@ const App = () => {
 
         {/* Broker Dashboard */}
         <Route path="/broker/dashboard" element={authUser&& localStorage.getItem("role") == "broker" ? <BrokerDashboard /> : <Navigate to="/Login" />} />
-        <Route path="/broker/suggestedcustomer" element={authUser&& localStorage.getItem("role") == "broker" ? <SuggestedCustomer /> : <Navigate to="/Login" />} />
+        <Route path="/broker/suggestedcustomer/:id" element={authUser&& localStorage.getItem("role") == "broker" || localStorage.getItem("role") == "admin" ? <SuggestedCustomer /> : <Navigate to="/Login" />} />
         <Route path="/broker/addproperty" element={authUser&& localStorage.getItem("role") == "broker" ? <AddProperty /> : <Navigate to="/Login" />} />
         <Route path="/broker/editproperty/:id" element={authUser ? <AddProperty /> : <Navigate to="/Login" />} />
       </Routes>

@@ -23,7 +23,7 @@ const useFetchAllCustomers = () => {
       );
       const result = await response.json();
       if (response.ok) {
-        setAllCustomers(result?.data?.users || []);
+        setAllCustomers(result?.data?.data || []);
       }
     } catch (error) {
       toast.error(error.message || "Error fetching customers");
