@@ -9,16 +9,19 @@ const SuggestedCustomer = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    const customers = Array.from({ length: 30 }, (_, i) => ({
-        number: i + 1,
-        name: `Customer ${i + 1}`,
-        contactNumber: `9${Math.floor(100000000 + Math.random() * 900000000)}`,
-        email: `customer${i + 1}@example.com`,
-        priceRange: `₹${(i + 1) * 500} - ₹${(i + 1) * 1000}`,
-        status: ["Interested", "Not Connected", "Not Interested"][i % 3],
-    }));
+    const [customerData, setCustomerData] = useState(
+        Array.from({ length: 30 }, (_, i) => ({
+            number: i + 1,
+            name: `Customer ${i + 1}`,
+            contactNumber: `9${Math.floor(100000000 + Math.random() * 900000000)}`,
+            email: `customer${i + 1}@example.com`,
+            priceRange: `₹${(i + 1) * 500} - ₹${(i + 1) * 1000}`,
+            status: ["Interested", "Not Connected", "Not Interested"][i % 3],
+        }))
+    );
 
-    const filteredCustomers = customers.filter((customer) => {
+
+    const filteredCustomers = customerData.filter((customer) => {
         const matchesFilter =
             activeFilter === "All" || customer.status === activeFilter;
         const matchesSearch =
@@ -99,7 +102,7 @@ const SuggestedCustomer = () => {
                                                 <span className="text-xs text-gray-500">INR</span>
                                             </div>
                                         </td>
-                                        <td className="py-2 px-4 text-gray-600">
+                                        {/* <td className="py-2 px-4 text-gray-600">
                                             <span
                                                 className={`px-2 py-1 rounded-full text-xs font-medium ${customer.status === "Interested"
                                                     ? "bg-green-100 text-green-800"
@@ -110,6 +113,28 @@ const SuggestedCustomer = () => {
                                             >
                                                 {customer.status}
                                             </span>
+                                        </td> */}
+                                        <td className="py-2 px-4 text-gray-600">
+                                            <select
+                                                value={customer.status}
+                                                onChange={(e) => {
+                                                    const updatedStatus = e.target.value;
+                                                    const updatedCustomers = customerData.map((c) =>
+                                                        c.number === customer.number ? { ...c, status: updatedStatus } : c
+                                                    );
+                                                    setCustomerData(updatedCustomers);
+                                                }}
+                                                className={`px-2 py-1 rounded-full text-xs font-medium ${customer.status === "Interested"
+                                                    ? "bg-green-100 text-green-800"
+                                                    : customer.status === "Not Interested"
+                                                        ? "bg-red-100 text-red-800"
+                                                        : "bg-blue-100 text-blue-800"
+                                                    }`}
+                                            >
+                                                <option className="bg-green-100 text-green-800" value="Interested">Interested</option>
+                                                <option className="bg-red-100 text-red-800" value="Not Interested">Not Interested</option>
+                                                <option className="bg-blue-100 text-blue-800" value="Not Connected">Not Connected</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 ))}
