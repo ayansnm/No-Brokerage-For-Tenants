@@ -13,7 +13,7 @@ import { MdApartment, MdEmail, MdVerified } from "react-icons/md";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useGetPropertyDetails from "../hooks/broker-hooks/useGetPropertyDetails";
 import Footer from "../components/Fields/Footer";
 import PropertyFeature from "./PropertyFeature";
@@ -46,6 +46,7 @@ const NextArrow = ({ onClick }) => (
 );
 
 const PropertyDetails = () => {
+  const navigate = useNavigate();
   const [selectedThumbIndex, setSelectedThumbIndex] = useState(0);
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
@@ -56,6 +57,7 @@ const PropertyDetails = () => {
     allCustomers,
     getAllCustomers,
   } = useGetAllSharedCustomersList();
+  const showCustomers = allCustomers?.slice(0, 3);
 
   const { loading, property, getPropertyDetails } = useGetPropertyDetails();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -153,9 +155,9 @@ const PropertyDetails = () => {
     media.length > 0
       ? media
       : (property.images || []).map((img) => ({
-          path: img,
-          type: img.endsWith(".mp4") ? "video" : "image",
-        }));
+        path: img,
+        type: img.endsWith(".mp4") ? "video" : "image",
+      }));
 
   const mainSliderSettings = {
     dots: true,
@@ -275,11 +277,10 @@ const PropertyDetails = () => {
                         {displayMedia.map((item, index) => (
                           <div key={index} className="px-1">
                             <div
-                              className={`rounded-md cursor-pointer transition-all duration-200 ${
-                                index === selectedThumbIndex
+                              className={`rounded-md cursor-pointer transition-all duration-200 ${index === selectedThumbIndex
                                   ? "border-4 border-primary shadow-lg"
                                   : "border border-gray-300"
-                              }`}
+                                }`}
                             >
                               {renderMediaItem(item, true)}
                             </div>
@@ -370,7 +371,7 @@ const PropertyDetails = () => {
             {localStorage.getItem("role") === "broker" ? (
               <div className="bg-white rounded-xl shadow-md p-6 sticky top-6">
                 <h3 className="text-xl font-bold mb-4">Contact Customers</h3>
-                {allCustomers?.map((customer) => (
+                {showCustomers?.map((customer) => (
                   <div
                     key={customer._id}
                     className="border border-gray-400 mb-4 p-4 rounded-xl"
@@ -406,6 +407,14 @@ const PropertyDetails = () => {
                     </button>
                   </div>
                 ))}
+                {allCustomers?.length > 3 && (
+                  <button
+                    onClick={() => navigate("/broker/suggestedcustomer")}
+                    className="w-full mt-2 border bg-gray-100 py-2 rounded-lg font-medium hover:bg-green-900 text-green-900 hover:text-white transition cursor-pointer"
+                  >
+                    Show All Customers
+                  </button>
+                )}
               </div>
             ) : localStorage.getItem("role") === "admin" ? (
               <>
@@ -415,9 +424,8 @@ const PropertyDetails = () => {
                     <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
                       {postedBy?.profilePicture ? (
                         <img
-                          src={`${import.meta.env.VITE_API_URL}/${
-                            postedBy.profilePicture
-                          }`}
+                          src={`${import.meta.env.VITE_API_URL}/${postedBy.profilePicture
+                            }`}
                           alt={postedBy.fullName}
                           className="w-full h-full object-cover"
                         />
