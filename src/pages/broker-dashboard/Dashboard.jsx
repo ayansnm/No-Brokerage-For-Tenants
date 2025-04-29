@@ -122,7 +122,7 @@ const Dashboard = () => {
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>
               </div>
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <p className="text-xs text-green-600 font-medium">
                   <span className="inline-flex items-center">
                     <svg
@@ -139,7 +139,7 @@ const Dashboard = () => {
                     {stat.trend}
                   </span>
                 </p>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
