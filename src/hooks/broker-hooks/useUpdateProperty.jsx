@@ -33,15 +33,36 @@ const useUpdateProperty = () => {
       if (data?.description) formData.append("description", data.description);
 
       // Append multiple images if available
-      console.log("IMAGES ALL :",data.images);
-      
-      if (data?.images?.length > 0) {
-        data.images.forEach((image) => {
-          if (image?.file) {
-            formData.append("images", image.file);
+      const images = [];
+      const videos = [];
+
+      data?.images?.forEach((media) => {
+        if (media?.file) {
+          if (media.file.type.includes('image')) {
+            images.push(media.file);
+          } else if (media.file.type.includes('video')) {
+            videos.push(media.file);
           }
-        });
-      }
+        }
+      });
+
+      // Append images
+      images.forEach((image, index) => {
+        formData.append(`images`, image);
+      });
+
+      // Append videos
+      videos.forEach((video, index) => {
+        formData.append(`videos`, video);
+      });
+
+      console.log("FORMDATA:", {
+        title: data?.title,
+        area: data?.area,
+        price: data?.priceRange,
+        imagesCount: images.length,
+        videosCount: videos.length
+      });
 
       // Debugging: log FormData entries
       for (let pair of formData.entries()) {
