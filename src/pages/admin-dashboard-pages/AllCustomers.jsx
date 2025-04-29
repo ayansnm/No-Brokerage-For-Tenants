@@ -95,8 +95,8 @@ const AllCustomers = () => {
         <Navbar pageName="All Customer" />
 
         {/* Top Filters & Button */}
-        <div className="w-full px-5 my-2 flex  flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="flex flex-wrap  items-center gap-3 w-full sm:w-auto">
+        <div className="w-full px-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             {/* <button className="p-3 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition">
               <FaFilter size={16} className="text-gray-500" />
             </button> */}
