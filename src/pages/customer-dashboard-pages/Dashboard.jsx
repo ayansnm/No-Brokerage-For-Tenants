@@ -20,6 +20,7 @@ import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSlider";
 import notfound from "../../assets/notfound.png";
 import useGetMyProperties from "../../hooks/customer-hooks/useGetMyProperties";
+import useGetSuggestedProperty from "../../hooks/customer-hooks/useGetSuggestedProperty";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -63,11 +64,17 @@ const Dashboard = () => {
     fetchProperties();
   }, [searchQuery]);
 
+  const { totalSharedWithCount, getSuggestedProperties } = useGetSuggestedProperty();
+
+  useEffect(() => {
+    getSuggestedProperties();
+  }, []);
+
   // Stats cards data
   const stats = [
     {
       title: "Total Properties Suggested",
-      value: "000",
+      value: totalSharedWithCount,
       icon: <BsFillBuildingsFill size={24} />,
       color: "bg-primary",
       trend: "12 NEW",
