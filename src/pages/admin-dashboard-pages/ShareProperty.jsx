@@ -280,11 +280,9 @@ const ShareProperty = () => {
                     <AnimatedRadioButtons
                       name="floor"
                       options={[
-                        { label: "Ground", value: "Ground" },
-                        { label: "First", value: "First" },
-                        { label: "Second", value: "Second" },
-                        { label: "Third", value: "Third" },
-                        { label: "Fourth", value: "Fourth" },
+                        { value: "Top", label: "Top (Nineth and Above)" },
+                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
+                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
                       ]}
                       selectedColor="bg-green-100 text-primary border-primary"
                       value={filter.floor}
@@ -400,11 +398,9 @@ const ShareProperty = () => {
                     <AnimatedRadioButtons
                       name="floor"
                       options={[
-                        { label: "Ground", value: "Ground" },
-                        { label: "First", value: "First" },
-                        { label: "Second", value: "Second" },
-                        { label: "Third", value: "Third" },
-                        { label: "Fourth", value: "Fourth" },
+                        { value: "Top", label: "Top (Nineth and Above)" },
+                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
+                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
                       ]}
                       selectedColor="bg-blue-100 text-blue-700 border-blue-300"
                       value={filter.floor}

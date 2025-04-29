@@ -122,24 +122,6 @@ const Dashboard = () => {
                   <p className="text-2xl font-bold">{stat.value}</p>
                 </div>
               </div>
-              <div className="mt-4">
-                <p className="text-xs text-green-600 font-medium">
-                  <span className="inline-flex items-center">
-                    <svg
-                      className="w-3 h-3 mr-1"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {stat.trend}
-                  </span>
-                </p>
-              </div>
             </div>
           ))}
         </div>
@@ -406,11 +388,9 @@ const Dashboard = () => {
                     <AnimatedRadioButtons
                       name="floor"
                       options={[
-                        { label: "Ground", value: "Ground" },
-                        { label: "First", value: "First" },
-                        { label: "Second", value: "Second" },
-                        { label: "Third", value: "Third" },
-                        { label: "Fourth", value: "Fourth" },
+                        { value: "Top", label: "Top (Nineth and Above)" },
+                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
+                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
                       ]}
                       selectedColor="bg-blue-100 text-blue-700 border-blue-300"
                       value={filter.floor}

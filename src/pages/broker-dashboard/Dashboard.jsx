@@ -332,11 +332,9 @@ const Dashboard = () => {
                   <AnimatedRadioButtons
                     name="floor"
                     options={[
-                      { label: "Ground", value: "Ground" },
-                      { label: "First", value: "First" },
-                      { label: "Second", value: "Second" },
-                      { label: "Third", value: "Third" },
-                      { label: "Fourth", value: "Fourth" },
+                      { value: "Top", label: "Top (Nineth and Above)" },
+                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
+                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
                     ]}
                     selectedColor="bg-green-100 text-primary border-primary"
                     value={filter.floor}
@@ -372,7 +370,7 @@ const Dashboard = () => {
                   <button
                     className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-medium transition-colors"
                     onClick={() => {
-                      setFilter({});
+                      setFilter({ priceRange : [0, 0] });
                     //   setFilter2({});
                       fetchData();
                     }}
@@ -493,7 +491,7 @@ const Dashboard = () => {
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => {
-                    setFilter({});
+                    setFilter({ priceRange : [0, 0] });
                     setFilterModalOpen(false);
                   }}
                 >

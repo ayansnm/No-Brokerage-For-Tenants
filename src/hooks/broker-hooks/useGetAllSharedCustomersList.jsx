@@ -21,10 +21,10 @@ const useGetAllSharedCustomersList = () => {
         }
       );
       const result = await response.json();
-        console.log(JSON.stringify(result));
+        console.log("Data:",JSON.stringify(result));
 
       if (response.ok) {
-        setAllCustomers(result?.data || []);
+        setAllCustomers(result?.data?.data || []);
       } else {
         setAllCustomers([]);
       }

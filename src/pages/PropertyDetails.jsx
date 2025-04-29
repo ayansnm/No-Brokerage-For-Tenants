@@ -57,7 +57,7 @@ const PropertyDetails = () => {
     allCustomers,
     getAllCustomers,
   } = useGetAllSharedCustomersList();
-  const showCustomers = allCustomers?.slice(0, 3);
+  const showCustomers = allCustomers && allCustomers?.slice(0, 3);
 
   const { loading, property, getPropertyDetails } = useGetPropertyDetails();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -159,15 +159,26 @@ const PropertyDetails = () => {
         type: img.endsWith(".mp4") ? "video" : "image",
       }));
 
-  const mainSliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-  };
+      const mainSliderSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
+        autoplay: true,
+        autoplaySpeed: 300000, // 5 minutes in milliseconds
+        pauseOnHover: false,
+        pauseOnFocus: false,
+        pauseOnDotsHover: false,
+        beforeChange: (current, next) => {
+          if (nav1) {
+            nav1.slickPause();
+            nav1.slickPlay();
+          }
+        },
+      };
 
   const thumbnailSliderSettings = {
     slidesToShow: Math.min(displayMedia.length, 4),
