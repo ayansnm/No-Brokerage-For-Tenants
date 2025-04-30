@@ -175,18 +175,7 @@ const Dashboard = () => {
 
             {/* Property Cards */}
             <div className="bg-white rounded-xl flex flex-col gap-5 shadow-sm p-8 text-center">
-              {/* <div className="max-w-md mx-auto">
-                <p className="text-xl poppins-semibold mb-2">Thank you!</p>
-                <p className="text-xl poppins-semibold mb-6">
-                  Soon we will share properties with you!
-                </p>
-                <img
-                  src={notfound}
-                  className="w-2/3 mx-auto mb-6"
-                  alt="No data found"
-                />
-              </div> */}
-              {properties &&
+              {properties && properties.length > 0 ? (
                 properties.map((item) => (
                   <PropertyCard
                     key={item?.property?._id}
@@ -202,7 +191,20 @@ const Dashboard = () => {
                     description={item?.property?.description}
                     type={item?.property?.type}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="max-w-md mx-auto">
+                  <p className="text-xl poppins-semibold mb-2">Thank you!</p>
+                  <p className="text-xl poppins-semibold mb-6">
+                    Soon we will share properties with you!
+                  </p>
+                  <img
+                    src={notfound}
+                    className="w-2/3 mx-auto mb-6"
+                    alt="No data found"
+                  />
+                </div>
+              )}
             </div>
           </div>
 

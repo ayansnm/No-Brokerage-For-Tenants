@@ -213,7 +213,7 @@ const PropertyDetails = () => {
               <ol className="inline-flex items-center space-x-1 md:space-x-3">
                 <li className="inline-flex items-center">
                   <a
-                    href="/broker/dashboard"
+                    href={localStorage.getItem("role") == "broker" ? "/broker/dashboard" : localStorage.getItem("role") == "admin" ? "/admin/dashboard" : localStorage.getItem("role") == "customer" ? "/" : "/"}
                     className="inline-flex items-center text-gray-600 hover:text-primary"
                   >
                     Home
@@ -335,11 +335,11 @@ const PropertyDetails = () => {
                   label="Furnishing"
                   value={furnished}
                 />
-                <PropertyFeature
+                {/* <PropertyFeature
                   icon={<GrStatusInfo />}
                   label="Status"
                   value={status}
-                />
+                /> */}
                 <PropertyFeature
                   icon={<PiMapPinAreaFill />}
                   label="Area"
@@ -421,7 +421,7 @@ const PropertyDetails = () => {
                 {allCustomers?.length > 0 && (
                   <button
                     onClick={() => navigate(`/broker/suggestedcustomer/${id}`)}
-                    className="w-full mt-2 border bg-gray-100 py-2 rounded-lg font-medium hover:bg-green-900 text-green-900 hover:text-white transition cursor-pointer"
+                    className="w-full mt-2 border bg-gray-100 py-2 rounded-lg font-medium hover:bg-[#265953] text-[#265953] hover:text-white transition cursor-pointer"
                   >
                     Show All Details of Customers
                   </button>

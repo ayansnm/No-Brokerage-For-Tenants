@@ -105,7 +105,7 @@ const AnimatedSelect = ({
             </div>
 
             {/* Filtered Options + Custom Entry */}
-            <ul className="py-1 max-h-60 overflow-auto">
+            <ul className="py-1 z-50 max-h-60 overflow-auto">
               {filteredOptions.length > 0 ? (
                 filteredOptions.map((option) => (
                   <motion.li

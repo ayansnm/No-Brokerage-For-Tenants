@@ -132,7 +132,7 @@ const PropertyCard = ({
           </button>
 
           {role === "user" ? (
-            <button className="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center transition-colors">
+            <button onClick={() => navigate(`/PropertyDetails/${id}`)} className="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center transition-colors">
               <FaHandshake className="mr-1" />
               Contact
             </button>
