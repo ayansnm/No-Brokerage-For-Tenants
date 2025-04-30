@@ -102,12 +102,12 @@ const AllProperties = () => {
                   {/* Search and Sort */}
                   <div className="flex flex-col sm:flex-row gap-3">
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <div className="absolute inset-y-0 mb-1 left-0 pl-3 flex items-center pointer-events-none">
                         <FaSearch className="text-gray-400" />
                       </div>
                       <input
                         type="text"
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#265953] focus:border-primary sm:text-sm"
+                        className="block w-full sm:w-96 pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#265953] focus:border-primary sm:text-sm"
                         placeholder="Search properties..."
                         value={searchQuery}
                         onChange={(e) => {

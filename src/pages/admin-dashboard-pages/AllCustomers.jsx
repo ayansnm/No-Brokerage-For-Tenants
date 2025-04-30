@@ -88,6 +88,20 @@ const AllCustomers = () => {
     // Example: update status in DB or local state
   };
 
+  const [showStatusPopup, setShowStatusPopup] = useState(false);
+  const [pendingStatusChange, setPendingStatusChange] = useState({ id: null, status: null });
+
+  const confirmStatusChange = () => {
+    handleStatusToggle(pendingStatusChange.id, pendingStatusChange.status);
+    setShowStatusPopup(false);
+    setPendingStatusChange({ id: null, status: null });
+  };
+
+  const cancelStatusChange = () => {
+    setShowStatusPopup(false);
+    setPendingStatusChange({ id: null, status: null });
+  };
+
   return (
     <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
       <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
@@ -150,9 +164,9 @@ const AllCustomers = () => {
                   <td className="px-4 py-3">
                     <div
                       className={`px-2 py-1 rounded-full text-xs text-center font-medium ${item?.isSubscribedForCommercial ||
-                          item?.isSubscribedForResidential
-                          ? "text-green-700 bg-green-200"
-                          : "text-red-700 bg-red-200"
+                        item?.isSubscribedForResidential
+                        ? "text-green-700 bg-green-200"
+                        : "text-red-700 bg-red-200"
                         }`}
                     >
                       {item?.isSubscribedForCommercial ||
@@ -194,25 +208,18 @@ const AllCustomers = () => {
 
                     {/* Toggle Switch for Active Status */}
                     <div className="mt-2">
-                      <label className="inline-flex items-center cursor-pointer">
+                      <label className="inline-flex items-center cursor-pointer mt-1">
                         <input
                           type="checkbox"
                           checked={item?.isActive}
-                          onChange={(e) =>
-                            handleStatusToggle(item?._id, e.target.checked)
-                          }
+                          onChange={(e) => {
+                            setPendingStatusChange({ id: item._id, status: e.target.checked });
+                            setShowStatusPopup(true);
+                          }}
                           className="sr-only"
                         />
-                        <div
-                          className={`w-10 h-5 ${item?.isActive ? " bg-green-500" : "bg-gray-500"
-                            } rounded-full shadow-inner relative transition-all duration-300`}
-                        >
-                          <div
-                            className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${item?.isActive
-                                ? "translate-x-5 bg-green-500"
-                                : "bg-gray-500"
-                              }`}
-                          ></div>
+                        <div className={`w-10 h-5 ${item?.isActive ? "bg-green-500" : "bg-gray-500"} rounded-full shadow-inner relative transition-all duration-300`}>
+                          <div className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${item?.isActive ? "translate-x-5 bg-green-500" : "bg-gray-500"}`}></div>
                         </div>
                       </label>
                     </div>
@@ -244,6 +251,47 @@ const AllCustomers = () => {
               ))}
             </tbody>
           </table>
+          <AnimatePresence>
+            {showStatusPopup && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+              >
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  className="bg-white rounded-lg shadow-lg p-6 w-80 text-center"
+                >
+                  <h2 className="text-lg font-semibold mb-4">Confirm Status Change</h2>
+                  <p className="text-sm text-gray-600 mb-6">
+                    Are you sure you want to change the status?
+                  </p>
+                  <div className="flex justify-center gap-4">
+                    <button
+                      onClick={confirmStatusChange}
+                      className={`text-white px-4 py-2 rounded hover:opacity-90 ${pendingStatusChange.status
+                        ? "bg-green-600 hover:bg-green-700"
+                        : "bg-red-600 hover:bg-red-700"
+                        }`}
+                    >
+                      Yes
+                    </button>
+
+                    <button
+                      onClick={cancelStatusChange}
+                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                    >
+                      No
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Delete Confirmation Popup */}
           <AnimatePresence>

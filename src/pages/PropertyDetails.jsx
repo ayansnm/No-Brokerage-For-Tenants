@@ -223,7 +223,7 @@ const PropertyDetails = () => {
                   <div className="flex items-center">
                     /
                     <a
-                      href="/properties"
+                      href={`/PropertyDetails/${id}`}
                       className="ml-1 text-gray-600 hover:text-primary md:ml-2"
                     >
                       Property Details

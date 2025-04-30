@@ -94,11 +94,25 @@ const Brokers = () => {
         // Example: update status in DB or local state
     };
 
+    const [showStatusPopup, setShowStatusPopup] = useState(false);
+    const [pendingStatusChange, setPendingStatusChange] = useState({ id: null, status: null });
+
+    const confirmStatusChange = () => {
+        handleStatusToggle(pendingStatusChange.id, pendingStatusChange.status);
+        setShowStatusPopup(false);
+        setPendingStatusChange({ id: null, status: null });
+    };
+
+    const cancelStatusChange = () => {
+        setShowStatusPopup(false);
+        setPendingStatusChange({ id: null, status: null });
+    };
+
     return (
         <div className="flex min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
             <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
             <div className="flex-1 overflow-y-auto h-screen">
-                <Navbar pageName={"All Brokers"}/>
+                <Navbar pageName={"All Brokers"} />
 
                 <div className="w-full px-5 my-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
@@ -191,25 +205,17 @@ const Brokers = () => {
                                                 <input
                                                     type="checkbox"
                                                     checked={item?.isActive}
-                                                    onChange={(e) =>
-                                                        handleStatusToggle(item?._id, e.target.checked)
-                                                    }
+                                                    onChange={(e) => {
+                                                        setPendingStatusChange({ id: item._id, status: e.target.checked });
+                                                        setShowStatusPopup(true);
+                                                    }}
                                                     className="sr-only"
                                                 />
-                                                <div
-                                                    className={`w-10 h-5 ${item?.isActive
-                                                        ? "bg-green-500"
-                                                        : "bg-gray-500"
-                                                        } rounded-full shadow-inner relative transition-all duration-300`}
-                                                >
-                                                    <div
-                                                        className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${item?.isActive
-                                                            ? "translate-x-5 bg-green-500"
-                                                            : "bg-gray-500"
-                                                            }`}
-                                                    ></div>
+                                                <div className={`w-10 h-5 ${item?.isActive ? "bg-green-500" : "bg-gray-500"} rounded-full shadow-inner relative transition-all duration-300`}>
+                                                    <div className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${item?.isActive ? "translate-x-5 bg-green-500" : "bg-gray-500"}`}></div>
                                                 </div>
                                             </label>
+
                                         </div>
                                     </td>
 
@@ -219,6 +225,48 @@ const Brokers = () => {
                             ))}
                         </tbody>
                     </table>
+                    <AnimatePresence>
+                        {showStatusPopup && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+                            >
+                                <motion.div
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 0.8, opacity: 0 }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                                    className="bg-white rounded-lg shadow-lg p-6 w-80 text-center"
+                                >
+                                    <h2 className="text-lg font-semibold mb-4">Confirm Status Change</h2>
+                                    <p className="text-sm text-gray-600 mb-6">
+                                        Are you sure you want to change the status?
+                                    </p>
+                                    <div className="flex justify-center gap-4">
+                                        <button
+                                            onClick={confirmStatusChange}
+                                            className={`text-white px-4 py-2 rounded hover:opacity-90 ${pendingStatusChange.status
+                                                    ? "bg-green-600 hover:bg-green-700"
+                                                    : "bg-red-600 hover:bg-red-700"
+                                                }`}
+                                        >
+                                            Yes
+                                        </button>
+
+                                        <button
+                                            onClick={cancelStatusChange}
+                                            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                                        >
+                                            No
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     {/* Delete Confirmation Popup */}
                     <AnimatePresence>
                         {showDeletePopup && (
@@ -263,71 +311,67 @@ const Brokers = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="fixed inset-0 flex items-center justify-center bg-black/50 bg-opacity-40 z-50"
+                                className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
                             >
                                 <motion.div
                                     initial={{ scale: 0.8, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     exit={{ scale: 0.8, opacity: 0 }}
                                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                                    className="bg-white rounded-lg shadow-lg p-6 w-80 text-center"
+                                    className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mx-4"
                                 >
-                                    <div
-                                        onClick={() => setShowEditPopup(false)}
-                                        className="flex  justify-end items-end "
-                                    >
-                                        <IoCloseSharp
-                                            size={25}
-                                            className="text-gray-700 hover:text-gray-600"
-                                        />
+                                    <div className="flex justify-end mb-2">
+                                        <button
+                                            onClick={() => setShowEditPopup(false)}
+                                            aria-label="Close popup"
+                                            className="text-gray-700 hover:text-gray-600 transition"
+                                        >
+                                            <IoCloseSharp size={24} />
+                                        </button>
                                     </div>
-                                    <h2 className="text-lg font-semibold mb-4">Edit Customer</h2>
-                                    <div className="text-start">
-                                        <TextInput
-                                            label={"User full name"}
-                                            placeholder={"Enter full name"}
-                                            className="text-start"
-                                            value={user.fullName}
-                                            onChange={(e) => {
-                                                setUser((prev) => ({
-                                                    ...prev,
-                                                    fullName: e.target.value,
-                                                }));
-                                            }}
-                                        />
-                                        <TextInput
-                                            label={"Email"}
-                                            placeholder={"Enter full name"}
-                                            type="email"
-                                            className="text-start"
-                                            value={user.email}
-                                            onChange={(e) => {
-                                                setUser((prev) => ({
-                                                    ...prev,
-                                                    email: e.target.value,
-                                                }));
-                                            }}
-                                        />
 
-                                        <label htmlFor="" className="text-sm poppins-medium">
-                                            Address
-                                        </label>
-                                        <textarea
-                                            className="w-full cursor-pointer hover:bg-gray-100 flex-col text-sm px-4 py-2 poppins-regular border-2 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#265953] border-primary h-[80px]"
-                                            placeholder="Enter description"
-                                            value={user.address}
-                                            onChange={(text) =>
-                                                setUser({
-                                                    ...user,
-                                                    address: text.target.value,
-                                                })
+                                    <h2 className="text-xl font-semibold text-center mb-4">Edit Customer</h2>
+
+                                    <div className="space-y-4 text-left">
+                                        <TextInput
+                                            label="User Full Name"
+                                            placeholder="Enter full name"
+                                            value={user.fullName}
+                                            onChange={(e) =>
+                                                setUser((prev) => ({ ...prev, fullName: e.target.value }))
                                             }
                                         />
 
-                                        <div className="flex justify-center gap-4">
+                                        <TextInput
+                                            label="Email"
+                                            placeholder="Enter email"
+                                            type="email"
+                                            value={user.email}
+                                            onChange={(e) =>
+                                                setUser((prev) => ({ ...prev, email: e.target.value }))
+                                            }
+                                        />
+
+                                        <div>
+                                            <label htmlFor="address" className="text-sm font-medium block mb-1">
+                                                Address
+                                            </label>
+                                            <textarea
+                                                id="address"
+                                                className="w-full resize-none border-2 border-primary rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#265953] transition"
+                                                placeholder="Enter address"
+                                                rows={3}
+                                                value={user.address}
+                                                onChange={(e) =>
+                                                    setUser((prev) => ({ ...prev, address: e.target.value }))
+                                                }
+                                            />
+                                        </div>
+
+                                        <div className="flex justify-center pt-2">
                                             <button
                                                 onClick={handleConfirmEdit}
-                                                className="bg-primary text-white rounded-full px-4 py-2  cursor-pointer"
+                                                className="bg-primary hover:bg-[#1e4b42] text-white rounded-full px-6 py-2 transition duration-300"
                                             >
                                                 Update User
                                             </button>

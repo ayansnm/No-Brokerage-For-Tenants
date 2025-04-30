@@ -36,7 +36,7 @@ const AllTickets = () => {
         {/* {JSON.stringify(tickets.length)} */}
         {/* Search & Sort */}
         <div className="flex justify-between mt-6 px-4">
-          <div className="flex items-center px-3 py-2 bg-white border rounded-lg border-[#e7e4e7]  focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all">
+          <div className="flex w-full sm:w-96 items-center px-3 py-2 bg-white border rounded-lg border-[#e7e4e7]  focus-within:border-[#7f7f7f] focus-within:ring-1 focus-within:ring-[#7f7f7f] transition-all">
             <FiSearch size={20} className="text-[#7f7f7f] mr-2" />
             <input
               type="text"
@@ -92,7 +92,7 @@ const AllTickets = () => {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="bg-white rounded-xl w-full max-w-md p-6 relative"
+                className="bg-white rounded-xl w-full max-w-2xl p-6 relative"
               >
                 <button
                   onClick={() => setShowModal(false)}
@@ -103,7 +103,7 @@ const AllTickets = () => {
 
                 <div className="flex flex-col gap-4">
                   {/* Header */}
-                  <h2 className="text-xl font-semibold text-primary">
+                  <h2 className="text-xl font-semibold text-[#265953]">
                     Ticket Response :
                   </h2>
                   <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -117,7 +117,7 @@ const AllTickets = () => {
                       <p>
                         <strong>Question:</strong> {ticketSelected?.message}
                       </p>
-                      <p>
+                      <p className="break-words whitespace-pre-wrap">
                         <strong>Description:</strong>{" "}
                         {ticketSelected?.description}
                       </p>
@@ -127,16 +127,16 @@ const AllTickets = () => {
                   {/* Textarea */}
                   <textarea
                     rows={4}
-                    className="w-full cursor-pointer hover:bg-gray-100 flex-col text-sm px-4 py-2 poppins-regular border-2 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#265953] border-primary h-[80px]"
+                    className="w-full hover:bg-gray-100 flex-col text-sm px-4 py-2 poppins-regular border-2 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#265953] border-primary"
                     placeholder="Write your response here..."
                     onChange={(e) => setReply(e.target.value)}
                     value={reply}
-                  ></textarea>
+                  />
                 </div>
 
                 <button
                   onClick={() => handleResponse(reply)}
-                  className="mt-4 w-full bg-green-900 text-white py-2 rounded-lg hover:bg-green-800"
+                  className="mt-4 w-full bg-[#265953] text-white py-2 rounded-lg hover:bg-[#265953ee] cursor-pointer"
                 >
                   Submit Response
                 </button>
@@ -150,94 +150,98 @@ const AllTickets = () => {
 };
 
 const TicketCard = ({
-    onResponseClick,
-    userName,
-    message,
-    description,
-    photo,
-    response,
-  }) => {
-    const API_URL = import.meta.env.VITE_API_URL;
-    
-    return (
-      <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200 w-full max-w-3xl mx-auto">
-        <div className="flex flex-col sm:flex-row gap-6">
-          {/* Image Section - Fixed width */}
-          <div className="w-full sm:w-40 h-40 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
-            {photo ? (
-              <img 
-                src={`${API_URL}/${photo}`} 
-                alt="Ticket attachment" 
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="text-gray-400 text-4xl">📎</div>
-            )}
-          </div>
-  
-          {/* Content Section - Flexible but constrained */}
-          <div className="flex-1 min-w-0"> {/* min-w-0 prevents flex item overflow */}
-            {/* Header with user and action button */}
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
-              <div className="min-w-0"> {/* Prevents text overflow */}
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-700">From:</span>
-                  <h3 className="font-semibold text-gray-900 truncate">
-                    {userName}
-                  </h3>
-                </div>
+  onResponseClick,
+  userName,
+  message,
+  description,
+  photo,
+  response,
+}) => {
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  return (
+    <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200 w-full max-w-3xl mx-auto">
+      <div className="flex flex-col sm:flex-row gap-6">
+        {/* Image Section - Fixed width */}
+        <div className="w-full sm:w-40 h-40 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+          {photo ? (
+            <img
+              src={`${API_URL}/${photo}`}
+              alt="Ticket attachment"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="text-gray-400 text-4xl">📎</div>
+          )}
+        </div>
+
+        {/* Content Section - Flexible but constrained */}
+        <div className="flex-1 min-w-0"> {/* min-w-0 prevents flex item overflow */}
+          {/* Header with user and action button */}
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-2">
+            <div className="min-w-0"> {/* Prevents text overflow */}
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-gray-700">From:</span>
+                <h3 className="font-semibold text-gray-900 truncate">
+                  {userName}
+                </h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-gray-700">Question:</span>
                 <h4 className="font-semibold text-lg text-gray-800 mt-1 truncate">
                   {message}
                 </h4>
               </div>
-              
-              {response === null ? (
-                <button
-                  className="bg-primary hover:opacity-95 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-200 flex-shrink-0"
-                  onClick={onResponseClick}
-                >
-                  Respond
-                </button>
-              ) : (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 flex-shrink-0">
-                  Responded
-                </span>
-              )}
             </div>
-  
-            {/* Description with proper overflow handling */}
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <p className="text-gray-700 break-words whitespace-pre-line">
-                {description}
-              </p>
-            </div>
-  
-            {/* Response section */}
-            <div>
-              {response ? (
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                  <div className="flex items-center gap-2 mb-1">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-sm font-medium text-blue-600">Response</span>
-                  </div>
-                  <p className="text-gray-700 break-words whitespace-pre-line">
-                    {response}
-                  </p>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 text-gray-500">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+            {response === null ? (
+              <button
+                className="bg-primary hover:opacity-95 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-200 flex-shrink-0"
+                onClick={onResponseClick}
+              >
+                Respond
+              </button>
+            ) : (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 flex-shrink-0">
+                Responded
+              </span>
+            )}
+          </div>
+
+          {/* Description with proper overflow handling */}
+          <div className="bg-gray-50 rounded-lg mb-4">
+            <span className="font-medium text-gray-700">Description:</span>
+            <p className="text-gray-700 break-words whitespace-pre-line">
+              {description}
+            </p>
+          </div>
+
+          {/* Response section */}
+          <div>
+            {response ? (
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                <div className="flex items-center gap-2 mb-1">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span className="text-sm">Awaiting response</span>
+                  <span className="text-sm font-medium text-blue-600">Response</span>
                 </div>
-              )}
-            </div>
+                <p className="text-gray-700 break-words whitespace-pre-line">
+                  {response}
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 text-gray-500">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-sm">Awaiting response</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 export default AllTickets;
