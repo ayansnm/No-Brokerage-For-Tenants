@@ -1,20 +1,41 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast';
 
 const useGetAllProperties = () => {
   const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState([]);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    currentPage: 1,
+    totalPages: 1
+  });
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const getAllProperties = async ({searchQuery,category, floor,format,priceRange,type, furnished}) => {
+  const getAllProperties = async ({
+    searchQuery,
+    category,
+    floor,
+    format,
+    priceRange,
+    type,
+    furnished,
+    page = 1
+  }) => {
     try {
       setLoading(true);
-      const userId = localStorage.getItem("userId")
       const token = localStorage.getItem("token");
-      console.log(`${API_URL}/api/property/getallproperties?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${""}&furnished=${furnished || ""}`);
       
       const response = await fetch(
-        `${API_URL}/api/property/getallproperties?search=${searchQuery || ""}&category=${type || ""}&floor=${floor || ""}&priceRange=${priceRange || ""}&format=${format || ""}&type=${category || ""}&furnished=${furnished || ""}`,
+        `${API_URL}/api/property/getallproperties?` + new URLSearchParams({
+          search: searchQuery || "",
+          category: type || "",
+          floor: floor || "",
+          priceRange: priceRange || "",
+          format: format || "",
+          type: category || "",
+          furnished: furnished || "",
+          page: page
+        }),
         {
           method: "GET",
           headers: {
@@ -23,24 +44,33 @@ const useGetAllProperties = () => {
           },
         }
       );
+      
       const result = await response.json();
-      console.log(JSON.stringify(result?.data?.data));
       
       if (response.ok) {
         setProperties(result?.data?.data || []);
-      }
-      else{
-        setProperties([])
+        setPagination(result?.data?.pagination || {
+          total: 0,
+          currentPage: 1,
+          totalPages: 1
+        });
+      } else {
+        setProperties([]);
+        setPagination({
+          total: 0,
+          currentPage: 1,
+          totalPages: 1
+        });
       }
     } catch (error) {
       toast.error(error.message || "Error fetching properties");
       console.error("Error fetching properties:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
-  return { loading, properties, getAllProperties };
+  return { loading, properties, pagination, getAllProperties };
 }
 
-export default useGetAllProperties
+export default useGetAllProperties;

@@ -113,10 +113,10 @@ const AllCustomers = () => {
               />
             </div>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900 hover:bg-green-800 text-white text-sm transition self-start sm:self-auto">
+          {/* <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900 hover:bg-green-800 text-white text-sm transition self-start sm:self-auto">
             <IoAddOutline size={18} />
             Add Customer
-          </button>
+          </button> */}
         </div>
 
         {/* Table */}

@@ -120,10 +120,10 @@ const Brokers = () => {
                         </div>
                     </div>
 
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900 hover:bg-green-800 text-white text-sm transition self-start sm:self-auto">
+                    {/* <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900 hover:bg-green-800 text-white text-sm transition self-start sm:self-auto">
                         <IoAddOutline size={18} />
                         Add Broker
-                    </button>
+                    </button> */}
                 </div>
 
                 <div className="overflow-x-auto px-5 mt-4">
@@ -136,7 +136,7 @@ const Brokers = () => {
                                 <th className="text-left px-4 py-3">STATUS</th>
                                 {/* <th className="text-left px-4 py-3">RATE</th> */}
                                 <th className="text-left px-4 py-3">ACTION</th>
-                                <th className="text-left px-4 py-3">PROPERTIES</th>
+                                <th className="text-left px-4 py-3">LISTED PROPERTIES</th>
                                 {/* <th className="text-left px-4 py-3">SHARE</th> */}
                             </tr>
                         </thead>
@@ -213,7 +213,7 @@ const Brokers = () => {
                                         </div>
                                     </td>
 
-                                    <td className="px-4 py-3">{item.properties || 'N/A'}</td>
+                                    <td className="px-4 py-3">{item.propertiesCount || '0'}</td>
                                     {/* <td className="px-4 py-3">{item.share || 'N/A'}</td> */}
                                 </tr>
                             ))}

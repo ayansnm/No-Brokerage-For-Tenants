@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BsFilter } from "react-icons/bs";
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { BsFilter, BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import PropertyCard from "../../components/Cards/PropertyCard";
 import Navbar from "../../components/Fields/Navbar";
 import Sidebar from "../../components/Fields/Sidebar";
-import Footer from "../../components/Fields/Footer";
 import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
 import PriceRangeSlider from "../../components/Fields/PriceRangeSelector";
 import useGetAllProperties from "../../hooks/admin-hooks/useGetAllProperties";
@@ -16,14 +15,15 @@ const AllProperties = () => {
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOption, setSortOption] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState({
     priceRange: [0, 1000000],
   });
 
-  const { loading, properties, getAllProperties } = useGetAllProperties();
+  const { loading, properties, pagination, getAllProperties } = useGetAllProperties();
 
   const applyFilters = () => {
+    setCurrentPage(1); // Reset to first page when filters change
     fetchData();
   };
 
@@ -36,12 +36,13 @@ const AllProperties = () => {
       priceRange: filter.priceRange[1],
       type: filter.type || "",
       furnished: filter.furnished || "",
+      page: currentPage, // Add page parameter
     });
   };
 
   useEffect(() => {
     fetchData();
-  }, [searchQuery, activeTab]);
+  }, [searchQuery, activeTab, currentPage]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,6 +50,12 @@ const AllProperties = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination?.totalPages) {
+      setCurrentPage(newPage);
+    }
   };
 
   const tabs = [
@@ -71,31 +78,21 @@ const AllProperties = () => {
             <div className="lg:w-2/3">
               {/* Header with actions */}
               <div className="bg-white rounded-xl shadow-sm p-3 mb-6">
-                {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"> */}
-                {/* <h2 className="text-xl font-bold text-gray-800">
-                    All Properties
-                  </h2> */}
-                {/* <button
-                    onClick={() => navigate("/broker/addproperty")}
-                    className="flex items-center gap-2 bg-primary hover:opacity-90 cursor-pointer text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    <FaPlus size={14} />
-                    Add Property
-                  </button> */}
-                {/* </div> */}
-
-                {/* Tabs, Search and Filter */}
-                <div className=" flex flex-col sm:flex-row justify-between gap-4">
+                <div className="flex flex-col sm:flex-row justify-between gap-4">
                   {/* Tabs */}
                   <div className="flex bg-gray-100 p-1 rounded-lg">
                     {tabs.map((tab) => (
                       <button
                         key={tab.value}
-                        onClick={() => setActiveTab(tab.value)}
-                        className={`px-4 py-2 text-sm rounded-md transition-colors ${activeTab === tab.value
+                        onClick={() => {
+                          setActiveTab(tab.value);
+                          setCurrentPage(1);
+                        }}
+                        className={`px-4 py-2 text-sm rounded-md transition-colors ${
+                          activeTab === tab.value
                             ? "bg-white shadow-sm text-primary poppins-semibold"
                             : "text-gray-600 hover:text-gray-800"
-                          }`}
+                        }`}
                       >
                         {tab.label}
                       </button>
@@ -113,28 +110,18 @@ const AllProperties = () => {
                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#265953] focus:border-primary sm:text-sm"
                         placeholder="Search properties..."
                         value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          setCurrentPage(1);
+                        }}
                       />
                     </div>
-                    {/* <div className="flex gap-2">
-                      <select
-                        className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#265953] focus:border-primary sm:text-sm"
-                        value={sortOption}
-                        onChange={(e) => setSortOption(e.target.value)}
-                      >
-                        <option value="">Sort by</option>
-                        <option value="price-asc">Price: Low to High</option>
-                        <option value="price-desc">Price: High to Low</option>
-                        <option value="date-asc">Date: Oldest</option>
-                        <option value="date-desc">Date: Newest</option>
-                      </select>
-                      <button
-                        onClick={() => setFilterModalOpen(true)}
-                        className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm hover:bg-gray-50 text-sm font-medium text-gray-700 md:hidden"
-                      >
-                        <BsFilter size={16} />
-                      </button>
-                    </div> */}
+                    <button
+                      onClick={() => setFilterModalOpen(true)}
+                      className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm hover:bg-gray-50 text-sm font-medium text-gray-700 md:hidden"
+                    >
+                      <BsFilter size={16} />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -145,24 +132,63 @@ const AllProperties = () => {
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
               ) : properties && properties.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6">
-                  {properties.map((item) => (
-                    <PropertyCard
-                      key={item?._id}
-                      id={item?._id}
-                      title={item?.title}
-                      price={item?.price}
-                      address={item?.address}
-                      media={item?.media}
-                      area={item?.area}
-                      floor={item?.floor}
-                      sizeType={item?.sizeType}
-                      size={item?.size}
-                      description={item?.description}
-                      type={item?.type}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 gap-6">
+                    {properties.map((item) => (
+                      <PropertyCard
+                        key={item?._id}
+                        id={item?._id}
+                        title={item?.title}
+                        price={item?.price}
+                        address={item?.address}
+                        media={item?.media}
+                        area={item?.area}
+                        floor={item?.floor}
+                        sizeType={item?.sizeType}
+                        size={item?.size}
+                        description={item?.description}
+                        type={item?.type}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {pagination?.totalPages > 1 && (
+                    <div className="flex justify-center mt-8">
+                      <nav className="flex items-center gap-1" aria-label="Pagination">
+                        <button
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <BsChevronLeft className="h-5 w-5" />
+                        </button>
+
+                        {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
+                          <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`px-4 py-1 rounded-md border ${
+                              currentPage === page
+                                ? "border-primary bg-primary text-white"
+                                : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ))}
+
+                        <button
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === pagination.totalPages}
+                          className="px-3 py-1 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <BsChevronRight className="h-5 w-5" />
+                        </button>
+                      </nav>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="bg-white rounded-xl shadow-sm p-8 text-center">
                   <div className="max-w-md mx-auto">
@@ -172,13 +198,6 @@ const AllProperties = () => {
                     <p className="text-gray-500 mb-6">
                       There are no properties matching your criteria.
                     </p>
-                    <button
-                      onClick={() => navigate("/broker/addproperty")}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      <FaPlus className="-ml-1 mr-2 h-4 w-4" />
-                      Add Property
-                    </button>
                   </div>
                 </div>
               )}
@@ -285,6 +304,7 @@ const AllProperties = () => {
                       className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded-lg font-medium transition-colors"
                       onClick={() => {
                         setFilter({ priceRange: [0, 1000000] });
+                        setCurrentPage(1);
                         fetchData();
                       }}
                     >
@@ -409,6 +429,7 @@ const AllProperties = () => {
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => {
                     setFilter({ priceRange: [0, 1000000] });
+                    setCurrentPage(1);
                     setFilterModalOpen(false);
                     fetchData();
                   }}
@@ -420,8 +441,6 @@ const AllProperties = () => {
           </div>
         </div>
       )}
-
-      {/* <Footer /> */}
     </div>
   );
 };

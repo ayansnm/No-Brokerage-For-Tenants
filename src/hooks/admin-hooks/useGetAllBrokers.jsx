@@ -25,6 +25,8 @@ const useFetchAllBrokers = () => {
 
       if (response.ok) {
         setAllBrokers(result?.data || []);
+        console.log("Result:", result);
+        
       } else {
         toast.error(result.message || "Failed to fetch brokers");
       }

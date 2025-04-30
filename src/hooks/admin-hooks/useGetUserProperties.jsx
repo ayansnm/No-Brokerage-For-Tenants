@@ -6,15 +6,40 @@ const useGetUserProperties = () => {
   const [allProperties, setAllProperties] = useState([]);
   const [requirement, setRequirement] = useState([]);
   const [user, setUser] = useState({});
+  const [pagination, setPagination] = useState({});
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const fetchSharingProperty = async ({page = 1, limit = 10, search = "", userId}) => {
+  const fetchSharingProperty = async ({
+    page = 1,
+    limit = 10,
+    search = "",
+    userId,
+    category = "",
+    floor = "",
+    format = "",
+    priceRange = "",
+    type = "",
+    furnished = ""
+  }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
 
+      // Construct query parameters
+      const params = new URLSearchParams({
+        page,
+        limit,
+        search: search || "",
+        category: category || "",
+        floor: floor || "",
+        format: format || "",
+        priceRange: priceRange || "",
+        type: type || "",
+        furnished: furnished || ""
+      });
+
       const response = await fetch(
-        `${API_URL}/api/property/getpropertylistbyuserrequirement/${userId}?page=${page}&limit=${limit}&search=${search || ""}`,
+        `${API_URL}/api/property/getpropertylistbyuserrequirement/${userId}?${params.toString()}`,
         {
           method: "GET",
           headers: {
@@ -23,21 +48,39 @@ const useGetUserProperties = () => {
           },
         }
       );
+      
       const result = await response.json();
-      console.log("DATA : ",JSON.stringify(result?.data));
+      
       if (response.ok) {
         setAllProperties(result?.data?.properties || []);
-        setRequirement(result?.data?.customerRequirement || {});
+        setRequirement(result?.data?.requirement || {});
+        setUser(result?.data?.user || {});
+        setPagination(result?.data?.pagination || {});
+      } else {
+        setAllProperties([]);
+        setRequirement({});
+        setUser({});
+        setPagination({
+          total: 0,
+          totalPages: 1,
+        });
       }
     } catch (error) {
-      toast.error(error.message || "Error fetching customers");
-      console.error("Error fetching customers:", error);
+      toast.error(error.message || "Error fetching properties");
+      console.error("Error fetching properties:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, allProperties, fetchSharingProperty, user };
+  return { 
+    loading, 
+    allProperties, 
+    fetchSharingProperty, 
+    user, 
+    requirement,
+    pagination 
+  };
 };
 
 export default useGetUserProperties;
