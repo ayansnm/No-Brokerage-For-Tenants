@@ -3,9 +3,10 @@ import Navbar from "../../components/Fields/Navbar";
 import { FiSearch } from "react-icons/fi";
 import useGetAllSharedCustomersList from "../../hooks/broker-hooks/useGetAllSharedCustomersList";
 import { useParams } from "react-router-dom";
+import useSharePropertyStatusChange from "../../hooks/admin-hooks/useSharePropertyStatusChange";
 
 const SuggestedCustomer = () => {
-  const filters = ["All", "Interested", "Not-Interested", "Not-Connected"];
+  const filters = ["All", "Interested", "Not-Interested", "Pending"];
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,6 +37,8 @@ const SuggestedCustomer = () => {
   const totalPages = pagination?.totalPages || 1;
   const totalCustomers = pagination?.total || 0;
 
+  const {sharePropertyStatusChange, loading} = useSharePropertyStatusChange();
+
   const handleStatusChange = async (customerId, newStatus) => {
     // Implement your API call to update customer status here
     // After successful update, you might want to refetch the current page
@@ -47,6 +50,14 @@ const SuggestedCustomer = () => {
     //   status: activeFilter === "All" ? undefined : activeFilter,
     //   search: searchTerm || undefined
     // });
+    await sharePropertyStatusChange({ id: customerId, status: newStatus });
+    getAllCustomers({ 
+      propertyId: id,
+      page: currentPage,
+      limit: itemsPerPage,
+      status: activeFilter === "All" ? undefined : activeFilter,
+      search: searchTerm || undefined
+    });
   };
 
   return (
@@ -188,9 +199,9 @@ const SuggestedCustomer = () => {
                           </option>
                           <option
                             className="bg-blue-100 text-blue-800"
-                            value="Not-Connected"
+                            value="Pending"
                           >
-                            Not Connected
+                            Pending
                           </option>
                         </select>
                       </td>

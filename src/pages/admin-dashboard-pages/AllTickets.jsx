@@ -11,6 +11,7 @@ import useGiveResponseTicket from "../../hooks/admin-hooks/useGiveResponseTicket
 const AllTickets = () => {
   const [showModal, setShowModal] = useState(false);
   const { loading, tickets, getAllTickets } = useGetAllTickets();
+  const API_URL = import.meta.env.VITE_API_URL;
   const [ticketSelected, setTicketSelected] = useState({});
   const fetchTickets = async () => {
     await getAllTickets();
@@ -69,6 +70,7 @@ const AllTickets = () => {
                   message: item?.message,
                   description: item?.description,
                   id: item?._id,
+                  photo: item?.photo,
                 });
                 setShowModal(true);
               }}
@@ -105,8 +107,7 @@ const AllTickets = () => {
                     Ticket Response :
                   </h2>
                   <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <div className="w-full sm:w-[50%] h-32 bg-gray-200 rounded-md flex items-center justify-center">
-                      <span className="text-gray-400 text-4xl">🖼</span>
+                    <div className="w-full sm:w-[50%] h-32 bg-gray-200 rounded-md flex items-center justify-center" style={{ backgroundImage: `url(${API_URL}/${ticketSelected?.photo})` }}>
                     </div>
                     {/* Ticket Info */}
                     <div className="space-y-2 text-sm text-gray-700 w-full sm:w-[50%]">
