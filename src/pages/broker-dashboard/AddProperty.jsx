@@ -29,6 +29,7 @@ const AddProperty = () => {
     state: "",
     city: "",
     area: "",
+    pincode: "",
     type: "",
     furnished: "",
     format: "",
@@ -137,6 +138,9 @@ const AddProperty = () => {
         if (!formData.area) {
           newErrors.area = "Please select an area";
         }
+        if (!formData.pincode) {
+          newErrors.area = "Please select a pincode";
+        }
         break;
       case 3:
         if (!formData.type) {
@@ -197,6 +201,7 @@ const AddProperty = () => {
       state: formData.state,
       city: formData.city,
       area: formData.area,
+      pincode: formData.pincode,
       size: formData.size + " " + formData.sizetype,
       priceRange: formData.priceRange,
       scheme: formData.scheme,
@@ -218,6 +223,7 @@ const AddProperty = () => {
       state: formData.state,
       city: formData.city,
       area: formData.area,
+      pincode: formData.pincode,
       size: formData.size + " " + formData.sizetype,
       priceRange: formData.priceRange,
       scheme: formData.scheme,
@@ -318,6 +324,7 @@ const AddProperty = () => {
         state: property.location?.state || "Gujarat",
         city: property.location?.city || "Ahmedabad",
         area: property.area || "",
+        pincode: property.pincode || "",
         type: property.category || "",
         furnished: property.furnished || "",
         format: property.format || "",
@@ -356,7 +363,7 @@ const AddProperty = () => {
         }}
         className="px-[1rem]"
       >
-        {}
+        { }
         <div
           style={{
             width: "100%",
@@ -390,11 +397,10 @@ const AddProperty = () => {
               <div className="flex flex-col sm:flex-col gap-2 justify-center items-center">
                 <button
                   type="button"
-                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${
-                    formData.purpose === "commercial"
+                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${formData.purpose === "commercial"
                       ? "bg-primary text-white border-primary"
                       : "bg-white text-primary border-primary hover:bg-[#265953] hover:!text-white"
-                  }`}
+                    }`}
                   onClick={() => handlePurposeSelect("commercial")}
                 >
                   <div className="flex flex-row items-center gap-3">
@@ -422,11 +428,10 @@ const AddProperty = () => {
                 </button>
                 <button
                   type="button"
-                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${
-                    formData.purpose === "residential"
+                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${formData.purpose === "residential"
                       ? "bg-primary text-white border-primary"
                       : "bg-white text-primary border-primary hover:bg-[#265953] hover:!text-white"
-                  }`}
+                    }`}
                   onClick={() => handlePurposeSelect("residential")}
                 >
                   <div className="flex flex-row items-center gap-3">
@@ -473,7 +478,7 @@ const AddProperty = () => {
                     Property Media (Max 10 - Images/Videos)
                   </label>
                   <div className="border-2 border-dashed border-primary rounded-xl p-4 text-center cursor-pointer hover:bg-primary-light/10">
-                    <label className="flex flex-col items-center justify-center space-y-2">
+                    <label className="flex cursor-pointer flex-col items-center justify-center space-y-2">
                       <IoIosImages size={48} className="text-primary" />
                       <span className="text-primary font-medium">
                         Click to upload images/videos
@@ -620,9 +625,9 @@ const AddProperty = () => {
                     options={
                       Array.isArray(areas)
                         ? areas.map((item) => ({
-                            value: item.areaName,
-                            label: item.areaName,
-                          }))
+                          value: item.areaName,
+                          label: item.areaName,
+                        }))
                         : []
                     }
                     placeholder="Select area"
@@ -637,6 +642,23 @@ const AddProperty = () => {
                   })
                 )} */}
                 </div>
+                <div className="form-group">
+                  <TextInput
+                    label={"Pincode"}
+                    name={"pincode"}
+                    type="text"
+                    placeholder={"Enter pincode"}
+                    value={formData.pincode}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        pincode: e.target.value,
+                      }))
+                    }
+                    error={errors.pincode}
+                  />
+                </div>
+
               </div>
             </Step>
 
@@ -654,14 +676,14 @@ const AddProperty = () => {
                     options={
                       formData.purpose === "residential"
                         ? [
-                            { value: "House", label: "House" },
-                            { value: "Bunglow", label: "Bunglow" },
-                            { value: "Flat", label: "Flat" },
-                          ]
+                          { value: "House", label: "House" },
+                          { value: "Bunglow", label: "Bunglow" },
+                          { value: "Flat", label: "Flat" },
+                        ]
                         : [
-                            { value: "Office", label: "Office" },
-                            { value: "Shop", label: "Shop" },
-                          ]
+                          { value: "Office", label: "Office" },
+                          { value: "Shop", label: "Shop" },
+                        ]
                     }
                     placeholder="Select type"
                     error={errors.type}
