@@ -65,7 +65,7 @@ const SuggestedCustomer = () => {
       <div className="flex-1">
         <Navbar pageName="Suggested Customer" />
 
-        <div className="p-4 mx-10 border rounded-2xl border-gray-300 bg-white">
+        <div className="p-4 mx-10 border rounded-2xl border-gray-300 bg-white animate-fadeIn mt-5">
           {/* Filters and Search */}
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap gap-4">
@@ -78,8 +78,8 @@ const SuggestedCustomer = () => {
                   }}
                   className={`px-3 py-1 rounded-lg transition ${
                     activeFilter === filter
-                      ? "bg-green-900 text-white"
-                      : "text-gray-400 hover:text-black"
+                      ? "bg-primary text-white"
+                      : "text-gray-400 hover:text-primary"
                   }`}
                 >
                   {filter}
@@ -105,7 +105,7 @@ const SuggestedCustomer = () => {
           {/* Table */}
           <div className="mt-6 overflow-x-auto">
             <table className="min-w-full bg-white rounded-lg shadow">
-              <thead className="bg-gray-100 text-gray-600 text-left">
+              <thead className="bg-gray-100 text-primary text-left">
                 <tr>
                   <th className="py-2 px-4">#</th>
                   <th className="py-2 px-4">Name</th>
@@ -179,14 +179,14 @@ const SuggestedCustomer = () => {
                           }
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             customer.status === "Interested"
-                              ? "bg-green-100 text-green-800"
+                              ? "bg-green-100 text-primary"
                               : customer.status === "Not-Interested"
                               ? "bg-red-100 text-red-800"
                               : "bg-blue-100 text-blue-800"
                           }`}
                         >
                           <option
-                            className="bg-green-100 text-green-800"
+                            className="bg-green-100 text-primary"
                             value="Interested"
                           >
                             Interested

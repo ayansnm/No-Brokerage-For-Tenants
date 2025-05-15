@@ -106,7 +106,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50 poppins-regular">
       <Navbar pageName="Dashboard" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fadeIn">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-8">
           {stats.map((stat, index) => (
@@ -119,7 +119,7 @@ const Dashboard = () => {
                   <p className="text-sm font-medium text-gray-500">
                     {stat.title}
                   </p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-2xl font-bold text-primary">{stat.value}</p>
                 </div>
               </div>
               {/* <div className="mt-4">
@@ -151,7 +151,7 @@ const Dashboard = () => {
             {/* Header with actions */}
             <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-xl font-bold text-primary">
                   Your Properties
                 </h2>
                 <button
@@ -173,7 +173,7 @@ const Dashboard = () => {
                       onClick={() => setActiveTab(tab.value)}
                       className={`px-4 py-2 text-sm rounded-md transition-colors ${
                         activeTab === tab.value
-                          ? "bg-green-900 text-white shadow-sm poppins-semibold"
+                          ? "bg-primary text-white shadow-sm poppins-semibold"
                           : "text-gray-600 hover:text-gray-800"
                       }`}
                     >

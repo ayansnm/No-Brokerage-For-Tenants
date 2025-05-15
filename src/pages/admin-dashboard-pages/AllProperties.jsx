@@ -71,7 +71,7 @@ const AllProperties = () => {
       <div className="flex-1 overflow-y-auto h-screen">
         <Navbar pageName="All Properties" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fadeIn">
           {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Property List Section */}

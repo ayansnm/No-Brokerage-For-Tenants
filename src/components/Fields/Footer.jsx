@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Company Info */}
         <div>
-          <h2 className="text-2xl font-bold mb-4 text-green-900">No Brokerage For Tenants</h2>
+          <h2 className="text-2xl font-bold mb-4 text-primary">No Brokerage For Tenants</h2>
           <p className="text-gray-700">
             Helping you find the perfect property – from cozy apartments to spacious homes.
           </p>
@@ -16,7 +16,7 @@ const Footer = () => {
 
         {/* Quick Links */}
         <div>
-          <h3 className="text-xl font-semibold mb-4 text-green-900">Quick Links</h3>
+          <h3 className="text-xl font-semibold mb-4 text-primary">Quick Links</h3>
           <ul className="space-y-2">
             <li>
               <Link to="/broker/dashboard" className="text-gray-700 hover:text-black transition-colors duration-200">
@@ -43,7 +43,7 @@ const Footer = () => {
 
         {/* Contact & Social Links */}
         <div>
-          <h3 className="text-xl font-semibold mb-4 text-green-900">Contact Us</h3>
+          <h3 className="text-xl font-semibold mb-4 text-primary">Contact Us</h3>
           <p className="text-gray-700 mb-1">Email: <a href="mailto:support@nbft.com" className="hover:underline">support@nbft.com</a></p>
           <p className="text-gray-700 mb-1">Phone: +91 98765 43210</p>
           <p className="text-gray-700 mb-4">456, MG Road, Bangalore, Karnataka 560001, India</p>
@@ -65,7 +65,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Text */}
-      <div className="text-center text-gray-600 text-sm mt-10 border-t border-gray-400 pt-6">
+      <div className="text-center text-primary text-sm mt-10 border-t border-gray-400 pt-6">
         © {new Date().getFullYear()} No Brokerage For Tenants. All rights reserved.
       </div>
     </footer>

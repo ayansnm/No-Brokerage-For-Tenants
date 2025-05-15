@@ -62,7 +62,7 @@ const AdminDashboard = () => {
         <Navbar pageName="Dashboard" />
 
         {/* Main Content */}
-        <div className="w-full flex justify-center p-3">
+        <div className="w-full flex justify-center p-3 animate-fadeIn">
           <div className="w-full md:w-[90vw] lg:w-[75vw] flex flex-col md:flex-row justify-between bg-white rounded-2xl border border-[#D4D4D4] p-4 sm:p-6 gap-6">
             {/* Total Properties Suggested */}
             <div className="flex items-start gap-3 flex-1">
@@ -73,24 +73,24 @@ const AdminDashboard = () => {
 
               {/* Text Block */}
               <div className="flex flex-col">
-                <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
+                <p className="text-lg sm:text-xl text-primary poppins-medium font-semibold">
                   Total Properties
                 </p>
 
                 {/* Number + Growth block */}
                 <div className="flex items-end gap-3 mt-1">
                   {/* Number */}
-                  <p className="poppins-medium text-2xl sm:text-3xl">
+                  <p className="poppins-medium text-2xl text-primary sm:text-3xl">
                     {counts.propertyCount}
                   </p>
 
                   {/* Percentage & Text */}
                   <div className="flex flex-col">
-                    <div className="poppins-semibold text-xs bg-[#beffd3] text-[#3fbe67] flex flex-row justify-center items-center rounded-full px-2 w-fit">
+                    <div className="poppins-semibold text-xs bg-[#beffd3] text-primary flex flex-row justify-center items-center rounded-full px-2 w-fit">
                       <MdArrowOutward size={15} />
                       <p className="poppins-medium ml-1">15.35%</p>
                     </div>
-                    <p className="poppins-medium text-[#777777] text-xs sm:text-sm">
+                    <p className="poppins-medium text-primary text-xs sm:text-sm">
                       Growth in properties
                     </p>
                   </div>
@@ -104,10 +104,10 @@ const AdminDashboard = () => {
                 <FaUserTie size={24} className="text-white" />
               </div>
               <div>
-                <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
+                <p className="text-lg sm:text-xl text-primary poppins-medium font-semibold">
                   Total Brokers
                 </p>
-                <p className="poppins-medium text-2xl sm:text-3xl mt-1">
+                <p className="poppins-medium text-2xl sm:text-3xl mt-1 text-primary">
                   {counts.brokerCount}
                 </p>
               </div>
@@ -120,10 +120,10 @@ const AdminDashboard = () => {
                 <FiUser size={24} className="text-white" />
               </div>
               <div>
-                <p className="text-lg sm:text-xl text-[#777777] poppins-medium font-semibold">
+                <p className="text-lg sm:text-xl text-primary poppins-medium font-semibold">
                   Total Users
                 </p>
-                <p className="poppins-medium text-2xl sm:text-3xl mt-1">
+                <p className="poppins-medium text-2xl sm:text-3xl mt-1 text-primary">
                   {counts.userCount}
                 </p>
               </div>
@@ -131,24 +131,24 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col px-2 sm:px-3 lg:flex-row gap-6 items-start">
+        <div className="w-full flex flex-col px-2 sm:px-3 lg:flex-row gap-6 items-start animate-fadeIn">
           {/* Analytics Box - Left */}
           <div className="w-full lg:flex-1 bg-white rounded-2xl border border-[#D4D4D4] p-2 sm:p-5 shadow-sm">
-            <p className="text-lg sm:text-xl text-[#777777] font-semibold poppins-medium mb-3">
+            <p className="text-lg sm:text-xl text-primary font-semibold poppins-medium mb-3">
               Analytics
             </p>
 
             {/* Number + Last Week Stats */}
-            <p className="text-md text-[#777777] font-semibold poppins-medium">
+            <p className="text-md text-primary font-semibold poppins-medium">
               Active Customers
             </p>
             <div className="flex justify-between items-end mb-4">
-              <p className="text-2xl font-semibold poppins-medium">
+              <p className="text-2xl font-semibold poppins-medium text-primary">
                 {activeUserCount}
               </p>
 
               <div className="flex flex-col items-end">
-                <div className="bg-[#eaf7ee] text-[#56ce7b] text-xs flex items-center gap-1 rounded-full px-3 py-1 font-medium">
+                <div className="bg-[#eaf7ee] text-primary text-xs flex items-center gap-1 rounded-full px-3 py-1 font-medium">
                   <MdArrowOutward size={14} />
                   <span>9.5%</span>
                 </div>
@@ -158,12 +158,12 @@ const AdminDashboard = () => {
 
             {/* Graph Placeholder */}
             <div className="w-full h-32 sm:h-40 mt-2">
-              <div className="w-full h-full bg-gradient-to-r from-purple-100 to-white rounded-lg flex justify-center items-center text-sm text-gray-400">
+              <div className="w-full h-full bg-gradient-to-r from-purple-100 to-white rounded-lg flex justify-center items-center text-sm text-primary">
                 <div className="w-full h-32 sm:h-40 mt-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={data}>
-                      <XAxis dataKey="name" tick={{ fontSize: 13 }} />
-                      <YAxis tick={{ fontSize: 13 }} />
+                      <XAxis style={{color:'text-primary'}} dataKey="name" tick={{ fontSize: 12 }} />
+                      <YAxis style={{color:'text-primary'}} tick={{ fontSize: 12 }} />
                       <Tooltip />
                       <Line
                         type="linear"
@@ -189,10 +189,10 @@ const AdminDashboard = () => {
                   <VscVmActive size={18} />
                 </div>
                 <div>
-                  <p className="text-sm text-[#777777] font-semibold poppins-medium">
+                  <p className="text-sm text-primary font-semibold poppins-medium">
                     Active Users
                   </p>
-                  <p className="text-xl font-semibold poppins-medium mt-1">
+                  <p className="text-xl font-semibold poppins-medium mt-1 text-primary">
                     {activeUserCount}
                   </p>
                 </div>
@@ -206,10 +206,10 @@ const AdminDashboard = () => {
                   <FaHandshakeAngle size={18} />
                 </div>
                 <div>
-                  <p className="text-sm text-[#777777] font-semibold poppins-medium">
+                  <p className="text-sm text-primary font-semibold poppins-medium">
                     Active Brokers
                   </p>
-                  <p className="text-xl font-semibold poppins-medium mt-1">
+                  <p className="text-xl font-semibold poppins-medium mt-1 text-primary">
                     {activeCount}
                   </p>
                 </div>

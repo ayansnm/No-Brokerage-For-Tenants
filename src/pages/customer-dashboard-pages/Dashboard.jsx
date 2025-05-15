@@ -107,11 +107,11 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50 poppins-regular">
       <Navbar pageName="Dashboard" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fadeIn">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
           {stats.map((stat, index) => (
-            <div key={index} className="bg-white rounded-xl shadow-sm p-6">
+            <div key={index} className="text-primary rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between">
                 <div className={`p-3 rounded-lg ${stat.color} text-white`}>
                   {stat.icon}
@@ -120,7 +120,7 @@ const Dashboard = () => {
                   <p className="text-sm font-medium text-gray-500">
                     {stat.title}
                   </p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-2xl font-bold text-primary">{stat.value}</p>
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ const Dashboard = () => {
           <div className="lg:w-2/3">
             {/* Header with actions */}
             <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-6">
+              <h2 className="text-xl font-bold text-primary mb-6">
                 Your all Shared properties!
               </h2>
 
@@ -194,8 +194,8 @@ const Dashboard = () => {
                 ))
               ) : (
                 <div className="max-w-md mx-auto">
-                  <p className="text-xl poppins-semibold mb-2">Thank you!</p>
-                  <p className="text-xl poppins-semibold mb-6">
+                  <p className="text-xl poppins-semibold mb-2 text-primary">Thank you!</p>
+                  <p className="text-xl poppins-semibold mb-6 text-primary">
                     Soon we will share properties with you!
                   </p>
                   <img
@@ -211,7 +211,7 @@ const Dashboard = () => {
           {/* Filter Sidebar - Desktop */}
           <div className="hidden lg:block lg:w-1/3">
             <div className="bg-white rounded-xl shadow-sm p-6 sticky top-2">
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-primary">
                 <BsFilter size={18} /> Filters
               </h3>
 

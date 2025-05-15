@@ -7,7 +7,7 @@ const PropertyFeature = ({ icon, label, value }) => {
         {icon}
       </div>
       <div>
-        <p className="font-medium text-gray-800">{value}</p>
+        <p className="font-medium text-primary">{value}</p>
         <p className="text-sm text-gray-500">{label}</p>
       </div>
     </div>

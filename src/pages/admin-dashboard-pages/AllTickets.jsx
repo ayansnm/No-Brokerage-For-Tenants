@@ -160,7 +160,7 @@ const TicketCard = ({
   const API_URL = import.meta.env.VITE_API_URL;
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200 w-full max-w-3xl mx-auto">
+    <div className="bg-white rounded-xl p-6 shadow-md border border-gray-200 w-full max-w-3xl mx-auto animate-fadeIn">
       <div className="flex flex-col sm:flex-row gap-6">
         {/* Image Section - Fixed width */}
         <div className="w-full sm:w-40 h-40 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
@@ -182,13 +182,13 @@ const TicketCard = ({
             <div className="min-w-0"> {/* Prevents text overflow */}
               <div className="flex items-center gap-2">
                 <span className="font-medium text-gray-700">From:</span>
-                <h3 className="font-semibold text-gray-900 truncate">
+                <h3 className="font-semibold text-primary truncate">
                   {userName}
                 </h3>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-medium text-gray-700">Question:</span>
-                <h4 className="font-semibold text-lg text-gray-800 mt-1 truncate">
+                <h4 className="font-semibold text-lg text-primary mt-1 truncate">
                   {message}
                 </h4>
               </div>
@@ -202,7 +202,7 @@ const TicketCard = ({
                 Respond
               </button>
             ) : (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 flex-shrink-0">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-primary flex-shrink-0">
                 Responded
               </span>
             )}
@@ -211,7 +211,7 @@ const TicketCard = ({
           {/* Description with proper overflow handling */}
           <div className="bg-gray-50 rounded-lg mb-4">
             <span className="font-medium text-gray-700">Description:</span>
-            <p className="text-gray-700 break-words whitespace-pre-line">
+            <p className="text-primary break-words whitespace-pre-line">
               {description}
             </p>
           </div>
@@ -226,7 +226,7 @@ const TicketCard = ({
                   </svg>
                   <span className="text-sm font-medium text-blue-600">Response</span>
                 </div>
-                <p className="text-gray-700 break-words whitespace-pre-line">
+                <p className="text-primary break-words whitespace-pre-line">
                   {response}
                 </p>
               </div>

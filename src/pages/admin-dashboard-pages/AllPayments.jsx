@@ -28,7 +28,7 @@ const AllPayments = () => {
       <div className="flex-1 overflow-y-auto h-screen">
         <Navbar pageName={"All Payments"} />
 
-        <div className="w-full px-5 my-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="w-full px-5 my-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 animate-fadeIn">
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             <button className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition">
               <FaFilter size={18} className="text-black" />
@@ -44,15 +44,15 @@ const AllPayments = () => {
             </div>
           </div>
 
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900 hover:bg-green-800 text-white text-sm transition self-start sm:self-auto">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-green-800 text-white cursor-pointer text-sm transition self-start sm:self-auto">
             <IoAddOutline size={18} />
             Add Payment
           </button>
         </div>
 
-        <div className="overflow-x-auto px-5 mt-4">
+        <div className="overflow-x-auto px-5 mt-4 animate-fadeIn">
           <table className="min-w-full bg-white rounded-lg shadow-sm overflow-hidden">
-            <thead className="bg-gray-100 text-gray-600 text-sm">
+            <thead className="bg-gray-100 text-primary text-sm">
               <tr>
                 <th className="text-left px-4 py-3">#</th>
                 <th className="text-left px-4 py-3">NAME</th>
@@ -75,7 +75,7 @@ const AllPayments = () => {
                   </div>
                 </td>
                 <td className="px-4 py-3">
-                  <span className="px-2 py-1 rounded-full text-xs font-medium">
+                  <span className="px-2 py-1 rounded-full text-xs font-medium text-primary">
                     Active
                   </span>
                 </td>

@@ -12,8 +12,9 @@ import { RiCustomerServiceFill, RiLogoutCircleRLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineHome } from "react-icons/md";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
+import Logo from "../../assets/nbftlogo.jpg"; 
 
-const Navbar = ({pageName}) => {
+const Navbar = ({ pageName }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -71,7 +72,6 @@ const Navbar = ({pageName}) => {
   ];
 
   const role = localStorage.getItem("role");
-  
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -95,15 +95,16 @@ const Navbar = ({pageName}) => {
       <nav className="bg-white shadow-sm border-b  border-gray-200 px-4 py-3 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Left side - Hamburger menu and page title */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-5">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="mr-4 text-gray-500 hover:text-gray-700 focus:outline-none md:hidden"
             >
               <VscMenu size={24} />
             </button>
+            {role === "admin" ? "" : <img src={Logo} alt="Logo" className="h-30 w-30 object-contain" />}
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">
+              <h1 className="text-xl font-semibold text-primary">
                 {pageName}
               </h1>
               <p className="text-xs text-gray-500">{formattedDate}</p>
@@ -144,20 +145,19 @@ const Navbar = ({pageName}) => {
                   alt="Profile"
                   className="h-8 w-8 rounded-full object-cover"
                 />
-                <span className="hidden md:inline text-sm font-medium text-gray-700">
+                <span className="hidden md:inline text-sm font-medium text-primary">
                   {localStorage.getItem("userName") || "User"}
                 </span>
                 <FaChevronDown
-                  className={`hidden md:inline text-gray-500 text-xs transition-transform ${
-                    dropdownOpen ? "transform rotate-180" : ""
-                  }`}
+                  className={`hidden md:inline text-gray-500 text-xs transition-transform ${dropdownOpen ? "transform rotate-180" : ""
+                    }`}
                 />
               </button>
 
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
                   <div className="px-4 py-2 border-b border-gray-100">
-                    <p className="text-sm font-medium">
+                    <p className="text-sm font-medium text-primary">
                       {localStorage.getItem("userName")}
                     </p>
                     <p className="text-xs text-gray-500 capitalize">
@@ -229,11 +229,10 @@ const Navbar = ({pageName}) => {
                           navigate(item.path);
                           setMobileMenuOpen(false);
                         }}
-                        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
-                          location.pathname === item.path
+                        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${location.pathname === item.path
                             ? "bg-blue-50 text-blue-700"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <span className="mr-3">{item.icon}</span>
                         {item.label}

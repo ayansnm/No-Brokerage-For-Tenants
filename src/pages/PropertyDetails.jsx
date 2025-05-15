@@ -205,7 +205,7 @@ const PropertyDetails = () => {
     <div className="bg-gray-50 min-h-screen poppins-regular">
       <Navbar pageName="Property Details" />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 animate-fadeIn">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Column - Media and Details */}
           <div className="lg:w-2/3">
@@ -233,7 +233,7 @@ const PropertyDetails = () => {
               </ol>
             </nav>
 
-            <h1 className="text-3xl font-bold mb-2">{title}</h1>
+            <h1 className="text-3xl font-bold mb-2 text-primary">{title}</h1>
             <div className="flex items-center gap-2 text-gray-600 mb-6">
               <FaMapMarkerAlt className="text-primary" />
               <span>{location}</span>
@@ -313,12 +313,12 @@ const PropertyDetails = () => {
             </div>
 
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-300">
-              <h2 className="text-xl font-bold mb-4">Description</h2>
+              <h2 className="text-xl text-primary font-bold mb-4">Description</h2>
               <p className="text-gray-700 leading-relaxed">{description}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-300">
-              <h2 className="text-xl font-bold mb-4">Features</h2>
+              <h2 className="text-xl font-bold mb-4 text-primary">Features</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <PropertyFeature
                   icon={<MdApartment />}
@@ -366,10 +366,10 @@ const PropertyDetails = () => {
             )}
 
             <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-300">
-              <h2 className="text-xl font-bold mb-4">Location</h2>
+              <h2 className="text-xl font-bold mb-4 text-primary">Location</h2>
               <div className="mt-4">
                 <p className="text-gray-700 flex items-center gap-2">
-                  <FaMapMarkerAlt />
+                  <FaMapMarkerAlt className="text-primary" />
                   {area}
                 </p>
                 <p className="text-gray-700">{location}</p>
@@ -430,7 +430,7 @@ const PropertyDetails = () => {
             ) : localStorage.getItem("role") === "admin" ? (
               <>
                 <div className="bg-white rounded-xl shadow-md p-6 sticky top-6">
-                  <h3 className="text-xl font-bold mb-4">Contact Agent</h3>
+                  <h3 className="text-xl text-primary font-bold mb-4">Contact Agent</h3>
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
                       {postedBy?.profilePicture ? (
@@ -447,7 +447,7 @@ const PropertyDetails = () => {
                       )}
                     </div>
                     <div>
-                      <h4 className="font-bold">{postedBy?.fullName}</h4>
+                      <h4 className="font-bold text-primary">{postedBy?.fullName}</h4>
                       <p className="text-sm text-gray-600">Real Estate Agent</p>
                       {postedBy?.verified && (
                         <div className="flex items-center gap-1 mt-1 text-xs text-green-600">
@@ -473,7 +473,7 @@ const PropertyDetails = () => {
                   </button>
                   {allCustomers.length > 0 && (
                     <div className="mt-4">
-                      <h3 className="text-xl font-bold mb-4">
+                      <h3 className="text-xl text-primary font-bold mb-4">
                         Contact Customers
                       </h3>
                       {allCustomers?.map((customer) => (
@@ -490,7 +490,7 @@ const PropertyDetails = () => {
                               </div>
                             </div>
                             <div className="flex flex-col min-w-0">
-                              <h4 className="font-bold truncate">
+                              <h4 className="font-bold text-primary truncate">
                                 {customer?.sharedWith?.fullName}
                               </h4>
                               <div className="flex items-center gap-2 text-sm text-gray-600 truncate">
@@ -515,7 +515,7 @@ const PropertyDetails = () => {
                       {allCustomers?.length > 0 && (
                   <button
                     onClick={() => navigate(`/broker/suggestedcustomer/${id}`)}
-                    className="w-full mt-2 border bg-gray-100 py-2 rounded-lg font-medium hover:bg-green-900 text-green-900 hover:text-white transition cursor-pointer"
+                    className="w-full mt-2 border bg-gray-100 py-2 rounded-lg font-medium hover:bg-[#084040] text-primary hover:!text-white transition cursor-pointer"
                   >
                     Show All Details of Customers
                   </button>

@@ -109,7 +109,7 @@ const AllCustomers = () => {
         <Navbar pageName="All Customer" />
 
         {/* Top Filters & Button */}
-        <div className="w-full px-5 flex my-3 flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="w-full px-5 flex my-3 flex-col sm:flex-row sm:items-center sm:justify-between gap-3 animate-fadeIn">
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             {/* <button className="p-3 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition">
               <FaFilter size={16} className="text-gray-500" />
@@ -134,9 +134,9 @@ const AllCustomers = () => {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto px-5 mt-4">
+        <div className="overflow-x-auto px-5 mt-4 animate-fadeIn">
           <table className="min-w-full bg-white rounded-lg shadow-sm overflow-hidden">
-            <thead className="bg-gray-100 text-gray-600 text-sm">
+            <thead className="bg-gray-100 text-primary text-sm">
               <tr>
                 <th className="text-left px-4 py-3">#</th>
                 <th className="text-left px-4 py-3">NAME</th>
@@ -218,7 +218,7 @@ const AllCustomers = () => {
                           }}
                           className="sr-only"
                         />
-                        <div className={`w-10 h-5 ${item?.isActive ? "bg-green-500" : "bg-gray-500"} rounded-full shadow-inner relative transition-all duration-300`}>
+                        <div className={`w-10 h-5 ${item?.isActive ? "bg-primary" : "bg-gray-500"} rounded-full shadow-inner relative transition-all duration-300`}>
                           <div className={`absolute left-0 top-0 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${item?.isActive ? "translate-x-5 bg-green-500" : "bg-gray-500"}`}></div>
                         </div>
                       </label>
@@ -242,7 +242,7 @@ const AllCustomers = () => {
                           toast.error("This customer has not subscribed yet.");
                         }
                       }}
-                      className="p-2 bg-green-800 rounded-full w-32 text-center text-xs text-white cursor-pointer"
+                      className="p-2 bg-primary rounded-full w-32 text-center text-xs text-white cursor-pointer"
                     >
                       Share Property
                     </p>

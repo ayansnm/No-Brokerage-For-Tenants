@@ -148,13 +148,13 @@
 }
 
 .text-primary{
-    color: #265953;
+    color: #084040;
 }
 .bg-primary{
-    background-color: #265953;
+    background-color: #084040;
 }
 .border-primary{
-    border-color: #265953;
+    border-color: #084040;
 }
 
 @theme inline {

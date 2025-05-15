@@ -63,10 +63,10 @@ const Profile = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar pageName="Profile" />
       
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 animate-fadeIn">
         {/* Profile Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">My Profile</h1>
+          <h1 className="text-3xl font-bold text-primary">My Profile</h1>
           <p className="text-gray-600">View and update your personal information</p>
         </div>
 
@@ -90,7 +90,7 @@ const Profile = () => {
               </div>
               
               <div className="text-center md:text-left">
-                <h2 className="text-2xl font-semibold text-gray-800">
+                <h2 className="text-2xl font-semibold text-primary">
                   {userProfile?.fullName || "John Doe"}
                 </h2>
                 <p className="text-gray-600">{userProfile?.email || "johndoe@example.com"}</p>

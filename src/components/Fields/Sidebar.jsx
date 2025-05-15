@@ -7,6 +7,7 @@ import { FiUser } from "react-icons/fi";
 import { LuTickets } from "react-icons/lu";
 import { TbCashBanknote } from "react-icons/tb";
 import { useNavigate, useLocation } from 'react-router-dom';
+import Logo from "../../assets/nbftlogo.jpg";
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -15,8 +16,10 @@ const Sidebar = () => {
     return (
         <>
             {/* Sidebar */}
-            <aside className="w-64 bg-white shadow-md p-5 hidden md:block border-r-2 border-[#b5b5b5]">
-                <h1 className="text-2xl font-semibold mb-4 text-[#2E073F]">NBFT</h1>
+            <aside className="w-64 bg-white shadow-md p-4 hidden md:block border-r-2 border-[#b5b5b5]">
+                {/* <h1 className="text-2xl font-semibold mb-4 text-primary">NBFT</h1> */}
+                <img src={Logo} alt="Logo" className="h-15 w-30 mb-2 object-contain" />
+
                 <hr className="mb-4" />
 
                 {/* Search Bar */}
@@ -29,42 +32,42 @@ const Sidebar = () => {
                 <ul className="space-y-3 text-gray-700 text-sm">
                     <li
                         onClick={() => navigate('/admin/dashboard')}
-                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/dashboard' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/dashboard' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <RxDashboard /> <span>Dashboard</span>
                     </li>
                     <li
                         onClick={() => navigate('/admin/properties')}
-                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/properties' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/properties' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <HiOutlineBuildingOffice2 /> <span>All Properties</span>
                     </li>
                     <li
                         onClick={() => navigate('/admin/customers')}
-                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/customers' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/customers' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <FiUser /> <span>All Customers</span>
                     </li>
                     <li
                         onClick={() => navigate('/admin/brokers')}
-                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/brokers' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/brokers' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <FaUsers /> <span>All Brokers</span>
                     </li>
                     <li
                         onClick={() => navigate('/admin/tickets')}
-                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/tickets' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/tickets' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <LuTickets /> <span>All Tickets</span>
                     </li>
                     <li
                         onClick={() => navigate('/admin/payments')}
-                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/payments' ? 'bg-green-900 text-white' : 'hover:bg-gray-100'
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/payments' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <TbCashBanknote /> <span>Payments</span>

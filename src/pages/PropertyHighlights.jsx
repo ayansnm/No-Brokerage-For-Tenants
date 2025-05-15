@@ -22,7 +22,7 @@ const PropertyHighlights = ({ price, bedrooms, bathrooms, area, sizeType }) => {
         </div>
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
-        <span className="bg-green-400 bg-opacity-20 px-3 py-1 rounded-full text-sm">For Rent</span>
+        <span className="bg-[#B7A380] bg-opacity-20 px-3 py-1 rounded-full text-sm text-primary">For Rent</span>
         {/* <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm">Ready to Move</span>
         <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm">Premium Property</span> */}
       </div>

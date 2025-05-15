@@ -215,7 +215,7 @@ const Requirements = () => {
           boxSizing: "border-box",
           overflowY: "auto",
         }}
-        className="px-[1rem]"
+        className="px-[1rem] animate-fadeIn"
       >
         <div
           style={{
@@ -249,7 +249,7 @@ const Requirements = () => {
                   type="button"
                   className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${formData.purpose === "Commercial"
                     ? "bg-primary text-white border-primary"
-                    : "bg-white text-primary border-primary hover:bg-[#265953] hover:!text-white"
+                    : "bg-white text-primary border-primary hover:bg-[#084040] hover:!text-white"
                     }`}
                   onClick={() => handlePurposeSelect("Commercial")}
                 >

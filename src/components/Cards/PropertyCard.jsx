@@ -58,7 +58,7 @@ const PropertyCard = ({
 
         {/* Status Badge */}
         {isNew && (
-          <span className="absolute top-3 left-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+          <span className="absolute top-3 left-3 bg-primary text-white text-xs font-semibold px-2 py-1 rounded-full">
             NEW
           </span>
         )}
@@ -76,7 +76,7 @@ const PropertyCard = ({
         <div onClick={() => navigate(`/PropertyDetails/${id}`)}>
           {/* Title and Price */}
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-semibold text-gray-800 line-clamp-1">
+            <h3 className="text-lg font-semibold text-primary line-clamp-1">
               {title}
             </h3>
             <p className="text-lg font-bold text-primary whitespace-nowrap ml-2">
@@ -147,14 +147,14 @@ const PropertyCard = ({
                 </button>
               )}
               <button
-                className="p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
+                className="p-2 text-primary hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
                 onClick={() => navigate(`/broker/editproperty/${id}`)}
                 title="Edit Property"
               >
                 <FiEdit2 />
               </button>
               <button
-                className="p-2 text-gray-600 hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
+                className="p-2 text-primary hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
                 title="Customer Details"
               >
                 <FiUsers />
