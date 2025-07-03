@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 const useGetPropertyDetails = () => {
@@ -10,6 +10,11 @@ const useGetPropertyDetails = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
+      
+      if (!token) {
+        throw new Error("Authentication token not found");
+      }
+
       const response = await fetch(
         `${API_URL}/api/property/getbyid/${id}`,
         {
@@ -20,21 +25,31 @@ const useGetPropertyDetails = () => {
           },
         }
       );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData?.message || "Failed to fetch property details");
+      }
+
       const result = await response.json();
-      console.log(JSON.stringify(result?.data));
+      console.log("Property details fetched:", result?.data);
       
-      if (response.ok) {
-        setProperty(result?.data || []);
+      if (result?.data) {
+        setProperty(result.data);
+        return result.data;
+      } else {
+        throw new Error("No property data received");
       }
     } catch (error) {
       toast.error(error.message || "Error fetching property");
-      console.error("Error fetching properties:", error);
+      console.error("Error fetching property details:", error);
+      return null;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return { loading, property, getPropertyDetails };
-}
+};
 
-export default useGetPropertyDetails
+export default useGetPropertyDetails;

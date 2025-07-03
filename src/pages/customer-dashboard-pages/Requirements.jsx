@@ -1,25 +1,29 @@
-import React, { useState, useEffect } from "react";
-import Stepper, { Step } from "../../components/ReactBits/Stepper";
-import bgImage from "../../assets/Background.png";
-import { FaHome, FaRegBuilding } from "react-icons/fa";
-import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons";
-import TextInput from "../../components/Fields/TextInput";
-import AnimatedSelect from "../../components/Fields/AnimatedSelect";
-import PriceRangeSlider from "../../components/Fields/PriceRangeSelector";
-import { MdOutlineRadioButtonChecked } from "react-icons/md";
-import useRequirement from "../../hooks/customer-hooks/useRequirement";
-import useGetFilledRequirements from "../../hooks/customer-hooks/useGetFilledRequirements";
-import useUpdateRequirement from "../../hooks/customer-hooks/useUpdateRequirement";
-import useGetAreas from "../../hooks/customer-hooks/useGetAreas";
-import Navbar from "../../components/Fields/Navbar";
-import Footer from "../../components/Fields/Footer";
+"use client"
+
+import { useState, useEffect } from "react"
+import Stepper, { Step } from "../../components/ReactBits/Stepper"
+import bgImage from "../../assets/Background.jpg"
+import { FaHome, FaRegBuilding } from "react-icons/fa"
+import AnimatedRadioButtons from "../../components/Fields/AnimatedRadioButtons"
+import TextInput from "../../components/Fields/TextInput"
+import AnimatedSelect from "../../components/Fields/AnimatedSelect"
+import useRequirement from "../../hooks/customer-hooks/useRequirement"
+import useGetFilledRequirements from "../../hooks/customer-hooks/useGetFilledRequirements"
+import useUpdateRequirement from "../../hooks/customer-hooks/useUpdateRequirement"
+import useGetAreas from "../../hooks/customer-hooks/useGetAreas"
+import Navbar from "../../components/Fields/Navbar"
+import Footer from "../../components/Fields/Footer"
+import PaymentSummary from "./PaymentSummary"
+import PaymentStatus from "./PaymentStatus"
+import useRazorpayPayment from "../../hooks/useRazorpayPayment"
 
 const Requirements = () => {
+  // Initialize all form fields with default values to prevent uncontrolled to controlled warnings
   const [formData, setFormData] = useState({
     purpose: "",
     category: "Rent",
     location: "",
-    priceRange: "",
+    priceRange: 0,
     state: "",
     city: "",
     area: "",
@@ -28,40 +32,47 @@ const Requirements = () => {
     format: "",
     floor: "",
     sizetype: "sqft",
-    size: "",
+    size: 0,
     scheme: "",
-  });
-  const [isData, setIsData] = useState(false);
-  const {
-    loading: load,
-    getRequirement,
-    requirements,
-  } = useGetFilledRequirements();
+    pincode: "",
+  })
 
-  const { loading: arealoading, areas, getAreas } = useGetAreas();
-  const [search, setSearch] = useState("");
+  const [isData, setIsData] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [currentStep, setCurrentStep] = useState(1)
+
+  const { loading: load, getRequirement, requirements } = useGetFilledRequirements()
+  const { loading: arealoading, areas, getAreas } = useGetAreas()
+  const { loading: requirementLoading, submitRequirement } = useRequirement()
+  const { loading: updateLoading, submitRequirement: updateRequirement } = useUpdateRequirement()
+  const { loading: paymentLoading, scriptLoaded } = useRazorpayPayment()
+
+  const [search, setSearch] = useState("")
+
+  // Calculate payment amount
+  const paymentAmount =
+    formData.purpose === "Residential" ? Math.round(formData.priceRange / 5) : Math.round(formData.priceRange / 2.5)
+
   const fetchAreas = async () => {
-    await getAreas({ search });
-  };
+    await getAreas({ search })
+  }
+
   useEffect(() => {
-    fetchAreas();
-  }, [search]);
+    fetchAreas()
+  }, [search])
 
   useEffect(() => {
     const fetchData = async () => {
-      getRequirement();
-    };
-    fetchData();
-  }, []);
+      getRequirement()
+    }
+    fetchData()
+  }, [])
 
   // Update formData when requirements are loaded
   useEffect(() => {
     if (requirements) {
-      const sizeParts = requirements?.size?.split(" ") || ["", "sqft"];
-      // const priceRangeParts = requirements?.priceRange
-      //   ?.split("-")
-      //   ?.map(Number) || [5000, 20000];
-      setIsData(true);
+      const sizeParts = requirements?.size?.split(" ") || ["0", "sqft"]
+      setIsData(true)
       setFormData((prev) => ({
         ...prev,
         purpose: requirements?.propertyPurpose || "",
@@ -73,104 +84,93 @@ const Requirements = () => {
         format: requirements?.bhk || "",
         floor: requirements?.floor || "",
         sizetype: sizeParts[1] || "sqft",
-        size: parseInt(sizeParts[0]) || "",
-        priceRange: requirements?.priceRange,
+        size: Number.parseInt(sizeParts[0]) || 0,
+        priceRange: requirements?.priceRange || 0,
         scheme: requirements?.scheme || "",
-      }));
+        pincode: requirements?.pincode || "",
+      }))
     }
-  }, [requirements]);
-
-  const [errors, setErrors] = useState({});
-  const [canProceed, setCanProceed] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  }, [requirements])
 
   useEffect(() => {
-    validateCurrentStep();
-  }, [formData, currentStep]);
+    validateCurrentStep()
+  }, [formData, currentStep])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
+
+    // Convert numeric fields to numbers
+    let processedValue = value
+    if (name === "priceRange" || name === "size" || name === "pincode") {
+      processedValue = value === "" ? 0 : Number(value)
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
-    }));
-    if (name == "area") {
-      console.log("HELLO");
-      console.log(value);
-      formData.area = value
+      [name]: processedValue,
+    }))
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }))
     }
-  };
+  }
 
   const handlePurposeSelect = (purpose) => {
     setFormData((prev) => ({
       ...prev,
       purpose,
-    }));
-  };
+    }))
 
-  const validateCurrentStep = (step) => {
-    const newErrors = {};
+    // Clear purpose error
+    if (errors.purpose) {
+      setErrors((prev) => ({
+        ...prev,
+        purpose: "",
+      }))
+    }
+  }
+
+  const validateCurrentStep = (step = currentStep) => {
+    const newErrors = {}
 
     switch (step) {
       case 1:
         if (!formData.purpose) {
-          newErrors.purpose = "Please select a purpose!";
+          newErrors.purpose = "Please select a purpose!"
         }
-        break;
+        break
       case 2:
-        if (!formData.state) {
-          newErrors.state = "Please select a state";
-        }
-        if (!formData.city) {
-          newErrors.city = "Please select a city";
-        }
-        if (!formData.area) {
-          newErrors.area = "Please select an area";
-        }
-        break;
+        if (!formData.state) newErrors.state = "Please select a state"
+        if (!formData.city) newErrors.city = "Please select a city"
+        if (!formData.area) newErrors.area = "Please select an area"
+        break
       case 3:
-        if (!formData.type) {
-          newErrors.type = "Please select a property type";
+        if (!formData.type) newErrors.type = "Please select a property type"
+        if (!formData.furnished) newErrors.furnished = "Please select furnished type"
+        if (!formData.format && formData.purpose === "Residential") {
+          newErrors.format = "Please select a format"
         }
-        if (!formData.furnished) {
-          newErrors.furnished = "Please select furnished type";
-        }
-        if (!formData.format && formData.purpose === "residential") {
-          newErrors.format = "Please select a format";
-        }
-        // if (
-        //   !formData.floor &&
-        //   (formData.type === "Flat" || formData.type === "Office")
-        // ) {
-        //   newErrors.floor = "Please select a floor";
-        // }
-        break;
+        break
       case 4:
-        if (!formData.size) {
-          newErrors.size = "Please enter size";
-        }
-        if (!formData.scheme) {
-          newErrors.scheme = "Please enter scheme name";
-        }
-        if (!formData.priceRange) {
-          newErrors.priceRange = "Please enter budget";
-        }
-        break;
+        if (!formData.size || formData.size <= 0) newErrors.size = "Please enter a valid size"
+        if (!formData.priceRange || formData.priceRange <= 0) newErrors.priceRange = "Please enter a valid budget"
+        break
       default:
-        break;
+        break
     }
 
-    return newErrors;
-  };
+    return newErrors
+  }
 
   const handleStepChange = (step) => {
-    setCurrentStep(step);
-    validateCurrentStep();
-  };
+    setCurrentStep(step)
+    validateCurrentStep()
+  }
 
-  const { loading, submitRequirement } = useRequirement();
-  const { loading: loadReq, submitRequirement: updateRequirement } =
-    useUpdateRequirement();
   const handleSubmit = async () => {
     const data = {
       propertyPurpose: formData.purpose,
@@ -184,19 +184,24 @@ const Requirements = () => {
       size: formData.size + " " + formData.sizetype,
       priceRange: formData.priceRange,
       scheme: formData.scheme,
-      amount:
-        formData.purpose === "residential"
-          ? formData.priceRange[1] / 5
-          : formData.priceRange[1] / 2.5,
-    };
-    console.log(data);
-    if (isData) {
-      console.log(requirements?._id);
-      await updateRequirement(data, requirements?._id);
-    } else {
-      await submitRequirement(data);
+      pincode: formData.pincode,
+      amount: paymentAmount,
     }
-  };
+
+    console.log("Submitting requirement with data:", data)
+
+    try {
+      if (isData) {
+        await updateRequirement(data, requirements?._id)
+      } else {
+        await submitRequirement(data)
+      }
+    } catch (error) {
+      console.error("Submission error:", error)
+    }
+  }
+
+  const isLoading = requirementLoading || updateLoading || paymentLoading
 
   return (
     <>
@@ -234,23 +239,21 @@ const Requirements = () => {
             handleSubmit={handleSubmit}
             purpose={formData.purpose}
             validateStep={validateCurrentStep}
-            errors={errors} // Pass errors to Stepper
-            setErrors={setErrors} // Pass setErrors to Stepper
+            errors={errors}
+            setErrors={setErrors}
+            typeofstepper="requirement"
           >
             <Step>
-              <h2 className="w-full text-center poppins-semibold mb-4">
-                Your purpose for property?
-              </h2>
-              {errors.purpose && (
-                <p className="text-red-500 text-center mb-4">{errors.purpose}</p>
-              )}
+              <h2 className="w-full text-center poppins-semibold mb-4">Your purpose for property?</h2>
+              {errors.purpose && <p className="text-red-500 text-center mb-4">{errors.purpose}</p>}
               <div className="flex flex-col sm:flex-col gap-2 justify-center items-center">
                 <button
                   type="button"
-                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${formData.purpose === "Commercial"
-                    ? "bg-primary text-white border-primary"
-                    : "bg-white text-primary border-primary hover:bg-[#084040] hover:!text-white"
-                    }`}
+                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${
+                    formData.purpose === "Commercial"
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-primary border-primary hover:bg-[#084040] hover:!text-white"
+                  }`}
                   onClick={() => handlePurposeSelect("Commercial")}
                 >
                   <div className="flex flex-row items-center gap-3">
@@ -259,30 +262,27 @@ const Requirements = () => {
                   </div>
                   <div className="flex flex-col mt-3 justify-center gap-2">
                     <div className="flex gap-2">
-                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">
-                        ●
-                      </span>
+                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">●</span>
                       <span className="mt-1 text-sm text-left">
-                        Select this if you want the property for Commercial
-                        purpose.
+                        Select this if you want the property for Commercial purpose.
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">
-                        ●
-                      </span>
+                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">●</span>
                       <span className="mt-1 text-sm text-left">
                         In Commercial you have to pay 40% of your budget amount
                       </span>
                     </div>
                   </div>
                 </button>
+
                 <button
                   type="button"
-                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${formData.purpose === "Residential"
-                    ? "bg-primary text-white border-primary"
-                    : "bg-white text-primary border-primary hover:bg-[#265953] hover:!text-white"
-                    }`}
+                  className={`w-[90%] cursor-pointer p-5 border-2 rounded-3xl transition-all duration-300 ${
+                    formData.purpose === "Residential"
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-primary border-primary hover:bg-[#265953] hover:!text-white"
+                  }`}
                   onClick={() => handlePurposeSelect("Residential")}
                 >
                   <div className="flex flex-row items-center gap-3">
@@ -291,18 +291,13 @@ const Requirements = () => {
                   </div>
                   <div className="flex flex-col mt-3 justify-center gap-2">
                     <div className="flex gap-2">
-                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">
-                        ●
-                      </span>
+                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">●</span>
                       <span className="mt-1 text-sm text-left">
-                        Select this if you want the property for Residential
-                        purpose.
+                        Select this if you want the property for Residential purpose.
                       </span>
                     </div>
                     <div className="flex gap-2">
-                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">
-                        ●
-                      </span>
+                      <span className="w-3 text-xl h-3 rounded-full poppins-medium">●</span>
                       <span className="mt-1 text-sm text-left">
                         In Residential you have to pay 20% of your budget amount
                       </span>
@@ -311,52 +306,42 @@ const Requirements = () => {
                 </button>
               </div>
             </Step>
+
             <Step>
-              <h2 className="w-full text-center poppins-medium mb-2">
-                The Place where you need a property?
-              </h2>
+              <h2 className="w-full text-center poppins-medium mb-2">The Place where you need a property?</h2>
               <div className="flex flex-col px-2 sm:px-0 gap-1">
                 <div className="form-group">
                   <AnimatedRadioButtons
                     label="Category"
                     name="category"
                     options={[{ label: "Rent", value: "Rent" }]}
-                    value={"Rent"}
+                    value={formData.category}
                     onChange={handleChange}
                   />
                 </div>
-                <div className="form-group ">
+                <div className="form-group">
                   <AnimatedSelect
                     label="State"
                     name="state"
                     value={formData.state}
                     onChange={handleChange}
-                    options={[
-                      { value: "Gujarat", label: "Gujarat" },
-                      // { value: "Maharashtra", label: "Maharashtra" },
-                      // { value: "Rajasthan", label: "Rajasthan" },
-                    ]}
+                    options={[{ value: "Gujarat", label: "Gujarat" }]}
                     placeholder="Select state"
                     error={errors.state}
                   />
                 </div>
-                <div className="form-group ">
+                <div className="form-group">
                   <AnimatedSelect
                     label="City"
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    options={[
-                      { value: "Ahmedabad", label: "Ahmedabad" },
-                      // { value: "Gandhinagar", label: "Gandhinagar" },
-                      // { value: "Patan", label: "Patan" },
-                      // { value: "Goa", label: "Goa" },
-                    ]}
+                    options={[{ value: "Ahmedabad", label: "Ahmedabad" }]}
                     placeholder="Select city"
                     error={errors.city}
                   />
                 </div>
-                <div className="form-group ">
+                <div className="form-group">
                   <AnimatedSelect
                     label="Area"
                     name="area"
@@ -365,31 +350,33 @@ const Requirements = () => {
                     options={
                       Array.isArray(areas)
                         ? areas.map((item) => ({
-                          value: item.areaName,
-                          label: item.areaName,
-                        }))
+                            value: item.areaName,
+                            label: item.areaName,
+                          }))
                         : []
                     }
-
                     placeholder="Select area"
                     error={errors.area}
                     search={search}
                     setSearch={setSearch}
                   />
-
-                  {/* {JSON.stringify(
-                  areas.map((item) => {
-                    return item.areaName;
-                  })
-                )} */}
+                </div>
+                <div className="form-group">
+                  <label className="text-black text-sm poppins-medium">Pincode</label>
+                  <input
+                    className="w-full mt-1 px-5 poppins-regular text-sm border-2 h-[35px] rounded-full transition-all duration-300 flex items-center justify-between cursor-pointer ring-2 ring-[#265953]"
+                    name="pincode"
+                    type="number"
+                    value={formData.pincode || ""}
+                    onChange={handleChange}
+                    placeholder="Enter your pincode"
+                  />
                 </div>
               </div>
             </Step>
 
             <Step>
-              <h2 className="w-full text-center poppins-medium mb-2">
-                Which type of property you want?
-              </h2>
+              <h2 className="w-full text-center poppins-medium mb-2">Which type of property you want?</h2>
               <div className="flex flex-col gap-1 px-2 sm:px">
                 <div className="form-group">
                   <AnimatedSelect
@@ -400,19 +387,20 @@ const Requirements = () => {
                     options={
                       formData.purpose === "Residential"
                         ? [
-                          { value: "House", label: "House" },
-                          { value: "Bunglow", label: "Bunglow" },
-                          { value: "Flat", label: "Flat" },
-                        ]
+                            { value: "House", label: "House" },
+                            { value: "Bunglow", label: "Bunglow" },
+                            { value: "Flat", label: "Flat" },
+                          ]
                         : [
-                          { value: "Office", label: "Office" },
-                          { value: "Shop", label: "Shop" },
-                        ]
+                            { value: "Office", label: "Office" },
+                            { value: "Shop", label: "Shop" },
+                          ]
                     }
                     placeholder="Select type"
                     error={errors.type}
                   />
                 </div>
+
                 <div className="form-group">
                   <AnimatedRadioButtons
                     label="Furnished"
@@ -427,7 +415,8 @@ const Requirements = () => {
                     error={errors.furnished}
                   />
                 </div>
-                {formData.purpose == "Residential" && (
+
+                {formData.purpose === "Residential" && (
                   <div className="form-group">
                     <AnimatedRadioButtons
                       label="Format"
@@ -444,6 +433,7 @@ const Requirements = () => {
                     />
                   </div>
                 )}
+
                 {(formData.type === "Flat" || formData.type === "Office") && (
                   <div className="form-group">
                     <AnimatedSelect
@@ -463,11 +453,9 @@ const Requirements = () => {
                 )}
               </div>
             </Step>
-            <Step>
-              <h2 className="w-full text-center poppins-semibold mb-2">
-                The size of property you want?
-              </h2>
 
+            <Step>
+              <h2 className="w-full text-center poppins-semibold mb-2">The size of property you want?</h2>
               <div className="flex flex-col gap-1 px-2 sm:px">
                 <div className="form-group">
                   <AnimatedRadioButtons
@@ -489,58 +477,40 @@ const Requirements = () => {
                     label="Size"
                     name="size"
                     type="number"
-                    value={formData.size}
+                    value={formData.size || ""}
                     onChange={handleChange}
                     placeholder="Enter size"
                     error={errors.size}
                   />
                 </div>
 
-                {/* <div className="form-group">
-                <TextInput
-                  label="Scheme"
-                  name="scheme"
-                  type="text"
-                  value={formData.scheme}
-                  onChange={handleChange}
-                  placeholder="Enter Scheme name"
-                  error={errors.scheme}
-                />
-              </div> */}
-
                 <div className="form-group">
-                  {/* <PriceRangeSlider
-                  value={formData.priceRange}
-                  onChange={(range) =>
-                    setFormData((prev) => ({ ...prev, priceRange: range }))
-                  }
-                /> */}
-                  <div className="form-group">
-                    <TextInput
-                      label="Budget"
-                      name="priceRange"
-                      type="number"
-                      value={formData.priceRange}
-                      onChange={handleChange}
-                      placeholder="Enter your budget"
-                      error={errors.priceRange}
-                    />
-                  </div>
-                  <p className="text-xs mt-1 text-primary poppins-semibold">
-                    You have to pay{" "}
-                    {formData.purpose === "residential"
-                      ? formData.priceRange / 5 || 0
-                      : formData.priceRange / 2.5 || 0}
-                  </p>
+                  <TextInput
+                    label="Budget"
+                    name="priceRange"
+                    type="number"
+                    value={formData.priceRange || ""}
+                    onChange={handleChange}
+                    placeholder="Enter your budget"
+                    error={errors.priceRange}
+                  />
                 </div>
+
+                {formData.priceRange > 0 && formData.purpose && (
+                  <PaymentSummary formData={formData} amount={paymentAmount} purpose={formData.purpose} />
+                )}
               </div>
             </Step>
           </Stepper>
         </div>
       </div>
+
+      {/* Payment Loading Overlay */}
+      <PaymentStatus loading={isLoading} scriptLoaded={scriptLoaded} />
+
       <Footer />
     </>
-  );
-};
+  )
+}
 
-export default Requirements;
+export default Requirements

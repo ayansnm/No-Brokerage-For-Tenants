@@ -3,8 +3,9 @@ import AnimatedButton from "../../components/Fields/AnimatedButton";
 import { Link } from "react-router-dom";
 import TextInput from "../../components/Fields/TextInput";
 import useLogin from "../../hooks/auth-hooks/useLogin";
-import Button from "../../components/Fields/Button";
-import IMG from "../../assets/image.png";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import CompanyLogo from "../../assets/bglogot.png"; // Replace with your actual logo path
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -18,10 +19,9 @@ const Login = () => {
     const { name, value } = e.target;
 
     if (name === "mobileNo") {
-      const numericValue = value.replace(/\D/g, "").slice(0, 10); // restrict to 10
+      const numericValue = value.replace(/\D/g, "").slice(0, 10);
       setFormData((prev) => ({ ...prev, [name]: numericValue }));
-    }
-     else {
+    } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
@@ -43,6 +43,7 @@ const Login = () => {
 
     return newErrors;
   };
+
   const { loading, login } = useLogin();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,30 +53,45 @@ const Login = () => {
     } else {
       setErrors({});
       console.log("Login form submitted:", formData);
-      // Call login API here
       await login(formData);
     }
   };
 
-  return (
-    <div className="flex h-screen animate-fadeIn">
-      {/* Right Image Section for desktop */}
-      <div className="hidden sm:block sm:w-1/2 h-full bg-primary">
-        <img
-          src={IMG}
-          alt="Login Visual"
-          className="w-full h-full object-cover"
-        />
-      </div>
-      {/* Left Section with mobile background */}
-      <div className="w-full sm:w-1/2 h-full overflow-y-auto no-scrollbar px-5 sm:px-20 flex justify-center items-center pb-5 bg-[url('/src/assets/image.png')] bg-cover bg-center sm:bg-none">
-        <div className="w-[90%] max-w-md py-10 bg-black/80 p-5 sm:p-0 text-white sm:text-black rounded-xl sm:bg-transparent">
-          <h1 className="text-2xl font-bold mb-2 poppins-bold">Welcome Back</h1>
-          <h2 className="text-1xl mb-3 text-center poppins-semibold">
-            Login to your Account
-          </h2>
+  // Testimonials or feature highlights for the carousel
+  const slides = [
+    {
+      text: "Join thousands of satisfied customers using our platform daily",
+      author: "",
+    },
+    {
+      text: "Secure, reliable, and built with cutting-edge technology",
+      author: "",
+    },
+    {
+      text: "24/7 customer support to assist you whenever you need",
+      author: "",
+    },
+    {
+      text: "Trusted by industry leaders across multiple sectors",
+      author: "",
+    },
+  ];
 
-          <form className="space-y-3" onSubmit={handleSubmit}>
+  return (
+    <div className="min-h-screen flex flex-col md:flex-row bg-primary dark:bg-gray-900">
+      {/* Left side - Login Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-[#B7A380]">
+              Welcome Back
+            </h1>
+            <h2 className="text-xl text-gray-600 dark:text-gray-300">
+              Login to your Account
+            </h2>
+          </div>
+
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <TextInput
               label="Mobile Number"
               name="mobileNo"
@@ -97,14 +113,31 @@ const Login = () => {
               error={errors.password}
             />
 
-            <AnimatedButton type="submit" text="Login" onClick={handleSubmit} />
+            <div className="pt-2">
+              <AnimatedButton
+                type="submit"
+                text={loading ? "Logging in..." : "Login"}
+                onClick={handleSubmit}
+                className="w-full"
+                disabled={loading}
+              />
+            </div>
+
+            <div className="text-center pt-4">
+              <Link
+                to="/forgot-password" // Add your forgot password route
+                className="text-sm text-secondary hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
           </form>
 
-          <p className="text-center mt-6 text-sm text-white sm:text-gray-600 poppins-regular">
-            Don't have an account?
+          <p className="text-center mt-8 text-sm text-gray-600 dark:text-gray-300">
+            Don't have an account?{" "}
             <Link
-              to="/Registration"
-              className="text-primary font-semibold ml-1 hover:underline"
+              to="/app/Registration"
+              className="text-secondary font-semibold hover:underline"
             >
               Register here
             </Link>
@@ -112,7 +145,57 @@ const Login = () => {
         </div>
       </div>
 
-      
+      {/* Right side - Branding Area */}
+      <div className="hidden md:flex md:w-1/2 bg-secondary flex-col items-center justify-center p-12 text-primary relative overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/20"></div>
+        </div>
+
+        {/* Logo */}
+        <div className="relative z-10 mb-12 flex flex-col items-center">
+          <img
+            src={CompanyLogo}
+            alt="Company Logo"
+            className="h-24 w-auto mb-6"
+          />
+          <h2 className="text-3xl font-bold">Your Company</h2>
+          <p className="text-lg opacity-90 mt-2">Tagline or slogan here</p>
+        </div>
+
+        {/* Testimonial Carousel */}
+        <div className="relative z-10 w-full max-w-lg">
+          <Carousel
+            autoPlay
+            infiniteLoop
+            interval={5000}
+            showArrows={false}
+            showStatus={false}
+            showThumbs={false}
+            swipeable={false}
+            emulateTouch={false}
+            stopOnHover={false}
+            dynamicHeight={false}
+            transitionTime={1000}
+          >
+            {slides.map((slide, index) => (
+              <div key={index} className="px-8 py-4 text-center">
+                <p className="text-xl italic mb-4">"{slide.text}"</p>
+                {slide.author && (
+                  <p className="font-medium">— {slide.author}</p>
+                )}
+              </div>
+            ))}
+          </Carousel>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-black/10 backdrop-blur-sm flex items-center justify-center">
+          <p className="text-sm opacity-80">
+            Secure. Reliable. Trusted.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

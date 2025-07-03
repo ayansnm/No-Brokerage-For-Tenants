@@ -29,14 +29,13 @@ const PropertyCard = ({
 
   // Get the first media item
   const firstMedia = media?.[0];
-  console.log("FIRST MEDIA: ", firstMedia);
   
 
   return (
     <div className="w-full bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer">
       {/* Property Media */}
       <div
-        onClick={() => navigate(`/PropertyDetails/${id}`)}
+        onClick={() => navigate(`/app/PropertyDetails/${id}`)}
         className="relative h-48 w-full bg-gray-100"
       >
         {firstMedia?.type === 'video' ? (
@@ -73,7 +72,7 @@ const PropertyCard = ({
 
       {/* Property Details */}
       <div className="p-4">
-        <div onClick={() => navigate(`/PropertyDetails/${id}`)}>
+        <div onClick={() => navigate(`/app/PropertyDetails/${id}`)}>
           {/* Title and Price */}
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-lg font-semibold text-primary line-clamp-1">
@@ -111,7 +110,7 @@ const PropertyCard = ({
         {/* Action Buttons */}
         <div className="flex justify-between items-center">
           <button
-            onClick={() => navigate(`/PropertyDetails/${id}`)}
+            onClick={() => navigate(`/app/PropertyDetails/${id}`)}
             className="text-primary hover:text-primary-dark text-sm font-medium flex items-center"
           >
             View Details
@@ -132,7 +131,7 @@ const PropertyCard = ({
           </button>
 
           {role === "user" ? (
-            <button onClick={() => navigate(`/PropertyDetails/${id}`)} className="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center transition-colors">
+            <button onClick={() => navigate(`/app/PropertyDetails/${id}`)} className="bg-primary hover:bg-primary-dark text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center transition-colors">
               <FaHandshake className="mr-1" />
               Contact
             </button>
@@ -148,7 +147,7 @@ const PropertyCard = ({
               )}
               <button
                 className="p-2 text-primary hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
-                onClick={() => navigate(`/broker/editproperty/${id}`)}
+                onClick={() => navigate(`/app/broker/editproperty/${id}`)}
                 title="Edit Property"
               >
                 <FiEdit2 />

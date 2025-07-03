@@ -47,7 +47,7 @@ const SimilarProperties = ({ currentPropertyId }) => {
           <div 
             key={property.id} 
             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer"
-            onClick={() => navigate(`/property/${property.id}`)}
+            onClick={() => navigate(`/app/property/${property.id}`)}
           >
             <div className="h-48 bg-gray-200 overflow-hidden">
               <img 

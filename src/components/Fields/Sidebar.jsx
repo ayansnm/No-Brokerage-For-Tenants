@@ -31,46 +31,53 @@ const Sidebar = () => {
                 {/* Navigation Menu */}
                 <ul className="space-y-3 text-gray-700 text-sm">
                     <li
-                        onClick={() => navigate('/admin/dashboard')}
+                        onClick={() => navigate('/app/admin/dashboard')}
                         className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/dashboard' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <RxDashboard /> <span>Dashboard</span>
                     </li>
                     <li
-                        onClick={() => navigate('/admin/properties')}
+                        onClick={() => navigate('/app/admin/properties')}
                         className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/properties' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <HiOutlineBuildingOffice2 /> <span>All Properties</span>
                     </li>
                     <li
-                        onClick={() => navigate('/admin/customers')}
+                        onClick={() => navigate('/app/admin/customers')}
                         className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/customers' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <FiUser /> <span>All Customers</span>
                     </li>
                     <li
-                        onClick={() => navigate('/admin/brokers')}
+                        onClick={() => navigate('/app/admin/brokers')}
                         className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/brokers' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <FaUsers /> <span>All Brokers</span>
                     </li>
                     <li
-                        onClick={() => navigate('/admin/tickets')}
+                        onClick={() => navigate('/app/admin/tickets')}
                         className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/tickets' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <LuTickets /> <span>All Tickets</span>
                     </li>
                     <li
-                        onClick={() => navigate('/admin/payments')}
+                        onClick={() => navigate('/app/admin/payments')}
                         className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/payments' ? 'bg-primary text-white' : 'hover:bg-gray-100'
                             }`}
                     >
                         <TbCashBanknote /> <span>Payments</span>
+                    </li>
+                    <li
+                        onClick={() => navigate('/app/admin/areamanagement')}
+                        className={`cursor-pointer p-2 rounded-lg flex items-center gap-2 ${location.pathname === '/admin/payments' ? 'bg-primary text-white' : 'hover:bg-gray-100'
+                            }`}
+                    >
+                        <TbCashBanknote /> <span>Areas</span>
                     </li>
                 </ul>
             </aside>

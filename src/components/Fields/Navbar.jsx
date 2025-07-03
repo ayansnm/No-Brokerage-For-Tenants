@@ -12,7 +12,8 @@ import { RiCustomerServiceFill, RiLogoutCircleRLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineHome } from "react-icons/md";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
-import Logo from "../../assets/nbftlogo.jpg"; 
+import Logo from "../../assets/bglogot.png";
+import { IoMdArrowBack } from "react-icons/io";
 
 const Navbar = ({ pageName }) => {
   const navigate = useNavigate();
@@ -35,37 +36,37 @@ const Navbar = ({ pageName }) => {
   const menuItems = [
     {
       label: "Dashboard",
-      path: "/admin/dashboard",
+      path: "/app/admin/dashboard",
       icon: <RxDashboard size={20} />,
       role: "admin",
     },
     {
       label: "Properties",
-      path: "/admin/properties",
+      path: "/app/admin/properties",
       icon: <HiOutlineBuildingOffice2 size={20} />,
       role: "admin",
     },
     {
       label: "Customers",
-      path: "/admin/customers",
+      path: "/app/admin/customers",
       icon: <FiUser size={20} />,
       role: "admin",
     },
     {
       label: "Brokers",
-      path: "/admin/brokers",
+      path: "/app/admin/brokers",
       icon: <FaUsers size={20} />,
       role: "admin",
     },
     {
       label: "Tickets",
-      path: "/admin/tickets",
+      path: "/app/admin/tickets",
       icon: <LuTickets size={20} />,
       role: "admin",
     },
     {
       label: "Payments",
-      path: "/admin/payments",
+      path: "/app/admin/payments",
       icon: <TbCashBanknote size={20} />,
       role: "admin",
     },
@@ -92,7 +93,7 @@ const Navbar = ({ pageName }) => {
 
   return (
     <>
-      <nav className="bg-white shadow-sm border-b  border-gray-200 px-4 py-3 sm:px-6">
+      <nav className="bg-[#B7A380] shadow-sm border-b  border-gray-200 px-4 py-3 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Left side - Hamburger menu and page title */}
           <div className="flex items-center gap-5">
@@ -102,12 +103,14 @@ const Navbar = ({ pageName }) => {
             >
               <VscMenu size={24} />
             </button>
-            {role === "admin" ? "" : <img src={Logo} alt="Logo" className="h-30 w-30 object-contain" />}
+            <div className="pl-5">
+              {role === "admin" ? "" : <img onClick={() => { if (role === "broker") { navigate("/app/broker/dashboard") } else if (role === "user") { navigate("/app") } }} src={Logo} alt="Logo" className="h-30 w-30 object-contain cursor-pointer" />}
+            </div>
             <div>
               <h1 className="text-xl font-semibold text-primary">
                 {pageName}
               </h1>
-              <p className="text-xs text-gray-500">{formattedDate}</p>
+              {/* <p className="text-xs text-gray-500">{formattedDate}</p> */}
             </div>
           </div>
 
@@ -115,20 +118,20 @@ const Navbar = ({ pageName }) => {
           <div className="flex items-center space-x-4">
             {role === "user" && (
               <button
-                onClick={() => navigate("/MyTickets")}
-                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full"
+                onClick={() => navigate("/app/MyTickets")}
+                className="p-2 text-secondary hover:!text-[#B7A380] hover:bg-gray-100 border border-secondary rounded-full"
                 title="Support"
               >
                 <RiCustomerServiceFill size={20} />
               </button>
             )}
 
-            <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full relative">
+            <button className="p-2 text-[#084040] hover:text-gray-700 border border-[#084040] hover:bg-gray-100 rounded-full relative">
               <VscBell size={20} />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
             </button>
             {/* {localStorage.getItem("role") == "user" && (
-              <button onClick={()=>navigate("/MyTickets")} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full relative">
+              <button onClick={()=>navigate("/app/MyTickets")} className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full relative">
                 <TfiHeadphoneAlt size={20} />
                 <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
               </button>
@@ -145,11 +148,11 @@ const Navbar = ({ pageName }) => {
                   alt="Profile"
                   className="h-8 w-8 rounded-full object-cover"
                 />
-                <span className="hidden md:inline text-sm font-medium text-primary">
+                <span className="hidden md:inline text-sm font-medium text-[#084040]">
                   {localStorage.getItem("userName") || "User"}
                 </span>
                 <FaChevronDown
-                  className={`hidden md:inline text-gray-500 text-xs transition-transform ${dropdownOpen ? "transform rotate-180" : ""
+                  className={`hidden md:inline text-[#084040] text-xs transition-transform ${dropdownOpen ? "transform rotate-180" : ""
                     }`}
                 />
               </button>
@@ -165,19 +168,19 @@ const Navbar = ({ pageName }) => {
                     </p>
                   </div>
                   <a
-                    href="#"
-                    onClick={() => navigate("/Profile")}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                    // href="#"
+                    onClick={() => navigate("/app/Profile")}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
                   >
                     <IoSettingsOutline /> Profile Settings
                   </a>
                   <a
-                    href="#"
+                    // href="#"
                     onClick={() => {
                       localStorage.clear();
-                      navigate("/Login");
+                      navigate("/app/Login");
                     }}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
                   >
                     <RiLogoutCircleRLine /> Sign out
                   </a>
@@ -230,8 +233,8 @@ const Navbar = ({ pageName }) => {
                           setMobileMenuOpen(false);
                         }}
                         className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${location.pathname === item.path
-                            ? "bg-blue-50 text-blue-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                          ? "bg-blue-50 text-blue-700"
+                          : "text-gray-700 hover:bg-gray-100"
                           }`}
                       >
                         <span className="mr-3">{item.icon}</span>
@@ -246,7 +249,7 @@ const Navbar = ({ pageName }) => {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          navigate("/");
+                          navigate("/app");
                           setMobileMenuOpen(false);
                         }}
                         className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
@@ -262,7 +265,7 @@ const Navbar = ({ pageName }) => {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          navigate("/MyTickets");
+                          navigate("/app/MyTickets");
                           setMobileMenuOpen(false);
                         }}
                         className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
@@ -281,7 +284,7 @@ const Navbar = ({ pageName }) => {
                     onClick={(e) => {
                       e.preventDefault();
                       localStorage.clear();
-                      navigate("/Login");
+                      navigate("/app/Login");
                     }}
                     className="flex items-center px-3 py-2 text-sm font-medium text-red-600 rounded-md hover:bg-gray-100"
                   >

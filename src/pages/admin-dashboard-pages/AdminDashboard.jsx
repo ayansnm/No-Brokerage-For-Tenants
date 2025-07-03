@@ -62,7 +62,7 @@ const AdminDashboard = () => {
         <Navbar pageName="Dashboard" />
 
         {/* Main Content */}
-        <div className="w-full flex justify-center p-3 animate-fadeIn">
+        <div data-aos="zoom-up" className="w-full flex justify-center p-3">
           <div className="w-full md:w-[90vw] lg:w-[75vw] flex flex-col md:flex-row justify-between bg-white rounded-2xl border border-[#D4D4D4] p-4 sm:p-6 gap-6">
             {/* Total Properties Suggested */}
             <div className="flex items-start gap-3 flex-1">

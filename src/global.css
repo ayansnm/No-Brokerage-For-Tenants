@@ -156,6 +156,15 @@
 .border-primary{
     border-color: #084040;
 }
+.text-secondary{
+    color: #B7A380;
+}
+.bg-secondary{
+    background-color: #B7A380;
+}
+.border-secondary{
+    border-color: #B7A380;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

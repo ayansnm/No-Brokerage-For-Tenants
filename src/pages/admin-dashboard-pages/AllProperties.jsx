@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsFilter, BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { FaSearch } from "react-icons/fa";
+import { FaDownload, FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import PropertyCard from "../../components/Cards/PropertyCard";
 import Navbar from "../../components/Fields/Navbar";
@@ -20,7 +20,8 @@ const AllProperties = () => {
     priceRange: [0, 1000000],
   });
 
-  const { loading, properties, pagination, getAllProperties } = useGetAllProperties();
+  const { loading, properties, pagination, getAllProperties } =
+    useGetAllProperties();
 
   const applyFilters = () => {
     setCurrentPage(1); // Reset to first page when filters change
@@ -64,6 +65,39 @@ const AllProperties = () => {
     { label: "Commercial", value: "Commercial" },
   ];
 
+  const handleDownloadExcel = async () => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL;
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `${API_URL}/api/property/downloadexcel/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to download file");
+
+      const blob = await response.blob();
+
+      // Create a temporary URL and trigger download
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "properties.xlsx"; // or the actual filename
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error : ", error.message);
+    }
+  };
   return (
     <div className="flex flex-col sm:flex-row min-h-screen bg-[#FAFAFA] poppins-regular h-screen overflow-hidden">
       <Sidebar className="w-[250px] h-screen sticky top-0 overflow-hidden" />
@@ -71,7 +105,10 @@ const AllProperties = () => {
       <div className="flex-1 overflow-y-auto h-screen">
         <Navbar pageName="All Properties" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fadeIn">
+        <div
+          data-aos="zoom-up"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+        >
           {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Property List Section */}
@@ -124,6 +161,15 @@ const AllProperties = () => {
                     </button>
                   </div>
                 </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => handleDownloadExcel()}
+                    className="flex items-center gap-2 bg-[#084040] hover:bg-[#0a4d4d] text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 text-sm mt-3"
+                  >
+                    <FaDownload size={14} />
+                    Download Excel
+                  </button>
+                </div>
               </div>
 
               {/* Property Cards */}
@@ -155,7 +201,10 @@ const AllProperties = () => {
                   {/* Pagination */}
                   {pagination?.totalPages > 1 && (
                     <div className="flex justify-center mt-8">
-                      <nav className="flex items-center gap-1" aria-label="Pagination">
+                      <nav
+                        className="flex items-center gap-1"
+                        aria-label="Pagination"
+                      >
                         <button
                           onClick={() => handlePageChange(currentPage - 1)}
                           disabled={currentPage === 1}
@@ -164,7 +213,10 @@ const AllProperties = () => {
                           <BsChevronLeft className="h-5 w-5" />
                         </button>
 
-                        {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
+                        {Array.from(
+                          { length: pagination.totalPages },
+                          (_, i) => i + 1
+                        ).map((page) => (
                           <button
                             key={page}
                             onClick={() => handlePageChange(page)}
@@ -266,8 +318,14 @@ const AllProperties = () => {
                       name="floor"
                       options={[
                         { value: "Top", label: "Top (Nineth and Above)" },
-                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
-                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
+                        {
+                          value: "Middle",
+                          label: "Middle (Fourth to Nineth floor)",
+                        },
+                        {
+                          value: "Bottom",
+                          label: "Bottom (Ground to Fourth floor)",
+                        },
                       ]}
                       selectedColor="bg-green-100 text-primary border-primary"
                       value={filter.floor}
@@ -385,8 +443,14 @@ const AllProperties = () => {
                       name="floor"
                       options={[
                         { value: "Top", label: "Top (Nineth and Above)" },
-                        { value: "Middle", label: "Middle (Fourth to Nineth floor)" },
-                        { value: "Bottom", label: "Bottom (Ground to Fourth floor)" },
+                        {
+                          value: "Middle",
+                          label: "Middle (Fourth to Nineth floor)",
+                        },
+                        {
+                          value: "Bottom",
+                          label: "Bottom (Ground to Fourth floor)",
+                        },
                       ]}
                       selectedColor="bg-blue-100 text-blue-700 border-blue-300"
                       value={filter.floor}

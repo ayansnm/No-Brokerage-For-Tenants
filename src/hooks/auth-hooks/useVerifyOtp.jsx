@@ -26,7 +26,7 @@ const useVerifyOtp = () => {
       if (!response.ok) {
         throw new Error(result.message || "Login failed");
       } else if (response.ok) {
-        navigate("/Login");
+        navigate("/app/Login");
       }
       return result;
     };

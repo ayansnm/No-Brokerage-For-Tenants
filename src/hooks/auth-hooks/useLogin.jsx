@@ -42,9 +42,9 @@ const useLogin = () => {
       // Navigate based on subscription
       const user = result?.data?.user;
       if (user?.role == "admin") {
-        navigate("/admin/dashboard");
+        navigate("/app/admin/dashboard");
       } else if (user?.role == "broker") {
-        navigate("/broker/dashboard");
+        navigate("/app/broker/dashboard");
       } else if (user?.role == "user") {
         console.log(user?.role);
         
@@ -52,9 +52,9 @@ const useLogin = () => {
           !user?.isSubscribedForCommercial &&
           !user?.isSubscribedForResidential
         ) {
-          navigate("/Requirements");
+          navigate("/app/Requirements");
         } else {
-          navigate("/");
+          navigate("/app");
         }
       }
 

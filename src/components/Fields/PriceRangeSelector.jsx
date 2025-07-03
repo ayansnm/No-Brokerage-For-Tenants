@@ -30,7 +30,7 @@ const PriceRangeSlider = ({
     <div className="w-full rounded-md">
       {/* <label className="text-black poppins-medium text-sm mt-1 block">Price-Range</label> */}
 
-      <div className="flex justify-between poppins-regular text-xs mb-1 text-black">
+      <div className="flex justify-between poppins-regular text-xs mb-1">
         <span>Min</span>
         <span>Max</span>
       </div>
@@ -42,7 +42,7 @@ const PriceRangeSlider = ({
           min={min}
           max={maxValue}
           onChange={handleMinInput}
-          className="w-1/2 px-3 py-1 border border-gray-300 rounded-md text-sm"
+          className="w-1/2 px-3 py-1 border border-primary rounded-md text-sm"
         />
         <input
           type="number"
@@ -50,7 +50,7 @@ const PriceRangeSlider = ({
           min={minValue}
           max={max}
           onChange={handleMaxInput}
-          className="w-1/2 px-3 py-1 border border-gray-300 rounded-md text-sm"
+          className="w-1/2 px-3 py-1 border border-primary rounded-md text-sm"
         />
       </div>
 
@@ -86,7 +86,7 @@ const PriceRangeSlider = ({
       />
 
       {/* Static labels below slider */}
-      <div className="flex justify-between mt-2 poppins-regular text-gray-600 text-xs px-1">
+      <div className="flex justify-between mt-2 poppins-regular text-xs px-1">
         <span>₹{min.toLocaleString()}</span>
         <span>₹{max.toLocaleString()}</span>
       </div>

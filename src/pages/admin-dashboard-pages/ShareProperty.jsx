@@ -254,7 +254,7 @@ const ShareProperty = () => {
                       There are no properties matching your criteria.
                     </p>
                     <button
-                      onClick={() => navigate("/broker/addproperty")}
+                      onClick={() => navigate("/app/broker/addproperty")}
                       className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                     >
                       <FaPlus className="-ml-1 mr-2 h-4 w-4" />

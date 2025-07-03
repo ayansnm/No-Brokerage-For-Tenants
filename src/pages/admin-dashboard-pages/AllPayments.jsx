@@ -52,7 +52,7 @@ const AllPayments = () => {
 
         <div className="overflow-x-auto px-5 mt-4 animate-fadeIn">
           <table className="min-w-full bg-white rounded-lg shadow-sm overflow-hidden">
-            <thead className="bg-gray-100 text-primary text-sm">
+            <thead className="bg-primary text-secondary text-sm">
               <tr>
                 <th className="text-left px-4 py-3">#</th>
                 <th className="text-left px-4 py-3">NAME</th>

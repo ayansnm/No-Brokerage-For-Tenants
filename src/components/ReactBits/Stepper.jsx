@@ -2,12 +2,16 @@
 import React, { useState, Children, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "../Fields/AnimatedButton";
+import { IoChevronBackOutline } from "react-icons/io5";
+import Logo from "../../assets/bglogo.png";
+import { IoMdArrowBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 export default function Stepper({
   children,
   initialStep = 1,
-  onStepChange = () => {},
-  onFinalStepCompleted = () => {},
+  onStepChange = () => { },
+  onFinalStepCompleted = () => { },
   stepCircleContainerClassName = "",
   stepContainerClassName = "",
   contentClassName = "",
@@ -23,9 +27,10 @@ export default function Stepper({
   canProceed = true,
   purpose,
   errors = {}, // Receive errors as prop
-  setErrors = () => {}, // Receive setErrors as prop
+  setErrors = () => { }, // Receive setErrors as prop
   validateStep = () => true, // Validation function
   typeofstepper = "requirement",
+  backtohome = false,
   ...rest
 }) {
   const [currentStep, setCurrentStep] = useState(initialStep);
@@ -34,12 +39,15 @@ export default function Stepper({
   const totalSteps = stepsArray.length;
   const isCompleted = currentStep > totalSteps;
   const isLastStep = currentStep === totalSteps;
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
   const updateStep = (newStep) => {
     setCurrentStep(newStep);
     if (newStep > totalSteps) onFinalStepCompleted();
     else onStepChange(newStep);
   };
+
+  const navigate = useNavigate()
 
   const handleBack = () => {
     if (currentStep > 1) {
@@ -79,17 +87,27 @@ export default function Stepper({
     }
   };
 
+  const role = localStorage.getItem("role");
+
   return (
     <div
       className="flex min-h-full flex-1 flex-col items-center justify-center"
       {...rest}
     >
       <div
-        className={`mx-auto w-full max-w-md rounded-4xl bg-white shadow-xl ${stepCircleContainerClassName}`}
+        className={`mx-auto w-full max-w-4xl rounded-4xl bg-[#ffffff]/90 shadow-xl ${stepCircleContainerClassName}`}
         style={{ border: "1px solid #222" }}
       >
         {Heading && (
-          <p className="mt-4 text-center font-semibold mx-4">{Heading}</p>
+          <div className="ml-5 flex items-center p-2">
+            <p
+              className="flex items-center gap-2 text-[#084040]  text-xl cursor-pointer"
+              onClick={() => setIsExitModalOpen(true)}
+            >
+              <IoMdArrowBack />Back To Home
+            </p>
+            <p className="mt-10 text-center font-semibold mx-auto  flex-1 ml-[-5cm]">{Heading}</p>
+          </div>
         )}
         <div
           className={`${stepContainerClassName} flex w-full items-center p-4 px-8`}
@@ -138,31 +156,35 @@ export default function Stepper({
 
         {!isCompleted && (
           <div className={`px-4 pb-4 ${footerClassName}`}>
-            <div
-              className={`mt-5 flex ${
-                currentStep !== 1 ? "justify-between" : "justify-end"
-              }`}
-            >
-              {currentStep !== 1 && (
-                <button
-                  onClick={handleBack}
-                  className={`rounded px-2 py-1 transition ${
-                    currentStep === 1
-                      ? "pointer-events-none opacity-50 text-neutral-400"
-                      : "text-neutral-400 hover:text-neutral-700"
+            {/* Add the horizontal line here */}
+            <div className="border-t border-[#265953] mt-4 mx-50"></div>
+
+            <div className="flex items-center justify-center gap-10">
+              <div
+                className={`flex w-[60%] sm:w-[25%] text-[#B7A380] ${currentStep !== 1 ? "justify-between" : "justify-end"
                   }`}
-                  {...backButtonProps}
-                >
-                  {backButtonText}
-                </button>
-              )}
-              <div className="w-[60%] sm:w-[40%]">
+              >
+                {currentStep !== 1 && (
+                  <AnimatedButton
+                    onClick={handleBack}
+                    className={`${currentStep === 1
+                      ? "pointer-events-none opacity-50 text-neutral-400"
+                      : "bg-[#084040] text-white rounded-full"
+                      }`}
+                    text={backButtonText}
+                    {...backButtonProps}
+                  />
+                )}
+              </div>
+              <div className="w-[60%] sm:w-[25%] text-[#B7A380]">
                 <AnimatedButton
                   text={
                     isLastStep
                       ? typeofstepper == "requirement"
                         ? "Pay Subscription"
-                        : typeofstepper == "updateproperty" ? "Update Property" : "Add Property"
+                        : typeofstepper == "updateproperty"
+                          ? "Update Property"
+                          : "Add Property"
                       : nextButtonText
                   }
                   onClick={isLastStep ? handleSubmit : handleNext}
@@ -170,6 +192,7 @@ export default function Stepper({
                 />
               </div>
             </div>
+
             {isLastStep && typeofstepper === "requirement" && (
               <>
                 {purpose === "residential" && (
@@ -195,6 +218,19 @@ export default function Stepper({
           </div>
         )}
       </div>
+      {isExitModalOpen && (
+        <>
+          <div className="fixed animate-fadeIn inset-0 bg-opacity-50 bg-[#00000071] backdrop-blur-xs flex justify-center items-center z-50 overflow-y-auto">
+            <div className="bg-[#B7A380] p-10 rounded-lg border border-[#084040]">
+              <p className="text-[#084040] text-center text-2xl">Are you sure you want to exit</p>
+              <div className="flex justify-center mt-4 gap-5">
+                <button className="hover:bg-[#084040] text-[#084040] hover:text-white px-2 py-1 rounded transform duration-150 text-lg" onClick={() => navigate("/app/broker/dashboard")}>Yes</button>
+                <button className="hover:bg-[#084040] text-[#084040] hover:text-white px-2 py-1 rounded transform duration-150 text-lg" onClick={() => setIsExitModalOpen(false)}>No</button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -278,8 +314,8 @@ function StepIndicator({
     currentStep === step
       ? "active"
       : currentStep < step
-      ? "inactive"
-      : "complete";
+        ? "inactive"
+        : "complete";
 
   const handleClick = () => {
     if (step !== currentStep && !disableStepIndicators) onClickStep(step);

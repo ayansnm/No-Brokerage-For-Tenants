@@ -107,11 +107,11 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50 poppins-regular">
       <Navbar pageName="Dashboard" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-fadeIn">
+      <div data-aos="fade-up" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
           {stats.map((stat, index) => (
-            <div key={index} className="text-primary rounded-xl shadow-sm p-6">
+            <div key={index} className="text-primary hover:!bg-[#B7A380] transition-all duration-300 rounded-xl shadow-sm p-6">
               <div className="flex items-center justify-between">
                 <div className={`p-3 rounded-lg ${stat.color} text-white`}>
                   {stat.icon}

@@ -35,7 +35,7 @@ const useSubscription = () => {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        navigate("/")
+        navigate("/app")
       }
     } catch (error) {
       console.error(error);

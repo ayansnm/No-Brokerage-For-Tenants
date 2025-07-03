@@ -109,7 +109,7 @@ const AllCustomers = () => {
         <Navbar pageName="All Customer" />
 
         {/* Top Filters & Button */}
-        <div className="w-full px-5 flex my-3 flex-col sm:flex-row sm:items-center sm:justify-between gap-3 animate-fadeIn">
+        <div data-aos="zoom-up" className="w-full px-5 flex my-3 flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             {/* <button className="p-3 rounded-full bg-white border border-gray-300 hover:bg-gray-100 transition">
               <FaFilter size={16} className="text-gray-500" />
@@ -136,7 +136,7 @@ const AllCustomers = () => {
         {/* Table */}
         <div className="overflow-x-auto px-5 mt-4 animate-fadeIn">
           <table className="min-w-full bg-white rounded-lg shadow-sm overflow-hidden">
-            <thead className="bg-gray-100 text-primary text-sm">
+            <thead className="bg-primary text-secondary text-sm">
               <tr>
                 <th className="text-left px-4 py-3">#</th>
                 <th className="text-left px-4 py-3">NAME</th>
@@ -237,7 +237,7 @@ const AllCustomers = () => {
                     <p
                       onClick={() => {
                         if (item?.propertyRequirements?.[0]?.propertyPurpose) {
-                          navigate(`/admin/shareproperty/${item?._id}`);
+                          navigate(`/app/admin/shareproperty/${item?._id}`);
                         } else {
                           toast.error("This customer has not subscribed yet.");
                         }

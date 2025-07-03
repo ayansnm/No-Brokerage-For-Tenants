@@ -29,7 +29,7 @@ const useRegistration = () => {
       else if(response.ok){
         console.log("Result:" , JSON.stringify(result));
         localStorage.setItem('mobileNo',result?.data?.user?.mobileNo);
-        navigate("/VerifyOtp")
+        navigate("/app/VerifyOtp")
       }
 
       return result;

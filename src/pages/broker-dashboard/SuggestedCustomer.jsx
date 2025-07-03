@@ -74,7 +74,7 @@ const SuggestedCustomer = () => {
                   key={filter}
                   onClick={() => {
                     setActiveFilter(filter);
-                    setCurrentPage(1); // reset to first page when filter changes
+                    setCurrentPage(1);
                   }}
                   className={`px-3 py-1 rounded-lg transition ${
                     activeFilter === filter

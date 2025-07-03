@@ -15,10 +15,10 @@ const AnimatedRadioButtons = ({
         {options.map((option) => (
           <label
             key={option.value}
-            className={`cursor-pointer px-2  rounded-full poppins-regular text-sm border-2 transition-all duration-300 ${
+            className={`cursor-pointer px-6 p-2 rounded-full poppins-regular text-sm border-2 transition-all duration-300 ${
               value === option.value
                 ? `${selectedColor || "bg-primary text-white"} border-transparent`
-                : "bg-white text-gray-700 border-gray-300"
+                : "bg-[#B7A380] text-primary border-primary"
             }`}
           >
             <input
