@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import toast from "react-hot-toast"
 import useRazorpayPayment from "../useRazorpayPayment"
@@ -34,28 +33,34 @@ const useRequirement = () => {
 
       // Calculate payment amount based on purpose
       const paymentAmount =
-        formData.propertyPurpose === "Residential" ? formData.priceRange / 5 : formData.priceRange / 2.5
+        formData.propertyPurpose === "Residential"
+          ? Math.round(formData.priceRange / 5)
+          : Math.round(formData.priceRange / 2.5)
 
       console.log("Initiating payment for amount:", paymentAmount)
 
+      // Get user details for prefill (you should get this from your user context/state)
+      const userDetails = {
+        name: "Ayan Banglawala", // Get from user context
+        email: "ayan@example.com", // Get from user context
+        contact: "9876543210", // Get from user context
+      }
+
       // Initiate payment
       await makePayment({
-        amount: parseFloat(paymentAmount),
-        prefill: {
-          name: "Ayan Banglawala", // You can get this from user context
-          email: "ayan@example.com",
-          contact: "9876543210",
-        },
+        amount: paymentAmount,
+        prefill: userDetails,
         payloadToSend: {
           requirementId: result.data._id,
           type: "requirement",
           propertyPurpose: formData.propertyPurpose,
+          originalAmount: formData.priceRange,
+          paymentAmount: paymentAmount,
         },
         onSuccessRedirect: "/app",
         companyName: "Property Rental Service",
         description: `Payment for ${formData.propertyPurpose} property requirement`,
         onSuccess: async (paymentRecord) => {
-          // Save payment record to your database
           console.log("Payment successful, saving record:", paymentRecord)
           try {
             const saveResponse = await fetch(`${API_URL}/api/property/savePayment`, {
@@ -67,23 +72,27 @@ const useRequirement = () => {
               body: JSON.stringify({
                 ...paymentRecord,
                 requirementId: result.data._id,
+                paymentType: "requirement",
               }),
             })
 
             if (saveResponse.ok) {
               console.log("Payment record saved successfully")
+              toast.success("Payment completed and recorded successfully!")
             } else {
               console.error("Failed to save payment record")
+              toast.warning("Payment successful but failed to save record. Please contact support.")
             }
           } catch (error) {
             console.error("Failed to save payment record:", error)
+            toast.warning("Payment successful but failed to save record. Please contact support.")
           }
         },
         onFailure: (error) => {
           console.error("Payment failed:", error)
           toast.error("Payment failed. Please try again.")
         },
-      },formData.amount, result?.data?._id)
+      })
 
       return result
     } catch (error) {
