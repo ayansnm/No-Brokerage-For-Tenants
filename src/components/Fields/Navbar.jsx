@@ -94,32 +94,32 @@ const Navbar = ({ pageName }) => {
   return (
     <>
       <nav className="bg-[#B7A380] shadow-sm border-b  border-gray-200 px-4 py-3 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between sm:h-16 h-12">
           {/* Left side - Hamburger menu and page title */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center sm:gap-5 gap-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="mr-4 text-gray-500 hover:text-gray-700 focus:outline-none md:hidden"
             >
               <VscMenu size={24} />
             </button>
-            <div className="pl-5">
+            <div className="sm:pl-5 hidden md:block pl-0">
               {role === "admin" ? "" : <img onClick={() => { if (role === "broker") { navigate("/app/broker/dashboard") } else if (role === "user") { navigate("/app") } }} src={Logo} alt="Logo" className="h-30 w-30 object-contain cursor-pointer" />}
             </div>
-            <div>
+            {/* <div>
               <h1 className="text-xl font-semibold text-primary">
                 {pageName}
               </h1>
-              {/* <p className="text-xs text-gray-500">{formattedDate}</p> */}
-            </div>
+              <p className="text-xs text-gray-500">{formattedDate}</p>
+            </div> */}
           </div>
 
           {/* Right side - Icons and profile */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
             {role === "user" && (
               <button
                 onClick={() => navigate("/app/MyTickets")}
-                className="p-2 text-secondary hover:!text-[#B7A380] hover:bg-gray-100 border border-secondary rounded-full"
+                className="p-2 text-primary hover:!text-[#B7A380] hover:bg-gray-100 border border-primary rounded-full"
                 title="Support"
               >
                 <RiCustomerServiceFill size={20} />

@@ -10,9 +10,10 @@ const TextInput = ({
   onChange,
   error,
   className = "",
+  textColor = "!text-black",
 }) => {
   return (
-    <div className="relative group !text-white">
+    <div className={`relative group  ${textColor}`}>
       <label className= "text-[#B7A380] text-sm poppins-medium">{label}</label>
       <input
         type={type}

@@ -282,7 +282,6 @@ const AddProperty = () => {
   );
 
   // edit property
-
   const { id } = useParams();
   const {
     loading: getPropertyLoad,

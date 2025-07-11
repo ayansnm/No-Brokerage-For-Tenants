@@ -101,6 +101,7 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Enter your mobile number"
               error={errors.mobileNo}
+              textColor="!text-white"
             />
 
             <TextInput
@@ -111,6 +112,7 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Enter your password"
               error={errors.password}
+              textColor="!text-white"
             />
 
             <div className="pt-2">

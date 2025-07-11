@@ -29,6 +29,9 @@ const Dashboard = () => {
   const [sortOption, setSortOption] = useState("");
   const [filter, setFilter] = useState({});
 
+  // Define the page name
+  const pageName = "Dashboard";
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -105,19 +108,24 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 poppins-regular">
-      <Navbar pageName="Dashboard" />
+      <Navbar pageName={pageName} />
 
       <div data-aos="fade-up" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Page Name Header */}
+        <div className="mb-2">
+          <h1 className="text-3xl font-bold text-primary">{pageName}</h1>
+        </div>
+
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
           {stats.map((stat, index) => (
-            <div key={index} className="text-primary hover:!bg-[#B7A380] transition-all duration-300 rounded-xl shadow-sm p-6">
+            <div key={index} className="text-primary hover:!bg-[#B7A380] transition-all duration-300 rounded-xl shadow-sm sm:p-6 p-2 group">
               <div className="flex items-center justify-between">
                 <div className={`p-3 rounded-lg ${stat.color} text-white`}>
                   {stat.icon}
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-gray-500 group-hover:text-[#084040]">
                     {stat.title}
                   </p>
                   <p className="text-2xl font-bold text-primary">{stat.value}</p>
@@ -216,7 +224,7 @@ const Dashboard = () => {
               </h3>
 
               <div className="space-y-3">
-                {/* <div>
+                <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-2">
                     Price Range
                   </h4>
@@ -226,9 +234,9 @@ const Dashboard = () => {
                       setFilter((prev) => ({ ...prev, priceRange: range }))
                     }
                   />
-                </div> */}
+                </div>
 
-                {/* <div>
+                <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     Property Type
                   </h4>
@@ -245,35 +253,35 @@ const Dashboard = () => {
                     value={filter.type}
                     onChange={handleChange}
                   />
-                </div> */}
-                {requirement?.propertyType !== "House" &&
-                requirement?.propertyType !== "Office" &&
-                requirement?.propertyType !== "Flat" ? (
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700 mb-3">
-                      Floor
-                    </h4>
-                    <AnimatedRadioButtons
-                      name="floor"
-                      options={[
-                        { value: "Top", label: "Top (Nineth and Above)" },
-                        {
-                          value: "Middle",
-                          label: "Middle (Fourth to Nineth floor)",
-                        },
-                        {
-                          value: "Bottom",
-                          label: "Bottom (Ground to Fourth floor)",
-                        },
-                      ]}
-                      selectedColor="bg-green-100 text-primary border-primary"
-                      value={filter.floor}
-                      onChange={handleChange}
-                    />
-                  </div>
-                ) : null}
+                </div>
+                {/* {requirement?.propertyType !== "House" && */}
+                {/* // requirement?.propertyType !== "Office" && */}
+                {/* // requirement?.propertyType !== "Flat" ? ( */}
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    Floor
+                  </h4>
+                  <AnimatedRadioButtons
+                    name="floor"
+                    options={[
+                      { value: "Top", label: "Top (Nineth and Above)" },
+                      {
+                        value: "Middle",
+                        label: "Middle (Fourth to Nineth floor)",
+                      },
+                      {
+                        value: "Bottom",
+                        label: "Bottom (Ground to Fourth floor)",
+                      },
+                    ]}
+                    selectedColor="bg-green-100 text-primary border-primary"
+                    value={filter.floor}
+                    onChange={handleChange}
+                  />
+                </div>
+                {/* // ) : null} */}
 
-                {/* <div>
+                <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
                     Size Type
                   </h4>
@@ -288,7 +296,7 @@ const Dashboard = () => {
                     value={filter.sizetype}
                     onChange={handleChange}
                   />
-                </div> */}
+                </div>
 
                 <div>
                   <h4 className="text-sm font-medium text-gray-700 mb-3">
@@ -372,32 +380,77 @@ const Dashboard = () => {
 
                 {/* Modal content */}
                 <div className="space-y-3">
-                  {requirement?.propertyType !== "House" &&
-                  requirement?.propertyType !== "Office" &&
-                  requirement?.propertyType !== "Flat" ? (
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-700 mb-3">
-                        Floor
-                      </h4>
-                      <AnimatedRadioButtons
-                        name="floor"
-                        options={[
-                          { value: "Top", label: "Top (Nineth and Above)" },
-                          {
-                            value: "Middle",
-                            label: "Middle (Fourth to Nineth floor)",
-                          },
-                          {
-                            value: "Bottom",
-                            label: "Bottom (Ground to Fourth floor)",
-                          },
-                        ]}
-                        selectedColor="bg-green-100 text-primary border-primary"
-                        value={filter.floor}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  ) : null}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">
+                      Price Range
+                    </h4>
+                    <PriceRangeSlider
+                      value={filter.priceRange}
+                      onChange={(range) =>
+                        setFilter((prev) => ({ ...prev, priceRange: range }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Property Type
+                    </h4>
+                    <AnimatedRadioButtons
+                      name="type"
+                      options={[
+                        { value: "House", label: "House" },
+                        { value: "Bunglow", label: "Bunglow" },
+                        { value: "Flat", label: "Flat" },
+                        { value: "Office", label: "Office" },
+                        { value: "Shop", label: "Shop" },
+                      ]}
+                      selectedColor="bg-green-100 text-primary border-primary"
+                      value={filter.type}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* {requirement?.propertyType !== "House" && */}
+                  {/* // requirement?.propertyType !== "Office" && */}
+                  {/* // requirement?.propertyType !== "Flat" ? ( */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Floor
+                    </h4>
+                    <AnimatedRadioButtons
+                      name="floor"
+                      options={[
+                        { value: "Top", label: "Top (Nineth and Above)" },
+                        {
+                          value: "Middle",
+                          label: "Middle (Fourth to Nineth floor)",
+                        },
+                        {
+                          value: "Bottom",
+                          label: "Bottom (Ground to Fourth floor)",
+                        },
+                      ]}
+                      selectedColor="bg-green-100 text-primary border-primary"
+                      value={filter.floor}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* // ) : null} */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Size Type
+                    </h4>
+                    <AnimatedRadioButtons
+                      name="sizetype"
+                      options={[
+                        { label: "sqft", value: "sqft" },
+                        { label: "Vigha", value: "vigha" },
+                        { label: "SqYard", value: "sqyard" },
+                      ]}
+                      selectedColor="bg-green-100 text-primary border-primary"
+                      value={filter.sizetype}
+                      onChange={handleChange}
+                    />
+                  </div>
 
                   <div>
                     <h4 className="text-sm font-medium text-gray-700 mb-3">
